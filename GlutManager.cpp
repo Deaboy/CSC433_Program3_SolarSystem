@@ -1,0 +1,401 @@
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ *
+ * @Date	11/7/2014
+ *
+ * @file File containing the implementation of the Fractals class.
+ *
+ * @brief implementation for handeling callbacks
+*******************************************************************************/
+
+/*******************************************************************************
+ *                 DECLARATIONS, INCLUDES, AND NAMESPACES
+*******************************************************************************/
+#include <map>
+#include "GlutManager.h"
+
+/*******************************************************************************
+ *                          FUNCTION DEFINITIONS
+*******************************************************************************/
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: Constructor, initializes data, registers data with other
+ *	classes, and creates instances of subClasses
+*******************************************************************************/
+GlutManager::GlutManager()
+: window_width((int) window_width), window_height((int) window_height),
+window_name("Solar System")
+{
+	instance = this;
+
+	//the main class of the solar system should be initialized here
+	//solarsystem current_program
+}
+
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: Destructor, destroys subclasses
+*******************************************************************************/
+GlutManager::~GlutManager()
+{
+	//delete current_program;
+}
+
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: Begins running the program. Initializes OpenGL, registers
+ *		events, instantiates objects, and runs the game. Beware when
+ *		calling this function, as it enters the OpenGL main loop, only
+ *		to return at end of program execution.
+ *
+ * @returns Status code of the program. 0 means no problems.
+*******************************************************************************/
+int GlutManager::run( int argc, char *argv[] )
+{
+	window_width = (int) window_width;
+	window_height = (int) window_height;
+
+	// perform various OpenGL initializations
+    glutInit( &argc, argv );
+
+	// Put window in center of screen
+	int w = glutGet(GLUT_SCREEN_WIDTH);
+	int h = glutGet(GLUT_SCREEN_HEIGHT);
+	if (w != 0 && h != 0)
+	{
+		w = w / 2 - window_width / 2;
+		h = h / 2 - window_height / 2;
+	}
+
+	// Initialize glut with 32-bit graphics, double buffering, and anti-aliasing
+    glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_MULTISAMPLE );
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	// Set up the program window
+    glutInitWindowSize( window_width, window_height);    // initial window size
+    glutInitWindowPosition( w, h );                  // initial window position
+    glutCreateWindow( window_name.c_str() );         // window title
+
+	// Always clear screen to black
+	glClearColor( 1.0, 1.0, 1.0, 1.0 );
+
+	glutIgnoreKeyRepeat(1);
+
+    // Register callbacks
+    glutDisplayFunc( *::display );
+    glutReshapeFunc( *::reshape );
+    glutMouseFunc( *::mouseclick );
+	glutMotionFunc( *::mousedrag );
+	glutPassiveMotionFunc( *::mousemove );
+
+    // Go into OpenGL/GLUT main loop
+    glutMainLoop();
+
+    return 0;
+
+}
+
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: Function to get the current instance of the program.
+ *
+ * @returns Pointer to the current instance of the program.
+*******************************************************************************/
+GlutManager* GlutManager::getInstance()
+{
+	return instance;
+}
+
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: Gets the width of the view port in the virtual space.
+ * 
+ * @returns The width of the view port in pixels.
+*******************************************************************************/
+double GlutManager::getViewWidth()
+{
+	return window_width;
+}
+
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: Gets the height of the view port in the virtual space.
+ *
+ * @returns The height of the view port in pixels.
+*******************************************************************************/
+double GlutManager::getViewHeight()
+{
+	return window_height;
+}
+
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: Draws the background and the fractal
+*******************************************************************************/
+void GlutManager::draw()
+{
+
+}
+
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: Drawing callback. Executes every glut display callaback.
+ *		Also calls the draw function of all registerd Drawable objects.
+*******************************************************************************/
+void GlutManager::display()
+{
+	//clear the display and set backround to black
+	glClear( GL_COLOR_BUFFER_BIT );
+	glColor3f( 1.0, 1.0, 1.0 );
+
+	/*
+	// Draw all registered drawables
+	typedef map<int, list<Drawable*>>::iterator it_type;
+	for (it_type iterator = drawables.begin();
+		iterator != drawables.end();
+		iterator++)
+	{
+		for (Drawable* d : iterator->second)
+		{
+			d->draw();
+		}
+	}
+	*/
+
+	//if needed
+	/* current_program::function */
+
+	// Flush graphical output
+	glutSwapBuffers();
+    glFlush();
+}
+
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: Resize callback. Executes whenever the window is resized.
+ *
+ * @param[in]	w - The window's new width in pixels.
+ * @param[in]	h - The window's new height in pixels.
+*******************************************************************************/
+void GlutManager::reshape(int w, int h)
+{
+	// store new window dimensions globally
+    window_width = w;
+    window_height = h;
+
+    glMatrixMode( GL_PROJECTION );		// Use an orthographic projection
+    glLoadIdentity();					// Initialize transformation matrix
+	
+	// Adjust viewport and map to window
+	gluOrtho2D(0, window_width, 0, window_height);
+    glViewport( 0, 0, window_width, window_height );
+
+    // Switch back to (default) model view mode, for transformations
+    glMatrixMode( GL_MODELVIEW );
+    glLoadIdentity();
+}
+
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: Key down callback. Executes whenever a typical key is
+ *		pressed.
+ *
+ * @param[in]	key - ASCII-encoded char of the key that was pressed.
+ * @param[in]	x - The x coordinate of the mouse at the time the key
+ *				was pressed. Measured in integers.
+ * @param[in]	y - The y coordinate of the mouse at the time the key
+ *				was pressed.
+*******************************************************************************/
+void GlutManager::keyDown(unsigned char key, int x, int y)
+{
+    switch ( key )
+    {
+        case 27:		// Escape
+            exit( 0 );
+            break;
+
+		default:		// Everything else, forward to game manager
+			/*current_program::function( key ); */
+            break;
+    }
+}
+
+/***************************************************************************//**
+ * @author Johnny Ackerman, Daniel Andrus
+ * 
+ * @par Description: Mouse click callback. Executes whenever a mouse button is
+ *		either clicked or released.
+ *  
+ * @param[in]	button - The button whose state was changed.
+ * @param[in]	state - The new state of the button.
+ * @param[in]	x - The x coordinate of the mouse at the time the button
+ *				was pressed. Measured in integers.
+ * @param[in]	y - The y coordinate of the mouse at the time the button
+ *				was pressed.
+*******************************************************************************/
+void GlutManager::mouseclick(int button, int state, int x, int y)
+{
+	double vx;	// view x
+	double vy;	// view y
+
+	// Correct for coordinate system
+	vx = x;
+    vy = window_height - y;
+
+	// Correct for scaling
+	/*
+	vx *= view_width / window_width;
+	vy *= view_height / window_height;
+
+	vx -= view_x;
+	vy -= view_y;
+	*/
+
+	//if needed
+	/*current_program::function*/
+}
+
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: Mouse movement callback. Executes when the mouse is moved
+ *		inside the program window.
+ *
+ * @param[in]	x - New x position of the mouse.
+ * @param[in]	y - New y position of the mouse.
+*******************************************************************************/
+void GlutManager::mousemove(int x, int y)
+{
+	double vx;	// view x
+	double vy;	// view y
+
+	// Correct for coordinate system
+	vx = x;
+    vy = window_height - y;
+
+	/*
+	// Correct for scaling
+	vx *= view_width / window_width;
+	vy *= view_height / window_height;
+
+	vx -= view_x;
+	vy -= view_y;
+
+	*/
+
+	//if needed
+	/*current_program::function */
+}
+
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: Mouse movement callback. Executes when the mouse is moved
+ *		inside the program window while a button is pressed.
+ *
+ * @param[in]	x - New x position of the mouse.
+ * @param[in]	y - New y position of the mouse.
+*******************************************************************************/
+void GlutManager::mousedrag(int x, int y)
+{
+	double vx;	// view x
+	double vy;	// view y
+
+	// Correct for coordinate system
+	vx = x;
+    vy = window_height - y;
+
+	// Correct for scaling
+	vx *= view_width / window_width;
+	vy *= view_height / window_height;
+
+	vx -= view_x;
+	vy -= view_y;
+
+	//f needed
+	/* current_program::function */
+}
+
+/*******************************************************************************
+ *                         GLUT CALLBACK FUNCTIONS
+*******************************************************************************/
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: Drawing callback. Executes every glut display callaback.
+ *		Also calls the draw function of all registerd Drawable objects.
+*******************************************************************************/
+void display()
+{
+	GlutManager::getInstance()->display();
+}
+
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: Resize callback. Executes whenever the window is resized.
+ *
+ * @param[in]	w - The window's new width in pixels.
+ * @param[in]	h - The window's new height in pixels.
+*******************************************************************************/
+void reshape(int w, int h)
+{
+	GlutManager::getInstance()->reshape(w, h);
+}
+
+/***************************************************************************//**
+ * @author Johnny Ackerman
+ * 
+ * @par Description: Mouse click callback. Executes whenever a mouse button is
+ * 		either clicked or released.
+ *  
+ * @param[in]	button - The button whose state was changed.
+ * @param[in]	state - The new state of the button.
+ * @param[in]	x - The x coordinate of the mouse at the time the button
+ *				was pressed. Measured in integers.
+ * @param[in]	y - The y coordinate of the mouse at the time the button
+ *				was pressed.
+*******************************************************************************/
+void mouseclick(int button, int state, int x, int y)
+{
+	GlutManager::getInstance()->mouseclick(button, state, x, y);
+}
+
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: Mouse movement callback. Executes when the mouse is moved
+ *		inside the program window.
+ *
+ * @param[in]	x - New x position of the mouse.
+ * @param[in]	y - New y position of the mouse.
+*******************************************************************************/
+void mousemove(int x, int y)
+{
+	GlutManager::getInstance()->mousemove(x, y);
+}
+
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: Mouse movement callback. Executes when the mouse is moved
+ *		inside the program window while a button is pressed.
+ *
+ * @param[in]	x - New x position of the mouse.
+ * @param[in]	y - New y position of the mouse.
+*******************************************************************************/
+void mousedrag(int x, int y)
+{
+	GlutManager::getInstance()->mousedrag(x, y);
+}
