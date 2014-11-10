@@ -154,6 +154,26 @@ double GlutManager::getViewHeight()
 	return window_height;
 }
 
+void GlutManager::registerClickable(Clickable* clickable)
+{
+	if (!isRegistered(clickable) && clickable != NULL)
+	{
+		clickables.push_back(clickable);
+	}
+}
+
+void GlutManager::unregisterClickable(Clickable* clickable)
+{
+	auto it = find(clickables.begin(), clickables.end(), clickable);
+	if (it != clickables.end())
+		clickables.erase(it);
+}
+
+bool GlutManager::isRegistered(Clickable* clickable)
+{
+	return find(clickables.begin(), clickables.end(), clickable) != clickables.end();
+}
+
 /***************************************************************************//**
  * @author Daniel Andrus, Johnny Ackerman
  * 

@@ -19,7 +19,12 @@ class GlutManager;
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
+#include <algorithm>
 #include "SolarSystem.h"
+#include "Clickable.h"
+#include "Drawable.h"
+#include "DrawingManager.h"
 
 // OpenGL/GLUT includes based on platform
 #ifndef OS_X
@@ -42,7 +47,7 @@ using namespace std;
  *      It handles drawing functions, forwards OpenGL events, generates a
  *      framerate, and standardizes various aspects of the program.
 *******************************************************************************/
-class GlutManager
+class GlutManager : public DrawingManager
 {
 private:
 	static GlutManager* instance; /*!< reference to main instance */
@@ -58,10 +63,11 @@ private:
 
 	SolarSystem* current_program;
 
+	vector<Clickable*> clickables;
+	map<int, vector<Drawable*> > drawables;
 
 
 public:
-
 	/*!
 	* @brief Constructor, allocates pointers for Initiator, generator and Fractal
 	*		views as well as initializes private data.
@@ -93,6 +99,10 @@ public:
 	*/
 	double getViewHeight();
 
+	void registerClickable(Clickable* clickable);
+	void unregisterClickable(Clickable* clickable);
+	bool isRegistered(Clickable* clickable);
+	
 	/*!
 	 * @brief Drawing function. Calls superclass functions.
 	 */
