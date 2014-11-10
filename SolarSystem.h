@@ -15,9 +15,7 @@
 ******************************************************************************/
 class SolarSystem;
 
-#include "Sphearical.h"
-
-using namespace std;
+#include "Spherical.h"
 
 /**************************************************************************//**
  * @brief The SolarSystem class creates and handles the solar system
@@ -33,59 +31,21 @@ public:
 
 private:
 	//Planets
-	Spearical Sun;
-	Spearical Mercury;
-	Spearical Venus;
-	Spearical Earth;
-	Spearical Mars;
-	Spearical Jupiter;
-	Spearical Saturn;
-	Spearical Uranus;
-	Spearical Neptune;
+	Spherical Sun;
+	Spherical Mercury;
+	Spherical Venus;
+	Spherical Earth;
+	Spherical Mars;
+	Spherical Jupiter;
+	Spherical Saturn;
+	Spherical Uranus;
+	Spherical Neptune;
 
 	// celestrial bodies
-	Spearical Moon;
+	Spherical Moon;
 
 	static SolarSystem* instance; /*!< reference to main instance */
 
 };
 
 #endif
-
-
-SolarSystem::SolarSystem()
-{
-	//initialize objects in solar system
-	Spearical Sun( 696000, 0, 0, 25 );
-	Spearical Mercury( 2439, 58, 88, 1416 );
-	Spearical Venus( 6052, 108, 225, 5832 );
-	Spearical Earth( 6378, 150, 365, 24 );
-	Spearical Mars( 3394, 228, 687, 24.6 );
-	Spearical Jupiter( 71398, 779, 4332, 9.8);
-	Spearical Saturn( 60270, 1424, 10761, 10.2 );
-	Spearical Uranus( 25550, 2867, 30682, 15.5 );
-	Spearical Neptune( 24750, 4492, 60195, 15.8 );
-	Spearical Moon( 1738, 0.384, 27.3, 27.3 );
-
-	instance = this;
-}
-
-SolarSystem::~SolarSystem()
-{
-//delete Sun, Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune;
-//delete Moon;
-}
-
-void SolarSystem::draw()
-{
-}
-
-void SolarSystem::spinObject()
-{
-
-}
-
-SolarSystem* SolarSystem::getInstance()
-{
-	return instance;
-}

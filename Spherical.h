@@ -13,25 +13,21 @@
 /******************************************************************************
  *                 DECLARATIONS, INCLUDES, AND NAMESPACES
 ******************************************************************************/
-class Spearical;
+class Spherical;
 
 #include "Drawable.h"
-
-using namespace std;
-
-
 
 /***************************************************************************//**
  * @brief The sphearical class holds the information needed to create a planet
  *	like object
 *******************************************************************************/
-class Spearical
+class Spherical
 {
 public:
-	Spearical();
-	Spearical( double radious, double distance, 
+	Spherical();
+	Spherical( double radious, double distance, 
 		double orbit_s, double rotation_s);
-	~Spearical();
+	~Spherical();
 
 private:
 	double radious;
@@ -43,24 +39,3 @@ private:
 };
 
 #endif
-
-Spearical::Spearical()
-{
-	radious = 0;
-	distance = 0;
-	orbit_s = 0;
-	rotation_s = 0;
-	filled = false;
-}
-
-Spearical::Spearical( double radious, double distance, 
-		double orbit_s, double rotation_s) : 
-	radious(radious), distance(distance), orbit_s(orbit_s), 
-		rotation_s(rotation_s)
-{
-	filled = false;
-}
-
-Spearical::~Spearical()
-{
-}

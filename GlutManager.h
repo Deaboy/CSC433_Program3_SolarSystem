@@ -18,9 +18,17 @@ class GlutManager;
 
 #include <iostream>
 #include <string>
-#include <GL/freeglut.h>
 #include <vector>
 #include "SolarSystem.h"
+
+// OpenGL/GLUT includes based on platform
+#ifndef OS_X
+#include <GL/freeglut.h>
+#else
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <GLUT/glut.h>
+#endif
 
 using namespace std;
 

@@ -11,7 +11,6 @@
 /*******************************************************************************
  *                 DECLARATIONS, INCLUDES, AND NAMESPACES
 *******************************************************************************/
-#include <map>
 #include "GlutManager.h"
 
 GlutManager* GlutManager::instance = NULL;
@@ -26,7 +25,7 @@ GlutManager* GlutManager::instance = NULL;
  *	classes, and creates instances of subClasses
 *******************************************************************************/
 GlutManager::GlutManager()
-: window_width((int) window_width), window_height((int) window_height),
+: window_width(400 /*arbitrary*/), window_height(300 /*arbitrary*/),
 window_name("Solar System")
 {
 	instance = this;

@@ -12,7 +12,14 @@
 /*******************************************************************************
  *                 DECLARATIONS, INCLUDES, AND NAMESPACES
 *******************************************************************************/
+// OpenGL/GLUT includes based on platform
+#ifndef OS_X
 #include <GL/freeglut.h>
+#else
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <GLUT/glut.h>
+#endif
 
 /*******************************************************************************
  *                              CLASS INTERFACE
