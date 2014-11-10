@@ -29,6 +29,13 @@ window_name("Solar System")
 {
 	instance = this;
 
+	//Rotation variables
+	spinInc = 1.0;
+	axis = 2;
+	theta[0] = 0.0;
+	theta[1] = 0.0;
+	theta[2] = 0.0;
+
 	//the main class of the solar system should be initialized here
 	//solarsystem current_program
 }
@@ -71,9 +78,9 @@ int GlutManager::run( int argc, char *argv[] )
 	}
 
 	// Initialize glut with 32-bit graphics, double buffering, and anti-aliasing
-    glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_MULTISAMPLE );
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH );
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Set up the program window
     glutInitWindowSize( window_width, window_height);    // initial window size
@@ -91,6 +98,17 @@ int GlutManager::run( int argc, char *argv[] )
     glutMouseFunc( *::mouseclick );
 	glutMotionFunc( *::mousedrag );
 	glutPassiveMotionFunc( *::mousemove );
+	glutIdleFunc( *::spinObject );
+
+	// set up illumination-reflectance model
+    GlutManager::initLightModel();
+
+	/* ****This might go in solarsystem ****
+    // generate GLU quadric object with surface normals
+    object = gluNewQuadric( );
+    gluQuadricNormals( object, GLU_SMOOTH );
+    gluQuadricDrawStyle( object, GLU_LINE );
+	*/
 
     // Go into OpenGL/GLUT main loop
     glutMainLoop();
@@ -316,15 +334,72 @@ void GlutManager::mousedrag(int x, int y)
 	vx = x;
     vy = window_height - y;
 
+	/*I
 	// Correct for scaling
 	vx *= view_width / window_width;
 	vy *= view_height / window_height;
 
 	vx -= view_x;
 	vy -= view_y;
+	*/
 
 	//f needed
 	/* current_program::function */
+}
+
+/***************************************************************************//**
+ * @author Dr. Weiss
+ * 
+ * @par Description: Glut Idle Callback, Spins an object around a given 'axis',
+ *	at a given speed 'spinInc'
+*******************************************************************************/
+void GlutManager::spinObject()
+{
+    theta[axis] += spinInc;
+    if ( theta[axis] > 360.0 ) theta[axis] -= 360.0;
+    glutPostRedisplay();
+}
+
+/***************************************************************************//**
+ * @author Dr. Weiss
+ * 
+ * @par Description: sets up "lighting" in the 3-D space
+*******************************************************************************/
+void GlutManager::initLightModel()
+{
+    // specify material reflectivity
+    GLfloat mat_ambient[] = { 0.0, 0.0, 1.0, 1.0 };     // blue ambient reflectivity
+    GLfloat mat_diffuse[] = { 0.0, 1.0, 0.0, 1.0 };     // green diffuse reflectivity
+    GLfloat mat_specular[] = { 1.0, 0.0, 0.0, 1.0 };    // red highlights
+    GLfloat mat_shininess = { 100.0 };
+    
+    glMaterialfv( GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient );
+    glMaterialfv( GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse );
+    glMaterialfv( GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular );
+    glMaterialf( GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess );
+    
+    // specify light source properties
+    GLfloat light_position[] = { 10.0, 10.0, 10.0, 1.0 };
+    GLfloat light_ambient[] = { 0.4, 0.4, 0.4, 1.0 };       // ambient light
+    GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };       // diffuse light
+    GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };      // highlights
+
+    glEnable( GL_LIGHT0 );      // enable one light source
+    glLightfv( GL_LIGHT0, GL_POSITION, light_position );
+    glLightfv( GL_LIGHT0, GL_AMBIENT, light_ambient );
+    glLightfv( GL_LIGHT0, GL_DIFFUSE, light_diffuse );
+    glLightfv( GL_LIGHT0, GL_SPECULAR, light_specular );
+
+    glShadeModel( GL_FLAT );    // start with flat shading (smooth is default)
+
+    glEnable( GL_DEPTH_TEST );  // enable depth buffer for hidden-surface elimination
+    glEnable( GL_NORMALIZE );   // automatic normalization of normals
+    glEnable( GL_CULL_FACE );   // eliminate backfacing polygons
+    glCullFace( GL_BACK );
+    // glLightModeli( GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE );   // render back faces
+
+    glClearColor( 0.0, 0.0, 0.0, 1.0 );     // black background
+    glColor3d ( 0.8, 0.8, 0.0 );            // draw in yellow
 }
 
 /*******************************************************************************
@@ -399,3 +474,15 @@ void mousedrag(int x, int y)
 {
 	GlutManager::getInstance()->mousedrag(x, y);
 }
+
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: idle callback, Spins an object around a given axis.
+*******************************************************************************/
+void spinObject()
+{
+    GlutManager::getInstance() -> spinObject();
+}
+
+

@@ -36,12 +36,20 @@ using namespace std;
 class GlutManager
 {
 private:
+	static GlutManager* instance; /*!< reference to main instance */
+
 	int window_width;			/*!< Width of gui window */
 	int window_height;			/*!< Height of gui window */
 	string window_name;			/*!< Name of the gui window */
-	GlutManager* instance;
+
+	//Rotation Variables
+	double spinInc;
+	GLdouble theta[3];
+	GLint axis;
+
 
 public:
+
 	/*!
 	* @brief Constructor, allocates pointers for Initiator, generator and Fractal
 	*		views as well as initializes private data.
@@ -128,6 +136,16 @@ public:
 	 *		the program window while a button is pressed.
 	 */
 	void mousedrag(int x, int y);
+
+	/*!
+	 * @brief Glut Idle callback that spins the object around and axis
+	 */
+	void spinObject();
+
+	/*!
+	 * @brief sets up glut lighting
+	 */
+	void initLightModel();
 	
 };
 
@@ -186,5 +204,10 @@ void mousemove(int x, int y);
  *		the program window while a button is pressed.
  */
 void mousedrag(int x, int y);
+
+/*!
+ * @brief glut Idle callback, spins a given object
+ */
+void spinObject( );
 
 #endif
