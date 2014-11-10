@@ -14,6 +14,8 @@
 #include <map>
 #include "GlutManager.h"
 
+GlutManager* GlutManager::instance = NULL;
+
 /*******************************************************************************
  *                          FUNCTION DEFINITIONS
 *******************************************************************************/
@@ -380,7 +382,7 @@ void GlutManager::initLightModel()
     
     // specify light source properties
     GLfloat light_position[] = { 10.0, 10.0, 10.0, 1.0 };
-    GLfloat light_ambient[] = { 0.4, 0.4, 0.4, 1.0 };       // ambient light
+    GLfloat light_ambient[] = { 0.4f, 0.4f, 0.4f, 1.0 };       // ambient light
     GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };       // diffuse light
     GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };      // highlights
 

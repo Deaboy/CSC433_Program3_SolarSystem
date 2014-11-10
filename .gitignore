@@ -184,3 +184,6 @@ FakesAssemblies/
 Solar_System.sln
 Solar_System.vcxproj
 Solar_System.vcxproj.filters
+*.vcxproj
+*.filters
+*.sln
