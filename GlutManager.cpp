@@ -39,7 +39,7 @@ window_name("Solar System")
 	theta[2] = 0.0;
 
 	//the main class of the solar system should be initialized here
-	//solarsystem current_program
+	current_program = new (nothrow) SolarSystem;
 }
 
 /***************************************************************************//**
@@ -174,29 +174,14 @@ void GlutManager::draw()
 void GlutManager::display()
 {
 	//clear the display and set backround to black
-	glClear( GL_COLOR_BUFFER_BIT );
+	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	glColor3f( 1.0, 1.0, 1.0 );
 
-	/*
-	// Draw all registered drawables
-	typedef map<int, list<Drawable*>>::iterator it_type;
-	for (it_type iterator = drawables.begin();
-		iterator != drawables.end();
-		iterator++)
-	{
-		for (Drawable* d : iterator->second)
-		{
-			d->draw();
-		}
-	}
-	*/
 
-	//if needed
-	/* current_program::function */
+	current_program -> draw();
 
 	// Flush graphical output
 	glutSwapBuffers();
-    glFlush();
 }
 
 /***************************************************************************//**

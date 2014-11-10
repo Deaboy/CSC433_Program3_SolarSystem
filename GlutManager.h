@@ -20,6 +20,7 @@ class GlutManager;
 #include <string>
 #include <GL/freeglut.h>
 #include <vector>
+#include "SolarSystem.h"
 
 using namespace std;
 
@@ -46,6 +47,9 @@ private:
 	double spinInc;
 	GLdouble theta[3];
 	GLint axis;
+
+	SolarSystem* current_program;
+
 
 
 public:
