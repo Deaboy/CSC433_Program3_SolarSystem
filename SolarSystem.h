@@ -15,37 +15,28 @@
 ******************************************************************************/
 class SolarSystem;
 
-#include "Spherical.h"
+#include <list>
+#include "Planet.h"
+#include "GlutManager.h"
+
+using namespace std;
 
 /**************************************************************************//**
  * @brief The SolarSystem class creates and handles the solar system
 ******************************************************************************/
 class SolarSystem
 {
+private:
+	//Planets
+	list<Planet*> planets;
+	GlutManager manager;
+	long long time;
+
 public:
 	SolarSystem();
 	~SolarSystem();
-	void draw();
-	void spinObject();
-	static SolarSystem* getInstance();
-
-private:
-	//Planets
-	Spherical Sun;
-	Spherical Mercury;
-	Spherical Venus;
-	Spherical Earth;
-	Spherical Mars;
-	Spherical Jupiter;
-	Spherical Saturn;
-	Spherical Uranus;
-	Spherical Neptune;
-
-	// celestrial bodies
-	Spherical Moon;
-
-	static SolarSystem* instance; /*!< reference to main instance */
-
+	void run(int argc, char *argv[]);
+	void update(long long time);
 };
 
 #endif

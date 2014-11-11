@@ -21,9 +21,7 @@ class GlutManager;
 #include <vector>
 #include <map>
 #include <algorithm>
-#include "SolarSystem.h"
 #include "Clickable.h"
-#include "Drawable.h"
 #include "DrawingManager.h"
 
 // OpenGL/GLUT includes based on platform
@@ -50,22 +48,14 @@ using namespace std;
 class GlutManager : public DrawingManager
 {
 private:
-	static GlutManager* instance; /*!< reference to main instance */
-
 	int window_width;			/*!< Width of gui window */
 	int window_height;			/*!< Height of gui window */
 	string window_name;			/*!< Name of the gui window */
 
-	//Rotation Variables
-	double spinInc;
-	GLdouble theta[3];
-	GLint axis;
-
-	SolarSystem* current_program;
-
 	vector<Clickable*> clickables;
 	map<int, vector<Drawable*> > drawables;
 
+	static GlutManager* instance;
 
 public:
 	/*!
@@ -78,16 +68,16 @@ public:
 	* @brief Destructor, removes pointers.
 	*/
 	~GlutManager();
+	
+	/*!
+	 * @brief Gets the main instance of this glut manager.
+	 */
+	static GlutManager* getInstance();
 
 	/*!
 	* @brief Function to get the current instance of the program.
 	*/
 	int run( int argc, char *argv[] );
-
-	/*!
-	* @brief Function to get the current instance of the program.
-	*/
-	static GlutManager* getInstance( );
 
 	/*!
 	* @brief Gets the width of the view port in the virtual space.
@@ -158,11 +148,6 @@ public:
 	 *		the program window while a button is pressed.
 	 */
 	void mousedrag(int x, int y);
-
-	/*!
-	 * @brief Glut Idle callback that spins the object around and axis
-	 */
-	void spinObject();
 
 	/*!
 	 * @brief sets up glut lighting

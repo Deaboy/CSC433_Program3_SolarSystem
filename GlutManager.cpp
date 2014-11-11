@@ -29,16 +29,6 @@ GlutManager::GlutManager()
 window_name("Solar System")
 {
 	instance = this;
-
-	//Rotation variables
-	spinInc = 1.0;
-	axis = 2;
-	theta[0] = 0.0;
-	theta[1] = 0.0;
-	theta[2] = 0.0;
-
-	//the main class of the solar system should be initialized here
-	current_program = new (nothrow) SolarSystem;
 }
 
 /***************************************************************************//**
@@ -99,7 +89,6 @@ int GlutManager::run( int argc, char *argv[] )
     glutMouseFunc( *::mouseclick );
 	glutMotionFunc( *::mousedrag );
 	glutPassiveMotionFunc( *::mousemove );
-	glutIdleFunc( *::spinObject );
 
 	// set up illumination-reflectance model
     GlutManager::initLightModel();
@@ -195,9 +184,6 @@ void GlutManager::display()
 	//clear the display and set backround to black
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	glColor3f( 1.0, 1.0, 1.0 );
-
-
-	current_program -> draw();
 
 	// Flush graphical output
 	glutSwapBuffers();
@@ -356,19 +342,6 @@ void GlutManager::mousedrag(int x, int y)
 /***************************************************************************//**
  * @author Dr. Weiss
  * 
- * @par Description: Glut Idle Callback, Spins an object around a given 'axis',
- *	at a given speed 'spinInc'
-*******************************************************************************/
-void GlutManager::spinObject()
-{
-    theta[axis] += spinInc;
-    if ( theta[axis] > 360.0 ) theta[axis] -= 360.0;
-    glutPostRedisplay();
-}
-
-/***************************************************************************//**
- * @author Dr. Weiss
- * 
  * @par Description: sets up "lighting" in the 3-D space
 *******************************************************************************/
 void GlutManager::initLightModel()
@@ -480,15 +453,3 @@ void mousedrag(int x, int y)
 {
 	GlutManager::getInstance()->mousedrag(x, y);
 }
-
-/***************************************************************************//**
- * @author Daniel Andrus, Johnny Ackerman
- * 
- * @par Description: idle callback, Spins an object around a given axis.
-*******************************************************************************/
-void spinObject()
-{
-    GlutManager::getInstance() -> spinObject();
-}
-
-
