@@ -8,23 +8,86 @@
 
 #include "Planet.h"
 
-Planet::Planet(string name, unsigned char red, unsigned char green,
-			   unsigned char blue, long double radius,
-			   long double rotation_axis, long double rotation_init,
-			   long double rotation_velocity, Planet* orbit_target,
-			   long double orbit_init, long double orbit_radius,
-			   long double orbit_velocity) :
-		name(name), radius(radius), rotation_axis(rotation_axis),
-		rotation_init(rotation_init), rotation_velocity(rotation_velocity),
-		orbit_target(orbit_target), orbit_init(orbit_init),
-		orbit_radius(orbit_radius), orbit_velocity(orbit_velocity),
-		time(-999999)
+Planet::Planet()
 {
-	this->color[0] = red;
-	this->color[1] = green;
-	this->color[2] = blue;
+	name				= "";
+	color[0]			= 0;
+	color[1]			= 0;
+	color[2]			= 0;
+	radius				= 0;
+	rotation_axis		= 0;
+	rotation_init		= 0;
+	rotation_period		= 0;
+	orbit_target		= NULL;
+	orbit_init			= 0;
+	orbit_radius		= 0;
+	orbit_period		= 0;
+	time				= -999999;
+	position[0]			= 0;
+	position[1]			= 0;
+	position[2]			= 0;
+}
 	
-	position[2] = 0;
+Planet& Planet::setName(string name)
+{
+	this->name = name;
+	return *this;
+}
+
+Planet& Planet::setColor(unsigned char r, unsigned char g, unsigned char b)
+{
+	this->color[0] = r;
+	this->color[1] = g;
+	this->color[2] = b;
+	return *this;
+}
+
+Planet& Planet::setRadius(long double radius)
+{
+	this->radius = radius;
+	return *this;
+}
+
+Planet& Planet::setRotationAxis(long double rotation_axis)
+{
+	this->rotation_axis = rotation_axis;
+	return *this;
+}
+
+Planet& Planet::setRotationInitial(long double rotation_init)
+{
+	this->rotation_init = rotation_init;
+	return *this;
+}
+
+Planet& Planet::setRotationPeriod(long double rotation_period)
+{
+	this->rotation_period = rotation_period;
+	return *this;
+}
+
+Planet& Planet::setOrbitTarget(Planet* orbit_target)
+{
+	this->orbit_target = orbit_target;
+	return *this;
+}
+
+Planet& Planet::setOrbitInitial(long double orbit_init)
+{
+	this->orbit_init = orbit_init;
+	return *this;
+}
+
+Planet& Planet::setOrbitRadius(long double orbit_radius)
+{
+	this->orbit_radius = orbit_radius;
+	return *this;
+}
+
+Planet& Planet::setOrbitPeriod(long double orbit_period)
+{
+	this->orbit_period = orbit_period;
+	return *this;
 }
 
 void Planet::getPosition(long long time, long double& x,
@@ -40,8 +103,18 @@ void Planet::getPosition(long long time, long double& x,
 		}
 		else
 		{
-			orbit_target->getPosition(time, position[0], position[1], position[2]);
-			orbit_angle = orbit_velocity * time + orbit_init;
+			orbit_target->getPosition(time,
+					position[0], position[1], position[2]);
+			if (orbit_period != 0)
+			{
+				orbit_angle = 360 * (time / orbit_period) + orbit_init;
+			
+			}
+			else
+			{
+				orbit_angle = orbit_init;
+			}
+			orbit_angle = orbit_angle * M_PI / 180.0;
 			position[0] = position[0] + cosl(orbit_angle) * orbit_radius;
 			position[1] = position[1] + sinl(orbit_angle) * orbit_radius;
 		}
@@ -59,7 +132,15 @@ void Planet::update(long long time)
 	if (this->time != time)
 	{
 		getPosition(time, position[0], position[1], position[2]);
-		rotation_angle = rotation_init + rotation_velocity * time;
+		if (rotation_period != 0)
+		{
+			rotation_angle =  360 * (time / rotation_period) + rotation_init;
+		}
+		else
+		{
+			rotation_angle = rotation_init;
+		}
+		rotation_angle = rotation_angle * M_PI / 180.0;
 	}
 }
 

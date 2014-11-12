@@ -17,11 +17,16 @@ void SolarSystem::run(int argc, char *argv[])
 {
 	// Create planets here
 	/*
-	Planet(string name, unsigned char color[3], long double radius,
-			long double rotation_axis, long double rotation_init,
-			long double rotation_velocity, Planet* orbit_target,
-			long double orbit_init, long double orbit_radius,
-			long double orbit_velocity);
+	Planet& setName(string name);
+	Planet& setColor(unsigned char r, unsigned char g, unsigned char b);
+	Planet& setRadius(long double radius);
+	Planet& setRotationAxis(long double rotation_axis);
+	Planet& setRotationInitial(long double rotation_init);
+	Planet& setRotationPeriod(long double rotation_period);
+	Planet& setOrbitTarget(Planet* orbit_target);
+	Planet& setOrbitInitial(long double orbit_init);
+	Planet& setOrbitRadius(long double orbit_radius);
+	Planet& setOrbitPeriod(long double orbit_period);
 	*/
 	/*
 	Spherical Sun( 696000, 0, 0, 25 );
@@ -35,10 +40,71 @@ void SolarSystem::run(int argc, char *argv[])
 	Spherical Neptune( 24750, 4492, 60195, 15.8 );
 	Spherical Moon( 1738, 0.384, 27.3, 27.3 );
 	*/
-	Planet* sun		= new Planet("Sun", 0, 0, 0, 1, 0, 0, 0, NULL, 0, 0, 0);
-	Planet* earth	= new Planet("Earth", 0, 0, 0, 1, 0, 0, 0, NULL, 0, 0, 0);
-	planets.push_back(sun);
-	planets.push_back(earth);
+	
+	Planet* sun;
+	Planet* earth;
+	Planet* temp;
+	
+	// Sun
+	temp = new Planet;
+	(*temp).setName("Sun")
+			.setColor(254, 250, 152)
+			.setRadius(696342)
+			.setRotationAxis(7.25)
+			.setRotationInitial(0)
+			.setRotationPeriod( FPS*(12 + 60*(7 + 60*(9 + 24*(25)))) )
+			.setOrbitTarget(NULL)
+			.setOrbitInitial(0)
+			.setOrbitRadius(0)
+			.setOrbitPeriod(0);
+	planets.push_back(temp);
+	sun = temp;
+	
+	// Mercury
+	temp = new Planet;
+	(*temp).setName("Mercury")
+			.setColor(154, 107, 55)
+			.setRadius(2439.7)
+			.setRotationAxis(2.11 / 60.0)
+			.setRotationInitial(0)
+			.setRotationPeriod( FPS*(0 + 60*(30 + 60*(1407))) )
+			.setOrbitTarget(sun)
+			.setOrbitInitial(0)
+			.setOrbitRadius(57909050)
+			.setOrbitPeriod( FPS*(0 + 60*(0 + 60*(0 + 24*(87.969)))) );
+	planets.push_back(temp);
+	
+	// Venus
+	temp = new Planet;
+	(*temp).setName("Venus")
+			.setColor(138, 67, 18)
+			.setRadius(6051.8)
+			.setRotationAxis(177.36)
+			.setRotationInitial(0)
+			.setRotationPeriod( FPS*(0 + 60*(0 + 60*(0 + 24*(-243.0185)))) )
+			.setOrbitTarget(sun)
+			.setOrbitInitial(0)
+			.setOrbitRadius(108208000)
+			.setOrbitPeriod( FPS*(0 + 60*(0 + 60*(0 + 24*(224.701)))) );
+	planets.push_back(temp);
+	
+	// Earth
+	temp = new Planet;
+	planets.push_back(temp);
+	earth = temp;
+	
+	// Moon
+	
+	// Mars
+	
+	// Jupiter
+	
+	// Saturn
+	
+	// Uranus
+	
+	// Neptune
+	
 	
 	// Register planets with glut manager
 	for (Planet* planet : planets)
