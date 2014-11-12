@@ -18,6 +18,7 @@ Planet::Planet()
 	rotation_axis		= 0;
 	rotation_init		= 0;
 	rotation_period		= 0;
+	right_ascension		= 0;
 	orbit_target		= NULL;
 	orbit_init			= 0;
 	orbit_radius		= 0;
@@ -50,19 +51,25 @@ Planet& Planet::setRadius(long double radius)
 
 Planet& Planet::setRotationAxis(long double rotation_axis)
 {
-	this->rotation_axis = rotation_axis;
+	this->rotation_axis = DEGTORAD(rotation_axis);
 	return *this;
 }
 
 Planet& Planet::setRotationInitial(long double rotation_init)
 {
-	this->rotation_init = rotation_init;
+	this->rotation_init = DEGTORAD(rotation_init);
 	return *this;
 }
 
 Planet& Planet::setRotationPeriod(long double rotation_period)
 {
 	this->rotation_period = rotation_period;
+	return *this;
+}
+
+Planet& Planet::setRightAscension(long double right_ascension)
+{
+	this->right_ascension = DEGTORAD(right_ascension);
 	return *this;
 }
 
@@ -74,7 +81,7 @@ Planet& Planet::setOrbitTarget(Planet* orbit_target)
 
 Planet& Planet::setOrbitInitial(long double orbit_init)
 {
-	this->orbit_init = orbit_init;
+	this->orbit_init = DEGTORAD(orbit_init);
 	return *this;
 }
 
@@ -107,14 +114,13 @@ void Planet::getPosition(long long time, long double& x,
 					position[0], position[1], position[2]);
 			if (orbit_period != 0)
 			{
-				orbit_angle = 360 * (time / orbit_period) + orbit_init;
+				orbit_angle = DEGTORAD(360 * (time / orbit_period)) + orbit_init;
 			
 			}
 			else
 			{
 				orbit_angle = orbit_init;
 			}
-			orbit_angle = orbit_angle * M_PI / 180.0;
 			position[0] = position[0] + cosl(orbit_angle) * orbit_radius;
 			position[1] = position[1] + sinl(orbit_angle) * orbit_radius;
 		}
@@ -134,13 +140,12 @@ void Planet::update(long long time)
 		getPosition(time, position[0], position[1], position[2]);
 		if (rotation_period != 0)
 		{
-			rotation_angle =  360 * (time / rotation_period) + rotation_init;
+			rotation_angle =  DEGTORAD(360 * (time / rotation_period)) + rotation_init;
 		}
 		else
 		{
 			rotation_angle = rotation_init;
 		}
-		rotation_angle = rotation_angle * M_PI / 180.0;
 	}
 }
 

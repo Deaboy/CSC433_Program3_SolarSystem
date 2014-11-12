@@ -28,6 +28,7 @@ private:
 	long double		rotation_axis;
 	long double		rotation_init;
 	long double		rotation_period;
+	long double		right_ascension;
 	
 	// Orbit info
 	Planet*			orbit_target;
@@ -50,6 +51,7 @@ public:
 	Planet& setRotationAxis(long double rotation_axis);
 	Planet& setRotationInitial(long double rotation_init);
 	Planet& setRotationPeriod(long double rotation_period);
+	Planet& setRightAscension(long double right_ascention);
 	Planet& setOrbitTarget(Planet* orbit_target);
 	Planet& setOrbitInitial(long double orbit_init);
 	Planet& setOrbitRadius(long double orbit_radius);
