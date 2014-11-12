@@ -15,32 +15,6 @@ SolarSystem::~SolarSystem()
 
 void SolarSystem::run(int argc, char *argv[])
 {
-	// Create planets here
-	/*
-	Planet& setName(string name);
-	Planet& setColor(unsigned char r, unsigned char g, unsigned char b);
-	Planet& setRadius(long double radius);
-	Planet& setRotationAxis(long double rotation_axis);
-	Planet& setRotationInitial(long double rotation_init);
-	Planet& setRotationPeriod(long double rotation_period);
-	Planet& setOrbitTarget(Planet* orbit_target);
-	Planet& setOrbitInitial(long double orbit_init);
-	Planet& setOrbitRadius(long double orbit_radius);
-	Planet& setOrbitPeriod(long double orbit_period);
-	*/
-	/*
-	Spherical Sun( 696000, 0, 0, 25 );
-	Spherical Mercury( 2439, 58, 88, 1416 );
-	Spherical Venus( 6052, 108, 225, 5832 );
-	Spherical Earth( 6378, 150, 365, 24 );
-	Spherical Mars( 3394, 228, 687, 24.6 );
-	Spherical Jupiter( 71398, 779, 4332, 9.8);
-	Spherical Saturn( 60270, 1424, 10761, 10.2 );
-	Spherical Uranus( 25550, 2867, 30682, 15.5 );
-	Spherical Neptune( 24750, 4492, 60195, 15.8 );
-	Spherical Moon( 1738, 0.384, 27.3, 27.3 );
-	*/
-	
 	Planet* sun;
 	Planet* earth;
 	Planet* temp;
@@ -90,20 +64,102 @@ void SolarSystem::run(int argc, char *argv[])
 	
 	// Earth
 	temp = new Planet;
+	(*temp).setName("Earth")
+			.setColor(49, 79, 43)
+			.setRadius(6371.0)
+			.setRotationAxis(((21.4119/60) + 26)/60 + 23)
+			.setRotationInitial(0)
+			.setRotationPeriod( FPS*(4.1 + 60*(56 + 60*(23))) )
+			.setOrbitTarget(sun)
+			.setOrbitInitial(0)
+			.setOrbitRadius(149598261)
+			.setOrbitPeriod( FPS*(0 + 60*(0 + 60*(0 + 24*(365.256363004)))) );
 	planets.push_back(temp);
 	earth = temp;
 	
 	// Moon
+	temp = new Planet;
+	(*temp).setName("Moon")
+			.setColor(191, 191, 191)
+			.setRadius(1737.1)
+			.setRotationAxis(6.687)
+			.setRotationInitial(0)
+			.setRotationPeriod( FPS*(0 + 60*(0 + 60*(0 + 24*(27.321582)))) )
+			.setOrbitTarget(earth)
+			.setOrbitInitial(0)
+			.setOrbitRadius(384399)
+			.setOrbitPeriod( FPS*(6 + 60*(43 + 60*(7 + 24*(27)))) );
+	planets.push_back(temp);
 	
 	// Mars
+	temp = new Planet;
+	(*temp).setName("Mars")
+			.setColor(193, 92, 40)
+			.setRadius(3389.5)
+			.setRotationAxis(25.19)
+			.setRotationInitial(0)
+			.setRotationPeriod( FPS*(22 + 60*(37 + 60*(24))) )
+			.setOrbitTarget(sun)
+			.setOrbitInitial(0)
+			.setOrbitRadius(227939100)
+			.setOrbitPeriod( FPS*(0 + 60*(0 + 60*(0 + 24*(686.971)))) );
+	planets.push_back(temp);
 	
 	// Jupiter
+	temp = new Planet;
+	(*temp).setName("Jupiter")
+			.setColor(225, 186, 138)
+			.setRadius(69911)
+			.setRotationAxis(3.13)
+			.setRotationInitial(0)
+			.setRotationPeriod( FPS*(30 + 60*(55 + 60*(9))) )
+			.setOrbitTarget(sun)
+			.setOrbitInitial(0)
+			.setOrbitRadius(778547200)
+			.setOrbitPeriod( FPS*(0 + 60*(0 + 60*(0 + 24*(4332.59)))) );
+	planets.push_back(temp);
 	
 	// Saturn
+	temp = new Planet;
+	(*temp).setName("Saturn")
+			.setColor(207, 166, 135)
+			.setRadius(58232)
+			.setRotationAxis(26.73)
+			.setRotationInitial(0)
+			.setRotationPeriod( FPS*(0 + 60*(34 + 60*(10))) )
+			.setOrbitTarget(sun)
+			.setOrbitInitial(0)
+			.setOrbitRadius(1433449370)
+			.setOrbitPeriod( FPS*(0 + 60*(0 + 60*(0 + 24*(10759.22)))) );
+	planets.push_back(temp);
 	
 	// Uranus
+	temp = new Planet;
+	(*temp).setName("Uranus")
+			.setColor(140, 170, 183)
+			.setRadius(25362)
+			.setRotationAxis(97.77)
+			.setRotationInitial(0)
+			.setRotationPeriod( FPS*(24 + 60*(14 + 60*(17))) )
+			.setOrbitTarget(sun)
+			.setOrbitInitial(0)
+			.setOrbitRadius(2870671400)
+			.setOrbitPeriod( FPS*(0 + 60*(0 + 60*(0 + 24*(30687.15)))) );
+	planets.push_back(temp);
 	
 	// Neptune
+	temp = new Planet;
+	(*temp).setName("Neptune")
+			.setColor(66, 106, 139)
+			.setRadius(24622)
+			.setRotationAxis(28.32)
+			.setRotationInitial(0)
+			.setRotationPeriod( FPS*(36 + 60*(6 + 60*(16))) )
+			.setOrbitTarget(sun)
+			.setOrbitInitial(0)
+			.setOrbitRadius(4498542600)
+			.setOrbitPeriod( FPS*(0 + 60*(0 + 60*(0 + 24*(60190.03)))) );
+	planets.push_back(temp);
 	
 	
 	// Register planets with glut manager
