@@ -89,6 +89,7 @@ int GlutManager::run( int argc, char *argv[] )
     glutMouseFunc( *::mouseclick );
 	glutMotionFunc( *::mousedrag );
 	glutPassiveMotionFunc( *::mousemove );
+	glutTimerFunc(0, *::step, 0);
 
 	// set up illumination-reflectance model
     GlutManager::initLightModel();
@@ -163,14 +164,24 @@ bool GlutManager::isRegistered(Clickable* clickable)
 	return find(clickables.begin(), clickables.end(), clickable) != clickables.end();
 }
 
-/***************************************************************************//**
- * @author Daniel Andrus, Johnny Ackerman
- * 
- * @par Description: Draws the background and the fractal
-*******************************************************************************/
-void GlutManager::draw()
+void GlutManager::registerStepable(Stepable* stepable)
 {
+	if (!isRegistered(stepable) && stepable != NULL)
+	{
+		stepables.push_back(stepable);
+	}
+}
 
+void GlutManager::unregisterStepable(Stepable* stepable)
+{
+	auto it = find(stepables.begin(), stepables.end(), stepable);
+	if (it != stepables.end())
+		stepables.erase(it);
+}
+
+bool GlutManager::isRegistered(Stepable* stepable)
+{
+	return find(stepables.begin(), stepables.end(), stepable) != stepables.end();
 }
 
 /***************************************************************************//**
@@ -184,6 +195,8 @@ void GlutManager::display()
 	//clear the display and set backround to black
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	glColor3f( 1.0, 1.0, 1.0 );
+
+	draw();
 
 	// Flush graphical output
 	glutSwapBuffers();
@@ -207,7 +220,8 @@ void GlutManager::reshape(int w, int h)
     glLoadIdentity();					// Initialize transformation matrix
 	
 	// Adjust viewport and map to window
-	gluOrtho2D(0, window_width, 0, window_height);
+	//gluOrtho2D(0, window_width, 0, window_height);
+	glOrtho(-(w/2), (w/2), -(h/2), (h/2), -100, 100);
     glViewport( 0, 0, window_width, window_height );
 
     // Switch back to (default) model view mode, for transformations
@@ -381,6 +395,14 @@ void GlutManager::initLightModel()
     glColor3d ( 0.8, 0.8, 0.0 );            // draw in yellow
 }
 
+void GlutManager::step()
+{
+	for (Stepable* stepable : stepables)
+	{
+		stepable->step();
+	}
+}
+
 /*******************************************************************************
  *                         GLUT CALLBACK FUNCTIONS
 *******************************************************************************/
@@ -452,4 +474,23 @@ void mousemove(int x, int y)
 void mousedrag(int x, int y)
 {
 	GlutManager::getInstance()->mousedrag(x, y);
+}
+
+void step(int i)
+{
+	// FPS, or technically "milliseconds per frame"
+#ifdef MSPF
+	static unsigned int fps_delay = MSPF;
+#else
+	static unsigned int fps_delay = 1000 / 60;
+#endif
+	
+	// Reset the timer
+	glutTimerFunc(fps_delay, *::step, 0);
+	
+	// Call step function
+	GlutManager::getInstance()->step();
+
+	// Redraw the screen after frame's been processed.
+	glutPostRedisplay();
 }

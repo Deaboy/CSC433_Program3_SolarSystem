@@ -15,6 +15,7 @@
 ******************************************************************************/
 class SolarSystem;
 
+#include "Stepable.h"
 #include <list>
 #include "Planet.h"
 #include "GlutManager.h"
@@ -24,7 +25,7 @@ using namespace std;
 /**************************************************************************//**
  * @brief The SolarSystem class creates and handles the solar system
 ******************************************************************************/
-class SolarSystem
+class SolarSystem : public Stepable
 {
 private:
 	//Planets
@@ -35,7 +36,8 @@ private:
 public:
 	SolarSystem();
 	~SolarSystem();
-	void run(int argc, char *argv[]);
+	int run(int argc, char *argv[]);
+	void step();
 	void update(long long time);
 };
 

@@ -77,7 +77,7 @@
 /*******************************************************************************
  *                 DECLARATIONS, INCLUDES, AND NAMESPACES
 *******************************************************************************/
-#include "GlutManager.h"
+#include "SolarSystem.h"
 
 /**************************************************************************//**
  * @author Johnny Ackerman, Danial Andrus
@@ -95,8 +95,8 @@
 int main( int argc, char *argv[] )
 {
 	// Initialize program's core class
-	GlutManager GlutManager;
+	SolarSystem solarsystem;
 
 	// Run everything through the Fractals class
-	return GlutManager.run( argc, argv);
+	return solarsystem.run( argc, argv);
 }

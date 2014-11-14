@@ -23,6 +23,7 @@ class GlutManager;
 #include <algorithm>
 #include "Clickable.h"
 #include "DrawingManager.h"
+#include "Stepable.h"
 
 // OpenGL/GLUT includes based on platform
 #ifndef OS_X
@@ -53,6 +54,7 @@ private:
 	string window_name;			/*!< Name of the gui window */
 
 	vector<Clickable*> clickables;
+	vector<Stepable*> stepables;
 	map<int, vector<Drawable*> > drawables;
 
 	static GlutManager* instance;
@@ -93,10 +95,9 @@ public:
 	void unregisterClickable(Clickable* clickable);
 	bool isRegistered(Clickable* clickable);
 	
-	/*!
-	 * @brief Drawing function. Calls superclass functions.
-	 */
-	void draw();
+	void registerStepable(Stepable* stepable);
+	void unregisterStepable(Stepable* stepable);
+	bool isRegistered(Stepable* stepable);
 
 	/*!
 	* @brief Drawing callback. Executes every glut display callaback. Also
@@ -153,6 +154,8 @@ public:
 	 * @brief sets up glut lighting
 	 */
 	void initLightModel();
+	
+	void step();
 	
 };
 
@@ -212,9 +215,6 @@ void mousemove(int x, int y);
  */
 void mousedrag(int x, int y);
 
-/*!
- * @brief glut Idle callback, spins a given object
- */
-void spinObject( );
+void step(int i);
 
 #endif

@@ -2,7 +2,7 @@
 
 SolarSystem::SolarSystem()
 {
-	
+	time = 0;
 }
 
 SolarSystem::~SolarSystem()
@@ -13,7 +13,7 @@ SolarSystem::~SolarSystem()
 	}
 }
 
-void SolarSystem::run(int argc, char *argv[])
+int SolarSystem::run(int argc, char *argv[])
 {
 	Planet* sun;
 	Planet* earth;
@@ -92,7 +92,7 @@ void SolarSystem::run(int argc, char *argv[])
 			.setRightAscension(0) // unknown
 			.setOrbitTarget(earth)
 			.setOrbitInitial(0)
-			.setOrbitRadius(384399)
+			.setOrbitRadius(384399 * 100)
 			.setOrbitPeriod( FPS*(6 + 60*(43 + 60*(7 + 24*(27)))) );
 	planets.push_back(temp);
 	
@@ -122,7 +122,7 @@ void SolarSystem::run(int argc, char *argv[])
 			.setRightAscension(268.057)
 			.setOrbitTarget(sun)
 			.setOrbitInitial(0)
-			.setOrbitRadius(778547200)
+			.setOrbitRadius(778547200 / 4.0)
 			.setOrbitPeriod( FPS*(0 + 60*(0 + 60*(0 + 24*(4332.59)))) );
 	planets.push_back(temp);
 	
@@ -137,7 +137,7 @@ void SolarSystem::run(int argc, char *argv[])
 			.setRightAscension(83.537)
 			.setOrbitTarget(sun)
 			.setOrbitInitial(0)
-			.setOrbitRadius(1433449370)
+			.setOrbitRadius(1433449370 / 4.0)
 			.setOrbitPeriod( FPS*(0 + 60*(0 + 60*(0 + 24*(10759.22)))) );
 	planets.push_back(temp);
 	
@@ -152,7 +152,7 @@ void SolarSystem::run(int argc, char *argv[])
 			.setRightAscension(257.311)
 			.setOrbitTarget(sun)
 			.setOrbitInitial(0)
-			.setOrbitRadius(2870671400)
+			.setOrbitRadius(2870671400 / 4.0)
 			.setOrbitPeriod( FPS*(0 + 60*(0 + 60*(0 + 24*(30687.15)))) );
 	planets.push_back(temp);
 	
@@ -167,7 +167,7 @@ void SolarSystem::run(int argc, char *argv[])
 			.setRightAscension(299.3)
 			.setOrbitTarget(sun)
 			.setOrbitInitial(0)
-			.setOrbitRadius(4498542600)
+			.setOrbitRadius(4498542600 / 4.0)
 			.setOrbitPeriod( FPS*(0 + 60*(0 + 60*(0 + 24*(60190.03)))) );
 	planets.push_back(temp);
 	
@@ -175,8 +175,15 @@ void SolarSystem::run(int argc, char *argv[])
 	// Register planets with glut manager
 	for (Planet* planet : planets)
 		manager.drawObject(planet);
+	manager.registerStepable(this);
 	
-	manager.run(argc, argv);
+	return manager.run(argc, argv);
+}
+
+void SolarSystem::step()
+{
+	time += 1;	// 1 to 1 ratio
+	update(time);
 }
 
 void SolarSystem::update(long long time)

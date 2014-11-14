@@ -45,19 +45,19 @@ Planet& Planet::setColor(unsigned char r, unsigned char g, unsigned char b)
 
 Planet& Planet::setRadius(long double radius)
 {
-	this->radius = radius;
+	this->radius = radius * PLANET_SCALE;
 	return *this;
 }
 
 Planet& Planet::setRotationAxis(long double rotation_axis)
 {
-	this->rotation_axis = DEGTORAD(rotation_axis);
+	this->rotation_axis = rotation_axis;
 	return *this;
 }
 
 Planet& Planet::setRotationInitial(long double rotation_init)
 {
-	this->rotation_init = DEGTORAD(rotation_init);
+	this->rotation_init = rotation_init;
 	return *this;
 }
 
@@ -69,7 +69,7 @@ Planet& Planet::setRotationPeriod(long double rotation_period)
 
 Planet& Planet::setRightAscension(long double right_ascension)
 {
-	this->right_ascension = DEGTORAD(right_ascension);
+	this->right_ascension = right_ascension;
 	return *this;
 }
 
@@ -81,13 +81,13 @@ Planet& Planet::setOrbitTarget(Planet* orbit_target)
 
 Planet& Planet::setOrbitInitial(long double orbit_init)
 {
-	this->orbit_init = DEGTORAD(orbit_init);
+	this->orbit_init = orbit_init;
 	return *this;
 }
 
 Planet& Planet::setOrbitRadius(long double orbit_radius)
 {
-	this->orbit_radius = orbit_radius;
+	this->orbit_radius = orbit_radius * ORBIT_SCALE;
 	return *this;
 }
 
@@ -102,27 +102,21 @@ void Planet::getPosition(long long time, long double& x,
 {
 	if (this->time != time)
 	{
-		if (orbit_target == NULL)
-		{
-			position[0] = 0;
-			position[1] = 1;
-			position[2] = 2;
-		}
-		else
+		if (orbit_target != NULL)
 		{
 			orbit_target->getPosition(time,
 					position[0], position[1], position[2]);
 			if (orbit_period != 0)
 			{
-				orbit_angle = DEGTORAD(360 * (time / orbit_period)) + orbit_init;
+				orbit_angle = 360 * (time / orbit_period) + orbit_init;
 			
 			}
 			else
 			{
 				orbit_angle = orbit_init;
 			}
-			position[0] = position[0] + cosl(orbit_angle) * orbit_radius;
-			position[1] = position[1] + sinl(orbit_angle) * orbit_radius;
+			position[0] = position[0] + cosl(DEGTORAD(orbit_angle)) * orbit_radius;
+			position[1] = position[1] + sinl(DEGTORAD(orbit_angle)) * orbit_radius;
 		}
 		this->time = time;
 	}
@@ -140,7 +134,7 @@ void Planet::update(long long time)
 		getPosition(time, position[0], position[1], position[2]);
 		if (rotation_period != 0)
 		{
-			rotation_angle =  DEGTORAD(360 * (time / rotation_period)) + rotation_init;
+			rotation_angle =  360 * (time / rotation_period) + rotation_init;
 		}
 		else
 		{
@@ -154,4 +148,18 @@ void Planet::draw()
 	// Draw a planet at position[] at angle rotation_angle and rotation_axis
 	// Texture needs to be determined by something external:
 	// wireframe, solid, shaded, and textured
+	GLUquadricObj *sphere;
+	//double radius = 8;	// TESTING
+	
+	//Draws the ball with freeGlut
+    glColor3ub( color[0], color[1], color[2] );
+    glPushMatrix();
+    glTranslated( position[0], position[1], position[2] );
+	glRotated( right_ascension, 0.0, 0.0, 1.0);
+	glRotated( rotation_axis, 1.0, 0.0, 0.0);
+	glRotated( rotation_angle, 0.0, 0.0, 1.0 );
+    sphere = gluNewQuadric();
+    gluSphere( sphere, radius, (int) (radius), (int) (radius) );
+    gluDeleteQuadric( sphere );
+    glPopMatrix();
 }

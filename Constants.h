@@ -12,6 +12,10 @@
 #define FPS		60			// Frames per second
 #define MSPF	1000/FPS	// Milliseconds per frame
 
+#define GENERAL_SCALE	1
+#define PLANET_SCALE	GENERAL_SCALE/1
+#define ORBIT_SCALE		GENERAL_SCALE/1
+
 #ifndef M_PI
 #define M_PI	3.14159265358979323846  /* pi */
 #endif
