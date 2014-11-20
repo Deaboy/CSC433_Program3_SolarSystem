@@ -92,7 +92,7 @@ int SolarSystem::run(int argc, char *argv[])
 			.setRightAscension(0) // unknown
 			.setOrbitTarget(earth)
 			.setOrbitInitial(0)
-			.setOrbitRadius(384399 * 100)
+			.setOrbitRadius(384399)
 			.setOrbitPeriod( FPS*(6 + 60*(43 + 60*(7 + 24*(27)))) );
 	planets.push_back(temp);
 	
@@ -122,7 +122,7 @@ int SolarSystem::run(int argc, char *argv[])
 			.setRightAscension(268.057)
 			.setOrbitTarget(sun)
 			.setOrbitInitial(0)
-			.setOrbitRadius(778547200 / 4.0)
+			.setOrbitRadius(778547200)
 			.setOrbitPeriod( FPS*(0 + 60*(0 + 60*(0 + 24*(4332.59)))) );
 	planets.push_back(temp);
 	
@@ -137,7 +137,7 @@ int SolarSystem::run(int argc, char *argv[])
 			.setRightAscension(83.537)
 			.setOrbitTarget(sun)
 			.setOrbitInitial(0)
-			.setOrbitRadius(1433449370 / 4.0)
+			.setOrbitRadius(1433449370)
 			.setOrbitPeriod( FPS*(0 + 60*(0 + 60*(0 + 24*(10759.22)))) );
 	planets.push_back(temp);
 	
@@ -152,7 +152,7 @@ int SolarSystem::run(int argc, char *argv[])
 			.setRightAscension(257.311)
 			.setOrbitTarget(sun)
 			.setOrbitInitial(0)
-			.setOrbitRadius(2870671400 / 4.0)
+			.setOrbitRadius(2870671400)
 			.setOrbitPeriod( FPS*(0 + 60*(0 + 60*(0 + 24*(30687.15)))) );
 	planets.push_back(temp);
 	
@@ -167,7 +167,7 @@ int SolarSystem::run(int argc, char *argv[])
 			.setRightAscension(299.3)
 			.setOrbitTarget(sun)
 			.setOrbitInitial(0)
-			.setOrbitRadius(4498542600 / 4.0)
+			.setOrbitRadius(4498542600)
 			.setOrbitPeriod( FPS*(0 + 60*(0 + 60*(0 + 24*(60190.03)))) );
 	planets.push_back(temp);
 	
@@ -177,12 +177,15 @@ int SolarSystem::run(int argc, char *argv[])
 		manager.drawObject(planet);
 	manager.registerStepable(this);
 	
+	manager.getCamera().setPitch(90).setYaw(270).setSubject(0,0,0).setDistance(50);
+	
 	return manager.run(argc, argv);
 }
 
 void SolarSystem::step()
 {
-	time += 1;	// 1 to 1 ratio
+	// time += 1;	// 1 to 1 ratio
+	time += (FPS * 60 * 60 * 24);
 	update(time);
 }
 
@@ -192,4 +195,5 @@ void SolarSystem::update(long long time)
 	{
 		planet->update(time);
 	}
+	manager.getCamera().update();
 }

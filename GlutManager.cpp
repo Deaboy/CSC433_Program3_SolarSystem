@@ -144,6 +144,11 @@ double GlutManager::getViewHeight()
 	return window_height;
 }
 
+Camera& GlutManager::getCamera()
+{
+	return camera;
+}
+
 void GlutManager::registerClickable(Clickable* clickable)
 {
 	if (!isRegistered(clickable) && clickable != NULL)
@@ -220,8 +225,9 @@ void GlutManager::reshape(int w, int h)
     glLoadIdentity();					// Initialize transformation matrix
 	
 	// Adjust viewport and map to window
-	//gluOrtho2D(0, window_width, 0, window_height);
-	glOrtho(-(w/2), (w/2), -(h/2), (h/2), -100, 100);
+	// gluOrtho2D(0, window_width, 0, window_height);
+	// glOrtho(-(w/2), (w/2), -(h/2), (h/2), -100, 100);
+	gluPerspective(50.0, (double) w/(double) h, 0, 100000);
     glViewport( 0, 0, window_width, window_height );
 
     // Switch back to (default) model view mode, for transformations
@@ -383,7 +389,8 @@ void GlutManager::initLightModel()
     glLightfv( GL_LIGHT0, GL_DIFFUSE, light_diffuse );
     glLightfv( GL_LIGHT0, GL_SPECULAR, light_specular );
 
-    glShadeModel( GL_FLAT );    // start with flat shading (smooth is default)
+    // glShadeModel( GL_FLAT );    // start with flat shading (smooth is default)
+	glShadeModel( GL_SMOOTH );
 
     glEnable( GL_DEPTH_TEST );  // enable depth buffer for hidden-surface elimination
     glEnable( GL_NORMALIZE );   // automatic normalization of normals

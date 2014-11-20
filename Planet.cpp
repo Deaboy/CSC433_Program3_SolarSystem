@@ -46,6 +46,7 @@ Planet& Planet::setColor(unsigned char r, unsigned char g, unsigned char b)
 Planet& Planet::setRadius(long double radius)
 {
 	this->radius = radius * PLANET_SCALE;
+	this->radius = 8;
 	return *this;
 }
 
@@ -156,7 +157,7 @@ void Planet::draw()
     glPushMatrix();
     glTranslated( position[0], position[1], position[2] );
 	glRotated( right_ascension, 0.0, 0.0, 1.0);
-	glRotated( rotation_axis, 1.0, 0.0, 0.0);
+	glRotated( rotation_axis, 0.0, 1.0, 0.0);
 	glRotated( rotation_angle, 0.0, 0.0, 1.0 );
     sphere = gluNewQuadric();
     gluSphere( sphere, radius, (int) (radius), (int) (radius) );

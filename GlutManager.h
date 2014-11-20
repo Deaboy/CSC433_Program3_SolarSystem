@@ -24,6 +24,7 @@ class GlutManager;
 #include "Clickable.h"
 #include "DrawingManager.h"
 #include "Stepable.h"
+#include "Camera.h"
 
 // OpenGL/GLUT includes based on platform
 #ifndef OS_X
@@ -53,6 +54,7 @@ private:
 	int window_height;			/*!< Height of gui window */
 	string window_name;			/*!< Name of the gui window */
 
+	Camera camera;
 	vector<Clickable*> clickables;
 	vector<Stepable*> stepables;
 	map<int, vector<Drawable*> > drawables;
@@ -90,6 +92,8 @@ public:
 	* @brief Gets the height of the view port in the virtual space.
 	*/
 	double getViewHeight();
+	
+	Camera& getCamera();
 
 	void registerClickable(Clickable* clickable);
 	void unregisterClickable(Clickable* clickable);
