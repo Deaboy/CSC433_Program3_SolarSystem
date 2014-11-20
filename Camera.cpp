@@ -90,9 +90,10 @@ void Camera::update()
 	
     glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
-	gluLookAt(position[0], position[1], position[2],
-				subject[0], subject[1], subject[2],
-				0.0, 0.0, 0.1);
+	//gluLookAt(position[0], position[1], position[2],
+	//			subject[0], subject[1], subject[2],
+	//			0.0, 0.0, 0.1);
+	glOrtho( -100, 100, -100, 100, -100, 100 );
 	
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();

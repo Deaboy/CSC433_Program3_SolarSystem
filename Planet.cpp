@@ -160,6 +160,11 @@ void Planet::draw()
 	glRotated( rotation_axis, 0.0, 1.0, 0.0);
 	glRotated( rotation_angle, 0.0, 0.0, 1.0 );
     sphere = gluNewQuadric();
+
+	//Gives the object surface normals for light
+	gluQuadricNormals( sphere, GLU_SMOOTH );
+	gluQuadricDrawStyle( sphere, GLU_LINE );
+
     gluSphere( sphere, radius, (int) (radius), (int) (radius) );
     gluDeleteQuadric( sphere );
     glPopMatrix();
