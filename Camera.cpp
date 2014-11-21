@@ -17,9 +17,13 @@ Camera::Camera()
 	position[0] = 0;
 	position[1] = 0;
 	position[2] = 0;
+	target_pitch = 0;
+	target_yaw = 0;
+	target_distance = 0;
 	pitch = 0;
 	yaw = 0;
 	distance = 0;
+	ease = 1;
 }
 
 void Camera::getPosition(long double& x, long double& y, long double& z)
@@ -38,17 +42,17 @@ void Camera::getSubject(long double& x, long double& y, long double& z)
 
 long double Camera::getPitch()
 {
-	return RADTODEG(pitch);
+	return RADTODEG(target_pitch);
 }
 
 long double Camera::getYaw()
 {
-	return RADTODEG(yaw);
+	return RADTODEG(target_yaw);
 }
 
 long double Camera::getDistance()
 {
-	return distance;
+	return target_distance;
 }
 
 Camera& Camera::setSubject(long double x, long double y, long double z)
@@ -63,21 +67,25 @@ Camera& Camera::setPitch(long double pitch)
 {
 	if (pitch > 89) pitch = 89;
 	if (pitch < -89) pitch = -89;
-	this->pitch = DEGTORAD(pitch);
+	this->target_pitch = DEGTORAD(pitch);
 	return *this;
 }
 
 Camera& Camera::setYaw(long double yaw)
 {
-	for (; yaw < 0; yaw += 360);
-	for (; yaw >= 360; yaw -= 360);
-	this->yaw = DEGTORAD(yaw);
+	this->target_yaw = DEGTORAD(yaw);
 	return *this;
 }
 
 Camera& Camera::setDistance(long double distance)
 {
-	this->distance = distance;
+	this->target_distance = distance;
+	return *this;
+}
+
+Camera& Camera::setEasing(long double ease)
+{
+	this->ease = (ease > 1 ? 1 : ease < 0 ? 0 : ease);
 	return *this;
 }
 
@@ -93,4 +101,31 @@ void Camera::update()
 	gluLookAt(position[0], position[1], position[2],
 				subject[0], subject[1], subject[2],
 				0.0, 0.0, 0.1);
+}
+
+void Camera::step()
+{
+	if (ease == 1)
+	{
+		pitch = target_pitch;
+		yaw = target_yaw;
+		distance = target_distance;
+	}
+	else
+	{
+		if (fabs(pitch - target_pitch) > 0.00390625)
+			pitch += (target_pitch - pitch) * ease;
+		else
+			pitch = target_pitch;
+
+		if (fabs(yaw - target_yaw) > 0.00390625)
+			yaw += (target_yaw - yaw) * ease;
+		else
+			yaw = target_yaw;
+
+		if (fabs(distance - target_distance) > 0.125)
+			distance += (target_distance - distance) * ease;
+		else
+			distance = target_distance;
+	}
 }

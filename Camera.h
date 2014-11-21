@@ -11,6 +11,7 @@
 
 #include <cmath>
 #include "Constants.h"
+#include "Stepable.h"
 
 // OpenGL/GLUT includes based on platform
 #ifndef OS_X
@@ -21,14 +22,18 @@
 #include <GLUT/glut.h>
 #endif
 
-class Camera
+class Camera : public Stepable
 {
 private:
 	long double subject[3];
 	long double position[3];
+	long double target_pitch;
+	long double target_yaw;
+	long double target_distance;
 	long double pitch;
 	long double yaw;
 	long double distance;
+	long double ease;
 
 public:
 	Camera();
@@ -43,7 +48,9 @@ public:
 	Camera& setPitch(long double pitch);
 	Camera& setYaw(long double yaw);
 	Camera& setDistance(long double distance);
+	Camera& setEasing(long double ease);
 
+	void step();
 	void update();
 };
 

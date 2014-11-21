@@ -178,7 +178,8 @@ int SolarSystem::run(int argc, char *argv[])
 		manager.drawObject(planet);
 	manager.registerStepable(this);
 	
-	manager.getCamera().setPitch(45).setYaw(315).setSubject(0,0,0).setDistance(1000);
+	manager.getCamera().setSubject(0,0,0).setEasing(0.125)
+			.setPitch(45).setYaw(315).setDistance(1000);
 	
 	return manager.run(argc, argv);
 }

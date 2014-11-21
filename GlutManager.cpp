@@ -29,6 +29,7 @@ GlutManager::GlutManager()
 window_name("Solar System")
 {
 	instance = this;
+	mouse_button = -1;
 }
 
 /***************************************************************************//**
@@ -105,6 +106,8 @@ int GlutManager::run( int argc, char *argv[] )
     gluQuadricNormals( object, GLU_SMOOTH );
     gluQuadricDrawStyle( object, GLU_LINE );
 	*/
+	
+	registerStepable(&camera);
 
     // Go into OpenGL/GLUT main loop
     glutMainLoop();
@@ -258,72 +261,74 @@ void GlutManager::reshape(int w, int h)
 *******************************************************************************/
 void GlutManager::keyDown(unsigned char key, int x, int y)
 {
-    switch ( key )
-    {
-        case 27:		// Escape
-            exit( 0 );
-            break;
+	if (mouse_button != GLUT_LEFT_BUTTON)
+	{
+		switch ( key )
+		{
+			case 27:		// Escape
+				exit( 0 );
+				break;
 
-		case 61:		// "="
-		case 43:		// "+"
-			camera.setDistance( camera.getDistance() * .75 );
-			camera.update();
-			break;
+			case 61:		// "="
+			case 43:		// "+"
+				camera.setDistance( camera.getDistance() * .75 );
+				camera.update();
+				break;
 
-		case 95:		// "_"
-		case 45:		// "-"
-			camera.setDistance( camera.getDistance() * 1.5 );
-			camera.update();
-			break;
+			case 95:		// "_"
+			case 45:		// "-"
+				camera.setDistance( camera.getDistance() * 1.333333333 );
+				camera.update();
+				break;
 
-		case 87:		// "W"
-		case 119:		// "w"
-			camera.setPitch( camera.getPitch() + 10 );
-			camera.update();
-			break;
+			case 87:		// "W"
+			case 119:		// "w"
+				camera.setPitch( camera.getPitch() + 20 );
+				camera.update();
+				break;
 
-		case 83:		// "S"
-		case 115:		// "s"
-			camera.setPitch( camera.getPitch() - 10 );
-			camera.update();
-			break;
+			case 83:		// "S"
+			case 115:		// "s"
+				camera.setPitch( camera.getPitch() - 20 );
+				camera.update();
+				break;
 
-		case 65:		// "A"
-		case 97:		// "a"
-			camera.setYaw( camera.getYaw() + 10 );
-			camera.update();
-			break;
+			case 65:		// "A"
+			case 97:		// "a"
+				camera.setYaw( camera.getYaw() + 20 );
+				camera.update();
+				break;
 
-		case 68:		// "D"
-		case 100:		// "d"
-			camera.setYaw( camera.getYaw() - 10 );
-			camera.update();
-			break;
+			case 68:		// "D"
+			case 100:		// "d"
+				camera.setYaw( camera.getYaw() - 20 );
+				camera.update();
+				break;
 
-		case 81:		// "Q"
-		case 113:		// "q"
-			break;
+			case 81:		// "Q"
+			case 113:		// "q"
+				break;
 
-		case 69:		// "E"
-		case 101:		// "e"
-			break;
+			case 69:		// "E"
+			case 101:		// "e"
+				break;
 
-		case 9:			// Tab
-			cout << "tab works";
-			break;
+			case 9:			// Tab
+				cout << "tab works";
+				break;
 
-		case 32:		// space
-			//resets view
-			camera.setPitch(45).setYaw(315).setSubject(0,0,0).setDistance(1000);
-			camera.update();
-			break;
+			case 32:		// space
+				//resets view
+				camera.setSubject(0,0,0).setEasing(0.125)
+						.setPitch(45).setYaw(315).setDistance(1000);
+				camera.update();
+				break;
 
-
-
-		default:		// Everything else, forward to game manager
-			/*current_program::function( key ); */
-            break;
-    }
+			default:		// Everything else, forward to game manager
+				/*current_program::function( key ); */
+				break;
+		}
+	}
 }
 
 /***************************************************************************//**
@@ -347,6 +352,7 @@ void GlutManager::mouseclick(int button, int state, int x, int y)
 		if (button == mouse_button)
 		{
 			//glutWarpPointer(mouse_restore_x, mouse_restore_y);
+			camera.setEasing(0.25);
 			mouse_button = -1;
 		}
 	}
@@ -354,6 +360,7 @@ void GlutManager::mouseclick(int button, int state, int x, int y)
 	{
 		if (button == GLUT_LEFT_BUTTON)
 		{
+			camera.setEasing(1);
 			mouse_button = button;
 			mouse_restore_x = x;
 			mouse_restore_y = y;
@@ -388,12 +395,8 @@ void GlutManager::mousemove(int x, int y)
 {
 	if (mouse_button == GLUT_LEFT_BUTTON)
 	{
-		long double p = y;
-		p -= mouse_restore_y;
-		p /= 2.0;
-		p += camera.getPitch();
-		camera.setPitch(p);
-		camera.setYaw(camera.getYaw() + ((x - mouse_restore_x) / 2.0));
+		camera.setPitch(camera.getPitch() + (y - mouse_restore_y) / 2.0);
+		camera.setYaw(camera.getYaw() + ((mouse_restore_x - x) / 2.0));
 		mouse_restore_x = x;
 		mouse_restore_y = y;
 		//glutWarpPointer(mouse_restore_x, mouse_restore_y);
