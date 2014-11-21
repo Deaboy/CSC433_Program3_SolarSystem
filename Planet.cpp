@@ -153,7 +153,7 @@ void Planet::draw()
 	
 	// Draw orbit first
 	// Pre-calculate the slice size (in radians)
-	long double orbit_slicesize = (2 * M_PI) / (orbit_radius / 10);
+	long double orbit_slicesize = (2 * M_PI) / (360);
 	if (orbit_slicesize > DEGTORAD(1)) orbit_slicesize = DEGTORAD(1);
 	
 	// Get our orbitting target's position
@@ -195,7 +195,7 @@ void Planet::draw()
 	gluQuadricNormals( sphere, GLU_SMOOTH );
 	gluQuadricDrawStyle( sphere, GLU_LINE );
 
-    gluSphere( sphere, radius, (int) (radius), (int) (radius) );
+    gluSphere( sphere, radius, 128, 128 );
     gluDeleteQuadric( sphere );
 	
     glPopMatrix();

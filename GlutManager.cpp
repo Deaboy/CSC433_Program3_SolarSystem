@@ -283,13 +283,13 @@ void GlutManager::keyDown(unsigned char key, int x, int y)
 
 			case 87:		// "W"
 			case 119:		// "w"
-				camera.setPitch( camera.getPitch() + 20 );
+				camera.setPitch( camera.getPitch() + 15 );
 				camera.update();
 				break;
 
 			case 83:		// "S"
 			case 115:		// "s"
-				camera.setPitch( camera.getPitch() - 20 );
+				camera.setPitch( camera.getPitch() - 15 );
 				camera.update();
 				break;
 
@@ -395,8 +395,8 @@ void GlutManager::mousemove(int x, int y)
 {
 	if (mouse_button == GLUT_LEFT_BUTTON)
 	{
-		camera.setPitch(camera.getPitch() + (y - mouse_restore_y) / 2.0);
-		camera.setYaw(camera.getYaw() + ((mouse_restore_x - x) / 2.0));
+		camera.setPitch(camera.getPitch() + (y - mouse_restore_y) / 4.0);
+		camera.setYaw(camera.getYaw() + ((mouse_restore_x - x) / 4.0));
 		mouse_restore_x = x;
 		mouse_restore_y = y;
 		//glutWarpPointer(mouse_restore_x, mouse_restore_y);

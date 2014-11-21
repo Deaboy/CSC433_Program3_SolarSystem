@@ -187,7 +187,7 @@ int SolarSystem::run(int argc, char *argv[])
 void SolarSystem::step()
 {
 	// time += 1;	// 1 to 1 ratio
-	time += (FPS * 60 * 60);// * 24);
+	time += 1;//(FPS * 60 * 60);// * 24);
 	update(time);
 }
 
