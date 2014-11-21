@@ -87,6 +87,7 @@ int GlutManager::run( int argc, char *argv[] )
     // Register callbacks
     glutDisplayFunc( *::display );
     glutReshapeFunc( *::reshape );
+	glutKeyboardFunc( *::keyDown );
     glutMouseFunc( *::mouseclick );
 	glutMotionFunc( *::mousedrag );
 	glutPassiveMotionFunc( *::mousemove );
@@ -259,6 +260,18 @@ void GlutManager::keyDown(unsigned char key, int x, int y)
         case 27:		// Escape
             exit( 0 );
             break;
+
+		case 61:		// "="
+		case 43:		// "+"
+			camera.setDistance( camera.getDistance() + (long double) 10000000.0 );
+			camera.update();
+			break;
+
+		case 95:		// "_"
+		case 45:		// "-"
+			camera.setDistance( camera.getDistance() - 10 );
+			camera.update();
+			break;
 
 		default:		// Everything else, forward to game manager
 			/*current_program::function( key ); */
@@ -441,6 +454,40 @@ void reshape(int w, int h)
 {
 	GlutManager::getInstance()->reshape(w, h);
 }
+
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: Key down callback. Executes whenever a typical key is
+ *		pressed. Simply forwards to Pong class' identical function.
+ *
+ * @param[in]	key - ASCII-encoded char of the key that was pressed.
+ * @param[in]	x - The x coordinate of the mouse at the time the key
+ *				was pressed. Measured in integers.
+ * @param[in]	y - The y coordinate of the mouse at the time the key
+ *				was pressed.
+*******************************************************************************/
+void keyDown(unsigned char key, int x, int y)
+{
+	GlutManager::getInstance()->keyDown(key, x, y);
+}
+
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: Key up callback. Executes whenever a typical key is
+ *		released. Simply forwards to Pong class' identical function.
+ * 
+ * @param[in]	key - ASCII-encoded char of the key that was pressed.
+ * @param[in]	x - The x coordinate of the mouse at the time the key
+ *				was pressed. Measured in integers.
+ * @param[in]	y - The y coordinate of the mouse at the time the key
+ *				was pressed.
+*******************************************************************************/
+//void keyUp(unsigned char key, int x, int y)
+//{
+//	GlutManager::getInstance()->keyUp(key, x, y);
+//}
 
 /***************************************************************************//**
  * @author Johnny Ackerman
