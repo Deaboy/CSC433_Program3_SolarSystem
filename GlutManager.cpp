@@ -160,7 +160,7 @@ Camera& GlutManager::getCamera()
 
 void GlutManager::registerClickable(Clickable* clickable)
 {
-	if (!isRegistered(clickable) && clickable != NULL)
+	if (!isClickableRegistered(clickable) && clickable != NULL)
 	{
 		clickables.push_back(clickable);
 	}
@@ -173,14 +173,14 @@ void GlutManager::unregisterClickable(Clickable* clickable)
 		clickables.erase(it);
 }
 
-bool GlutManager::isRegistered(Clickable* clickable)
+bool GlutManager::isClickableRegistered(Clickable* clickable)
 {
 	return find(clickables.begin(), clickables.end(), clickable) != clickables.end();
 }
 
 void GlutManager::registerStepable(Stepable* stepable)
 {
-	if (!isRegistered(stepable) && stepable != NULL)
+	if (!isStepableRegistered(stepable) && stepable != NULL)
 	{
 		stepables.push_back(stepable);
 	}
@@ -193,9 +193,29 @@ void GlutManager::unregisterStepable(Stepable* stepable)
 		stepables.erase(it);
 }
 
-bool GlutManager::isRegistered(Stepable* stepable)
+bool GlutManager::isStepableRegistered(Stepable* stepable)
 {
 	return find(stepables.begin(), stepables.end(), stepable) != stepables.end();
+}
+
+void GlutManager::registerPressable(Pressable* pressable)
+{
+	if (!isPressableRegistered(pressable) && pressable != NULL)
+	{
+		pressables.push_back(pressable);
+	}
+}
+
+void GlutManager::unregisterPressable(Pressable* pressable)
+{
+	auto it = find(pressables.begin(), pressables.end(), pressable);
+	if (it != pressables.end())
+		pressables.erase(it);
+}
+
+bool GlutManager::isPressableRegistered(Pressable* pressable)
+{
+	return find(pressables.begin(), pressables.end(), pressable) != pressables.end();
 }
 
 /***************************************************************************//**
@@ -244,7 +264,7 @@ void GlutManager::reshape(int w, int h)
 	// Adjust viewport and map to window
 	// gluOrtho2D(0, window_width, 0, window_height);
 	// glOrtho(-(w/2), (w/2), -(h/2), (h/2), -100, 100);
-	gluPerspective(50.0, (double) w/(double) h, 100.0, 1000000000.0);
+	gluPerspective(50.0, (double) w/(double) h, 1.0, 1000000000.0);
 	
 }
 
@@ -262,73 +282,9 @@ void GlutManager::reshape(int w, int h)
 *******************************************************************************/
 void GlutManager::keyDown(unsigned char key, int x, int y)
 {
-	if (mouse_button != GLUT_LEFT_BUTTON)
+	for (Pressable* pressable : pressables)
 	{
-		switch ( key )
-		{
-			case 27:		// Escape
-				exit( 0 );
-				break;
-
-			case 61:		// "="
-			case 43:		// "+"
-				camera.setDistance( camera.getDistance() * .75 );
-				camera.update();
-				break;
-
-			case 95:		// "_"
-			case 45:		// "-"
-				camera.setDistance( camera.getDistance() * 1.333333333 );
-				camera.update();
-				break;
-
-			case 87:		// "W"
-			case 119:		// "w"
-				camera.setPitch( camera.getPitch() + 15 );
-				camera.update();
-				break;
-
-			case 83:		// "S"
-			case 115:		// "s"
-				camera.setPitch( camera.getPitch() - 15 );
-				camera.update();
-				break;
-
-			case 65:		// "A"
-			case 97:		// "a"
-				camera.setYaw( camera.getYaw() + 20 );
-				camera.update();
-				break;
-
-			case 68:		// "D"
-			case 100:		// "d"
-				camera.setYaw( camera.getYaw() - 20 );
-				camera.update();
-				break;
-
-			case 81:		// "Q"
-			case 113:		// "q"
-				break;
-
-			case 69:		// "E"
-			case 101:		// "e"
-				break;
-
-			case 9:			// Tab
-				cout << "tab works";
-				break;
-
-			case 32:		// space
-				//resets view
-				camera.setSubject(0,0,0).setEasing(0.125)
-						.setPitch(45).setYaw(315).setDistance(1000);
-				camera.update();
-				break;
-
-			default:		// Everything else, forward to game manager
-				/*current_program::function( key ); */
-				break;
-		}
+		pressable->keyDown(key, x, y);
 	}
 }
 
@@ -353,7 +309,7 @@ void GlutManager::mouseclick(int button, int state, int x, int y)
 		if (button == mouse_button)
 		{
 			//glutWarpPointer(mouse_restore_x, mouse_restore_y);
-			camera.setEasing(0.25);
+			camera.setRotationEasing(0.125);
 			mouse_button = -1;
 		}
 	}
@@ -361,7 +317,7 @@ void GlutManager::mouseclick(int button, int state, int x, int y)
 	{
 		if (button == GLUT_LEFT_BUTTON)
 		{
-			camera.setEasing(1);
+			camera.setRotationEasing(1);
 			mouse_button = button;
 			mouse_restore_x = x;
 			mouse_restore_y = y;
@@ -585,7 +541,7 @@ void step(int i)
 {
 	// FPS, or technically "milliseconds per frame"
 #ifdef MSPF
-	static unsigned int fps_delay = MSPF;
+	static unsigned int fps_delay = (int) MSPF;
 #else
 	static unsigned int fps_delay = 1000 / 60;
 #endif

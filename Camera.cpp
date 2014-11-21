@@ -14,6 +14,9 @@ Camera::Camera()
 	subject[0] = 0;
 	subject[1] = 0;
 	subject[2] = 0;
+	target_subject[0] = 0;
+	target_subject[1] = 1;
+	target_subject[2] = 2;
 	position[0] = 0;
 	position[1] = 0;
 	position[2] = 0;
@@ -23,7 +26,9 @@ Camera::Camera()
 	pitch = 0;
 	yaw = 0;
 	distance = 0;
-	ease = 1;
+	rot_ease = 1;
+	zoom_ease = 1;
+	move_ease = 1;
 }
 
 void Camera::getPosition(long double& x, long double& y, long double& z)
@@ -35,9 +40,9 @@ void Camera::getPosition(long double& x, long double& y, long double& z)
 
 void Camera::getSubject(long double& x, long double& y, long double& z)
 {
-	x = subject[0];
-	y = subject[1];
-	z = subject[2];
+	x = target_subject[0];
+	y = target_subject[1];
+	z = target_subject[2];
 }
 
 long double Camera::getPitch()
@@ -57,9 +62,9 @@ long double Camera::getDistance()
 
 Camera& Camera::setSubject(long double x, long double y, long double z)
 {
-	subject[0] = x;
-	subject[1] = y;
-	subject[2] = z;
+	target_subject[0] = x;
+	target_subject[1] = y;
+	target_subject[2] = z;
 	return *this;
 }
 
@@ -83,9 +88,21 @@ Camera& Camera::setDistance(long double distance)
 	return *this;
 }
 
-Camera& Camera::setEasing(long double ease)
+Camera& Camera::setRotationEasing(long double ease)
 {
-	this->ease = (ease > 1 ? 1 : ease < 0 ? 0 : ease);
+	this->rot_ease = (ease > 1 ? 1 : ease < 0 ? 0 : ease);
+	return *this;
+}
+
+Camera& Camera::setZoomEasing(long double ease)
+{
+	this->zoom_ease = (ease > 1 ? 1 : ease < 0 ? 0 : ease);
+	return *this;
+}
+
+Camera& Camera::setMovementEasing(long double ease)
+{
+	this->move_ease = (ease > 1 ? 1 : ease < 0 ? 0 : ease);
 	return *this;
 }
 
@@ -105,27 +122,48 @@ void Camera::update()
 
 void Camera::step()
 {
-	if (ease == 1)
+	if (rot_ease == 1)
 	{
 		pitch = target_pitch;
 		yaw = target_yaw;
+	}
+	else
+	{
+		if (fabs(pitch - target_pitch) > rot_ease/256)
+			pitch += (target_pitch - pitch) * rot_ease;
+		else
+			pitch = target_pitch;
+
+		if (fabs(yaw - target_yaw) > rot_ease/256)
+			yaw += (target_yaw - yaw) * rot_ease;
+		else
+			yaw = target_yaw;
+	}
+
+	if (zoom_ease == 1)
+	{
 		distance = target_distance;
 	}
 	else
 	{
-		if (fabs(pitch - target_pitch) > 0.00390625)
-			pitch += (target_pitch - pitch) * ease;
-		else
-			pitch = target_pitch;
-
-		if (fabs(yaw - target_yaw) > 0.00390625)
-			yaw += (target_yaw - yaw) * ease;
-		else
-			yaw = target_yaw;
-
-		if (fabs(distance - target_distance) > 0.125)
-			distance += (target_distance - distance) * ease;
+		if (fabs(distance - target_distance) > zoom_ease / 8)
+			distance += (target_distance - distance) * zoom_ease;
 		else
 			distance = target_distance;
+	}
+
+	if (move_ease == 1)
+	{
+		subject[0] = target_subject[0];
+		subject[1] = target_subject[1];
+		subject[2] = target_subject[2];
+	}
+	else
+	{
+		for (int i = 0; i < 3; i++)
+		if (fabs(subject[i] - target_subject[i]) > move_ease/256)
+			subject[i] += (target_subject[i] - subject[i]) * move_ease;
+		else
+			subject[i] = target_subject[i];
 	}
 }

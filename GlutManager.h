@@ -24,6 +24,7 @@ class GlutManager;
 #include "Clickable.h"
 #include "DrawingManager.h"
 #include "Stepable.h"
+#include "Pressable.h"
 #include "Camera.h"
 
 // OpenGL/GLUT includes based on platform
@@ -57,6 +58,7 @@ private:
 	Camera camera;
 	vector<Clickable*> clickables;
 	vector<Stepable*> stepables;
+	vector<Pressable*> pressables;
 	map<int, vector<Drawable*> > drawables;
 	
 	// Camera control variables
@@ -102,11 +104,15 @@ public:
 
 	void registerClickable(Clickable* clickable);
 	void unregisterClickable(Clickable* clickable);
-	bool isRegistered(Clickable* clickable);
+	bool isClickableRegistered(Clickable* clickable);
 	
 	void registerStepable(Stepable* stepable);
 	void unregisterStepable(Stepable* stepable);
-	bool isRegistered(Stepable* stepable);
+	bool isStepableRegistered(Stepable* stepable);
+	
+	void registerPressable(Pressable* pressable);
+	void unregisterPressable(Pressable* pressable);
+	bool isPressableRegistered(Pressable* pressable);
 
 	/*!
 	* @brief Drawing callback. Executes every glut display callaback. Also

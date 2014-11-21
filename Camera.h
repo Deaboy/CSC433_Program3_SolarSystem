@@ -26,6 +26,7 @@ class Camera : public Stepable
 {
 private:
 	long double subject[3];
+	long double target_subject[3];
 	long double position[3];
 	long double target_pitch;
 	long double target_yaw;
@@ -33,7 +34,9 @@ private:
 	long double pitch;
 	long double yaw;
 	long double distance;
-	long double ease;
+	long double rot_ease;
+	long double zoom_ease;
+	long double move_ease;
 
 public:
 	Camera();
@@ -48,7 +51,9 @@ public:
 	Camera& setPitch(long double pitch);
 	Camera& setYaw(long double yaw);
 	Camera& setDistance(long double distance);
-	Camera& setEasing(long double ease);
+	Camera& setRotationEasing(long double ease);
+	Camera& setZoomEasing(long double ease);
+	Camera& setMovementEasing(long double ease);
 
 	void step();
 	void update();

@@ -16,27 +16,37 @@
 class SolarSystem;
 
 #include "Stepable.h"
-#include <list>
+#include <vector>
 #include "Planet.h"
 #include "GlutManager.h"
+#include "Pressable.h"
 
 using namespace std;
 
 /**************************************************************************//**
  * @brief The SolarSystem class creates and handles the solar system
 ******************************************************************************/
-class SolarSystem : public Stepable
+class SolarSystem : public Stepable, public Pressable
 {
 private:
 	//Planets
-	list<Planet*> planets;
+	vector<Planet*> planets;
+	Planet* subject;
 	GlutManager manager;
 	long long time;
 
 public:
 	SolarSystem();
 	~SolarSystem();
+
 	int run(int argc, char *argv[]);
+	void setCameraSubject(int i);
+
+	void keyDown(unsigned char key, int x, int y);
+	void keyUp(unsigned char key, int x, int y);
+	void keySpecialDown(unsigned char key, int x, int y);
+	void keySpecialUp(unsigned char key, int x, int y);
+
 	void step();
 	void update(long long time);
 };

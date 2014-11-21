@@ -3,6 +3,7 @@
 SolarSystem::SolarSystem()
 {
 	time = 0;
+	subject = NULL;
 }
 
 SolarSystem::~SolarSystem()
@@ -177,12 +178,118 @@ int SolarSystem::run(int argc, char *argv[])
 	for (Planet* planet : planets)
 		manager.drawObject(planet);
 	manager.registerStepable(this);
+	manager.registerPressable(this);
 	
-	manager.getCamera().setSubject(0,0,0).setEasing(0.125)
+	manager.getCamera().setSubject(0,0,0).setRotationEasing(0.125)
+			.setZoomEasing(0.125).setMovementEasing(1)
 			.setPitch(45).setYaw(315).setDistance(1000);
 	
 	return manager.run(argc, argv);
 }
+
+void SolarSystem::setCameraSubject(int i)
+{
+	if (i < (int) planets.size())
+		subject = planets[i];
+}
+
+void SolarSystem::keyDown(unsigned char key, int x, int y)
+{
+	if (key != GLUT_LEFT_BUTTON)
+	{
+		switch ( key )
+		{
+			case 27:		// Escape
+				exit( 0 );
+				break;
+
+			case 61:		// "="
+			case 43:		// "+"
+				GlutManager::getInstance()->
+					getCamera().setDistance( GlutManager::getInstance()->
+					getCamera().getDistance() * .75 );
+				break;
+
+			case 95:		// "_"
+			case 45:		// "-"
+				GlutManager::getInstance()->
+					getCamera().setDistance( GlutManager::getInstance()->
+					getCamera().getDistance() * 1.333333333 );
+				break;
+
+			case 87:		// "W"
+			case 119:		// "w"
+				GlutManager::getInstance()->
+					getCamera().setPitch( GlutManager::getInstance()->
+					getCamera().getPitch() + 15 );
+				break;
+
+			case 83:		// "S"
+			case 115:		// "s"
+				GlutManager::getInstance()->
+					getCamera().setPitch( GlutManager::getInstance()->
+					getCamera().getPitch() - 15 );
+				break;
+
+			case 65:		// "A"
+			case 97:		// "a"
+				GlutManager::getInstance()->
+					getCamera().setYaw( GlutManager::getInstance()->
+					getCamera().getYaw() + 20 );
+				break;
+
+			case 68:		// "D"
+			case 100:		// "d"
+				GlutManager::getInstance()->
+					getCamera().setYaw( GlutManager::getInstance()->
+					getCamera().getYaw() - 20 );
+				break;
+
+			case 81:		// "Q"
+			case 113:		// "q"
+				break;
+
+			case 69:		// "E"
+			case 101:		// "e"
+				break;
+
+			case 9:			// Tab
+				break;
+
+			case 32:		// space
+				//resets view
+				GlutManager::getInstance()->
+					getCamera().setSubject(0,0,0).setRotationEasing(0.125)
+						.setZoomEasing(0.125).setMovementEasing(1)
+						.setPitch(45).setYaw(315).setDistance(1000);
+				setCameraSubject(0);
+				break;
+
+			case '0':
+			case '1':
+			case '2':
+			case '3':
+			case '4':
+			case '5':
+			case '6':
+			case '7':
+			case '8':
+			case '9':
+				setCameraSubject(key - '0');
+				break;
+
+			default:		// Everything else, forward to game manager
+				/*current_program::function( key ); */
+				break;
+		}
+	}
+}
+
+void SolarSystem::keyUp(unsigned char key, int x, int y) {}
+
+void SolarSystem::keySpecialDown(unsigned char key, int x, int y) {}
+
+void SolarSystem::keySpecialUp(unsigned char key, int x, int y) {}
 
 void SolarSystem::step()
 {
@@ -196,5 +303,11 @@ void SolarSystem::update(long long time)
 	for (Planet* planet : planets)
 	{
 		planet->update(time);
+	}
+	if (subject != NULL)
+	{
+		long double x, y, z;
+		subject->getPosition(time, x, y, z);
+		GlutManager::getInstance()->getCamera().setSubject(x, y, z);
 	}
 }
