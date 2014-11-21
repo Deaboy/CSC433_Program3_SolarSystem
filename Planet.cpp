@@ -41,9 +41,9 @@ Planet& Planet::setColor(unsigned char r, unsigned char g, unsigned char b)
 	this->color[0] = r;
 	this->color[1] = g;
 	this->color[2] = b;
-	lightColor[0] = float (r)/256.0;
-	lightColor[1] = float (g)/256.0;
-	lightColor[2] = float (b)/256.0;
+	lightColor[0] = r/255.0f;
+	lightColor[1] = g/255.0f;
+	lightColor[2] = b/255.0f;
 	lightColor[3] = 1;
 	return *this;
 }
@@ -158,7 +158,7 @@ void Planet::draw()
 	
 	// Draw orbit first
 	// Pre-calculate the slice size (in radians)
-	long double orbit_slicesize = (2 * M_PI) / (360);
+	long double orbit_slicesize = (2 * M_PI) / (orbit_radius / 50);
 	if (orbit_slicesize > DEGTORAD(1)) orbit_slicesize = DEGTORAD(1);
 	
 	// Get our orbitting target's position
@@ -168,13 +168,15 @@ void Planet::draw()
 	else
 		target_x = target_y = target_z = 0.0;
 	
-	// Build the orbit
+	// Draw the orbit without lighting
+	glDisable(GL_LIGHTING);
 	glBegin(GL_LINE_LOOP);
 		for (long double theta = 0; theta < 2*M_PI; theta += orbit_slicesize)
 			glVertex3d(target_x + cosl(theta) * orbit_radius,
 						target_y + sinl(theta) * orbit_radius,
 						target_z);
 	glEnd();
+	glEnable(GL_LIGHTING);
 	
 	// Draw a planet at position[] at angle rotation_angle and rotation_axis
 	// Texture needs to be determined by something external:
@@ -198,10 +200,9 @@ void Planet::draw()
 
 	//Gives the object surface normals for light
 	gluQuadricNormals( sphere, GLU_SMOOTH );
-	gluQuadricDrawStyle( sphere, GLU_LINE );
+	gluQuadricDrawStyle( sphere, GLU_FILL );
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, lightColor );
 	glMaterialfv(GL_FRONT, GL_SPECULAR, lightColor );
-
 
     gluSphere( sphere, radius, 128, 128 );
     gluDeleteQuadric( sphere );

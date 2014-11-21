@@ -237,6 +237,10 @@ void GlutManager::display()
 	// Update the camera, thus updating the point of view
 	camera.update();
 
+	// Update the light's position
+    GLfloat light_position[] = { 0.0, 0.0, 0.0, 1.0 };
+    glLightfv( GL_LIGHT0, GL_POSITION, light_position );
+
 	draw();
 
 	// Flush graphical output
@@ -382,6 +386,7 @@ void GlutManager::mousedrag(int x, int y)
 void GlutManager::initLightModel()
 {
     // specify material reflectivity
+	/*
     GLfloat mat_ambient[] = { 1.0, 1.0, 1.0, 1.0 };     // white ambient reflectivity
     GLfloat mat_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };     // white diffuse reflectivity
     GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };    // white highlights
@@ -391,12 +396,12 @@ void GlutManager::initLightModel()
     glMaterialfv( GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse );
     glMaterialfv( GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular );
     glMaterialf( GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess );
-    
+	*/
     // specify light source properties
     GLfloat light_position[] = { 0.0, 0.0, 0.0, 1.0 };
     GLfloat light_ambient[] = { 0.4f, 0.4f, 0.4f, 1.0 };       // ambient light
     GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };       // diffuse light
-    GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };      // highlights
+    GLfloat light_specular[] = { 1.0, 1.0, 1.0, 0.0 };      // highlights
 
     glEnable( GL_LIGHT0 );      // enable one light source
     glLightfv( GL_LIGHT0, GL_POSITION, light_position );
@@ -414,7 +419,6 @@ void GlutManager::initLightModel()
     // glLightModeli( GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE );   // render back faces
 
     glClearColor( 0.0, 0.0, 0.0, 1.0 );     // black background
-    glColor3d ( 0.8, 0.8, 0.0 );            // draw in yellow
 }
 
 void GlutManager::step()
