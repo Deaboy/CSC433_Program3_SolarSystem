@@ -263,15 +263,55 @@ void GlutManager::keyDown(unsigned char key, int x, int y)
 
 		case 61:		// "="
 		case 43:		// "+"
-			camera.setDistance( camera.getDistance() + (long double) 10000000.0 );
+			camera.setDistance( camera.getDistance() - (long double) 10.0 );
 			camera.update();
 			break;
 
 		case 95:		// "_"
 		case 45:		// "-"
-			camera.setDistance( camera.getDistance() - 10 );
+			camera.setDistance( camera.getDistance() + 10 );
 			camera.update();
 			break;
+
+		case 87:		// "W"
+		case 119:		// "w"
+			camera.setPitch( camera.getPitch() + 10 );
+			camera.update();
+			break;
+
+		case 83:		// "S"
+		case 115:		// "s"
+			camera.setPitch( camera.getPitch() - 10 );
+			camera.update();
+			break;
+
+		case 65:		// "A"
+		case 97:		// "a"
+			camera.setYaw( camera.getYaw() + 10 );
+			camera.update();
+			break;
+
+		case 68:		// "D"
+		case 100:		// "d"
+			camera.setYaw( camera.getYaw() - 10 );
+			camera.update();
+			break;
+
+		case 81:		// "Q"
+		case 113:		// "q"
+			break;
+
+		case 69:		// "E"
+		case 101:		// "e"
+			break;
+
+		case 32:		// space
+			//resets view
+			camera.setPitch(45).setYaw(315).setSubject(0,0,0).setDistance(1000);
+			camera.update();
+			break;
+
+
 
 		default:		// Everything else, forward to game manager
 			/*current_program::function( key ); */
