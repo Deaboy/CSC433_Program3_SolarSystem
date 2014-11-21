@@ -61,7 +61,9 @@ Camera& Camera::setSubject(long double x, long double y, long double z)
 
 Camera& Camera::setPitch(long double pitch)
 {
-	this->pitch = DEGTORAD(pitch > 90 ? 90 : pitch < -90 ? -90 : pitch);
+	if (pitch > 89) pitch = 89;
+	if (pitch < -89) pitch = -89;
+	this->pitch = DEGTORAD(pitch);
 	return *this;
 }
 

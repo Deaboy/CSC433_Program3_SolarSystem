@@ -58,6 +58,11 @@ private:
 	vector<Clickable*> clickables;
 	vector<Stepable*> stepables;
 	map<int, vector<Drawable*> > drawables;
+	
+	// Camera control variables
+	int mouse_restore_x;
+	int mouse_restore_y;
+	int mouse_button;
 
 	static GlutManager* instance;
 

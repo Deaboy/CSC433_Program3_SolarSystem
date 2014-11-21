@@ -21,11 +21,11 @@
 #endif
 
 #ifndef DEGTORAD
-#define DEGTORAD(x) x*M_PI/180.0
+#define DEGTORAD(x) (x*M_PI)/180.0
 #endif
 
 #ifndef RADTODEG
-#define RADTODEG(x) x*180.0/M_PI
+#define RADTODEG(x) (x*180.0)/M_PI
 #endif
 
 #endif

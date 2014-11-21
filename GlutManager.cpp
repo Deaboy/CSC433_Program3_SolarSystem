@@ -294,24 +294,24 @@ void GlutManager::keyDown(unsigned char key, int x, int y)
 *******************************************************************************/
 void GlutManager::mouseclick(int button, int state, int x, int y)
 {
-	double vx;	// view x
-	double vy;	// view y
-
-	// Correct for coordinate system
-	vx = x;
-    vy = window_height - y;
-
-	// Correct for scaling
-	/*
-	vx *= view_width / window_width;
-	vy *= view_height / window_height;
-
-	vx -= view_x;
-	vy -= view_y;
-	*/
-
-	//if needed
-	/*current_program::function*/
+	// Camera controls
+	if (state == GLUT_UP)
+	{
+		if (button == mouse_button)
+		{
+			//glutWarpPointer(mouse_restore_x, mouse_restore_y);
+			mouse_button = -1;
+		}
+	}
+	else
+	{
+		if (button == GLUT_LEFT_BUTTON)
+		{
+			mouse_button = button;
+			mouse_restore_x = x;
+			mouse_restore_y = y;
+		}
+	}
 }
 
 /***************************************************************************//**
@@ -325,25 +325,18 @@ void GlutManager::mouseclick(int button, int state, int x, int y)
 *******************************************************************************/
 void GlutManager::mousemove(int x, int y)
 {
-	double vx;	// view x
-	double vy;	// view y
-
-	// Correct for coordinate system
-	vx = x;
-    vy = window_height - y;
-
-	/*
-	// Correct for scaling
-	vx *= view_width / window_width;
-	vy *= view_height / window_height;
-
-	vx -= view_x;
-	vy -= view_y;
-
-	*/
-
-	//if needed
-	/*current_program::function */
+	if (mouse_button == GLUT_LEFT_BUTTON)
+	{
+		long double p = y;
+		p -= mouse_restore_y;
+		p /= 2.0;
+		p += camera.getPitch();
+		camera.setPitch(p);
+		camera.setYaw(camera.getYaw() + ((x - mouse_restore_x) / 2.0));
+		mouse_restore_x = x;
+		mouse_restore_y = y;
+		//glutWarpPointer(mouse_restore_x, mouse_restore_y);
+	}
 }
 
 /***************************************************************************//**
@@ -357,24 +350,7 @@ void GlutManager::mousemove(int x, int y)
 *******************************************************************************/
 void GlutManager::mousedrag(int x, int y)
 {
-	double vx;	// view x
-	double vy;	// view y
-
-	// Correct for coordinate system
-	vx = x;
-    vy = window_height - y;
-
-	/*I
-	// Correct for scaling
-	vx *= view_width / window_width;
-	vy *= view_height / window_height;
-
-	vx -= view_x;
-	vy -= view_y;
-	*/
-
-	//f needed
-	/* current_program::function */
+	mousemove(x, y);
 }
 
 /***************************************************************************//**
