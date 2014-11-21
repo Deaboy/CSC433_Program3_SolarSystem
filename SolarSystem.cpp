@@ -4,6 +4,7 @@ SolarSystem::SolarSystem()
 {
 	time = 0;
 	subject = NULL;
+	currentPlanet = 0;
 }
 
 SolarSystem::~SolarSystem()
@@ -247,10 +248,12 @@ void SolarSystem::keyDown(unsigned char key, int x, int y)
 
 			case 81:		// "Q"
 			case 113:		// "q"
+				setCameraSubject( currentPlanet-- % 10 );
 				break;
 
 			case 69:		// "E"
 			case 101:		// "e"
+				setCameraSubject( currentPlanet++ % 10 );
 				break;
 
 			case 9:			// Tab
@@ -276,6 +279,7 @@ void SolarSystem::keyDown(unsigned char key, int x, int y)
 			case '8':
 			case '9':
 				setCameraSubject(key - '0');
+				currentPlanet = key - '0';
 				break;
 
 			default:		// Everything else, forward to game manager

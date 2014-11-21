@@ -34,6 +34,7 @@ private:
 	Planet* subject;
 	GlutManager manager;
 	long long time;
+	int currentPlanet;
 
 public:
 	SolarSystem();
