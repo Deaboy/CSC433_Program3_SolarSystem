@@ -190,6 +190,11 @@ void Planet::draw()
 	
 	// Create and draw sphere
     sphere = gluNewQuadric();
+
+	//Gives the object surface normals for light
+	gluQuadricNormals( sphere, GLU_SMOOTH );
+	gluQuadricDrawStyle( sphere, GLU_LINE );
+
     gluSphere( sphere, radius, (int) (radius), (int) (radius) );
     gluDeleteQuadric( sphere );
 	
