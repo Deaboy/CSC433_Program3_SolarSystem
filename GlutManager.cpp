@@ -89,6 +89,9 @@ int GlutManager::run( int argc, char *argv[] )
     glutReshapeFunc( *::reshape );
 	glutKeyboardFunc( *::keyDown );
     glutMouseFunc( *::mouseclick );
+	#ifndef OS_X
+	glutMouseWheelFunc( *::mousescroll );
+	#endif
 	glutMotionFunc( *::mousedrag );
 	glutPassiveMotionFunc( *::mousemove );
 	glutTimerFunc(0, *::step, 0);
@@ -358,6 +361,20 @@ void GlutManager::mouseclick(int button, int state, int x, int y)
 	}
 }
 
+void GlutManager::mousescroll(int button, int dir, int x, int y)
+{
+	if (dir > 0)
+	{
+		// Zoom in
+		camera.setDistance(camera.getDistance() * 0.75);
+	}
+	else
+	{
+		// Zoom out
+		camera.setDistance(camera.getDistance() * 1.33333333333);
+	}
+}
+
 /***************************************************************************//**
  * @author Daniel Andrus, Johnny Ackerman
  * 
@@ -525,6 +542,11 @@ void keyDown(unsigned char key, int x, int y)
 void mouseclick(int button, int state, int x, int y)
 {
 	GlutManager::getInstance()->mouseclick(button, state, x, y);
+}
+
+void mousescroll(int button, int dir, int x, int y)
+{
+	GlutManager::getInstance()->mousescroll(button, dir, x, y);
 }
 
 /***************************************************************************//**
