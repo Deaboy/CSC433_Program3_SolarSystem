@@ -382,9 +382,9 @@ void GlutManager::mousedrag(int x, int y)
 void GlutManager::initLightModel()
 {
     // specify material reflectivity
-    GLfloat mat_ambient[] = { 0.0, 0.0, 1.0, 1.0 };     // blue ambient reflectivity
-    GLfloat mat_diffuse[] = { 0.0, 1.0, 0.0, 1.0 };     // green diffuse reflectivity
-    GLfloat mat_specular[] = { 1.0, 0.0, 0.0, 1.0 };    // red highlights
+    GLfloat mat_ambient[] = { 1.0, 1.0, 1.0, 1.0 };     // white ambient reflectivity
+    GLfloat mat_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };     // white diffuse reflectivity
+    GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };    // white highlights
     GLfloat mat_shininess = { 100.0 };
     
     glMaterialfv( GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient );
@@ -393,7 +393,7 @@ void GlutManager::initLightModel()
     glMaterialf( GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess );
     
     // specify light source properties
-    GLfloat light_position[] = { 10.0, 10.0, 10.0, 1.0 };
+    GLfloat light_position[] = { 0.0, 0.0, 0.0, 1.0 };
     GLfloat light_ambient[] = { 0.4f, 0.4f, 0.4f, 1.0 };       // ambient light
     GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };       // diffuse light
     GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };      // highlights

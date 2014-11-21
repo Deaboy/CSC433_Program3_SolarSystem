@@ -14,6 +14,7 @@ Planet::Planet()
 	color[0]			= 0;
 	color[1]			= 0;
 	color[2]			= 0;
+	color[3]			= 0;
 	radius				= 0;
 	rotation_axis		= 0;
 	rotation_init		= 0;
@@ -40,6 +41,10 @@ Planet& Planet::setColor(unsigned char r, unsigned char g, unsigned char b)
 	this->color[0] = r;
 	this->color[1] = g;
 	this->color[2] = b;
+	lightColor[0] = float (r)/256.0;
+	lightColor[1] = float (g)/256.0;
+	lightColor[2] = float (b)/256.0;
+	lightColor[3] = 1;
 	return *this;
 }
 
@@ -194,6 +199,9 @@ void Planet::draw()
 	//Gives the object surface normals for light
 	gluQuadricNormals( sphere, GLU_SMOOTH );
 	gluQuadricDrawStyle( sphere, GLU_LINE );
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, lightColor );
+	glMaterialfv(GL_FRONT, GL_SPECULAR, lightColor );
+
 
     gluSphere( sphere, radius, 128, 128 );
     gluDeleteQuadric( sphere );

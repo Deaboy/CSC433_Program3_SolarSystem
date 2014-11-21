@@ -22,6 +22,7 @@ private:
 	// Constant stuff
 	string			name;
 	unsigned char	color[3];
+	GLfloat			lightColor[4];
 	long double		radius;
 	
 	// Rotation info
