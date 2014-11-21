@@ -99,6 +99,7 @@ int GlutManager::run( int argc, char *argv[] )
 
 	// set up illumination-reflectance model
     GlutManager::initLightModel();
+	glEnable( GL_LIGHTING );
 
 	/* ****This might go in solarsystem ****
     // generate GLU quadric object with surface normals
