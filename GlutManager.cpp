@@ -243,7 +243,7 @@ void GlutManager::reshape(int w, int h)
 	// Adjust viewport and map to window
 	// gluOrtho2D(0, window_width, 0, window_height);
 	// glOrtho(-(w/2), (w/2), -(h/2), (h/2), -100, 100);
-	gluPerspective(50.0, (double) w/(double) h, 1.0, 100000.0);
+	gluPerspective(50.0, (double) w/(double) h, 100.0, 1000000000.0);
 	
 }
 

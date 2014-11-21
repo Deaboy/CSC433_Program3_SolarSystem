@@ -149,7 +149,7 @@ void Planet::draw()
 	
 	// Set the color
     glColor3ub( color[0], color[1], color[2] );
-	double radius = 8;	// TESTING
+	//double radius = 8;	// TESTING
 	
 	// Draw orbit first
 	// Pre-calculate the slice size (in radians)

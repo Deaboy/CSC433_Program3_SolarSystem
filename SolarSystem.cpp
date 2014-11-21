@@ -93,7 +93,7 @@ int SolarSystem::run(int argc, char *argv[])
 			.setOrbitTarget(earth)
 			.setOrbitInitial(0)
 			.setOrbitRadius(384399)
-			.setOrbitRadius(149598261)	// TESTING
+			//.setOrbitRadius(149598261)	// TESTING
 			.setOrbitPeriod( FPS*(6 + 60*(43 + 60*(7 + 24*(27)))) );
 	planets.push_back(temp);
 	
