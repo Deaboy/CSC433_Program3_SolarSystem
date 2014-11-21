@@ -88,12 +88,7 @@ void Camera::update()
 	position[1] = subject[1] + sinl(yaw) * position[2];
 	position[2] = subject[2] + sinl(pitch) * distance;
 	
-    glMatrixMode( GL_PROJECTION );
-	glLoadIdentity();
 	gluLookAt(position[0], position[1], position[2],
 				subject[0], subject[1], subject[2],
 				0.0, 0.0, 0.1);
-	
-	glMatrixMode( GL_MODELVIEW );
-	glLoadIdentity();
 }

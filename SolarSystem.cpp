@@ -93,6 +93,7 @@ int SolarSystem::run(int argc, char *argv[])
 			.setOrbitTarget(earth)
 			.setOrbitInitial(0)
 			.setOrbitRadius(384399)
+			.setOrbitRadius(149598261)	// TESTING
 			.setOrbitPeriod( FPS*(6 + 60*(43 + 60*(7 + 24*(27)))) );
 	planets.push_back(temp);
 	
@@ -177,7 +178,7 @@ int SolarSystem::run(int argc, char *argv[])
 		manager.drawObject(planet);
 	manager.registerStepable(this);
 	
-	manager.getCamera().setPitch(90).setYaw(270).setSubject(0,0,0).setDistance(50);
+	manager.getCamera().setPitch(45).setYaw(315).setSubject(0,0,0).setDistance(1000);
 	
 	return manager.run(argc, argv);
 }
@@ -185,7 +186,7 @@ int SolarSystem::run(int argc, char *argv[])
 void SolarSystem::step()
 {
 	// time += 1;	// 1 to 1 ratio
-	time += (FPS * 60 * 60 * 24);
+	time += (FPS * 60 * 60);// * 24);
 	update(time);
 }
 
@@ -195,5 +196,4 @@ void SolarSystem::update(long long time)
 	{
 		planet->update(time);
 	}
-	manager.getCamera().update();
 }

@@ -46,7 +46,6 @@ Planet& Planet::setColor(unsigned char r, unsigned char g, unsigned char b)
 Planet& Planet::setRadius(long double radius)
 {
 	this->radius = radius * PLANET_SCALE;
-	this->radius = 8;
 	return *this;
 }
 
@@ -146,21 +145,53 @@ void Planet::update(long long time)
 
 void Planet::draw()
 {
+    glPushMatrix();
+	
+	// Set the color
+    glColor3ub( color[0], color[1], color[2] );
+	double radius = 8;	// TESTING
+	
+	// Draw orbit first
+	// Pre-calculate the slice size (in radians)
+	long double orbit_slicesize = (2 * M_PI) / (orbit_radius / 10);
+	if (orbit_slicesize > DEGTORAD(1)) orbit_slicesize = DEGTORAD(1);
+	
+	// Get our orbitting target's position
+	long double target_x, target_y, target_z;
+	if (orbit_target != NULL)
+		orbit_target->getPosition(time, target_x, target_y, target_z);
+	else
+		target_x = target_y = target_z = 0.0;
+	
+	// Build the orbit
+	glBegin(GL_LINE_LOOP);
+		for (long double theta = 0; theta < 2*M_PI; theta += orbit_slicesize)
+			glVertex3d(target_x + cosl(theta) * orbit_radius,
+						target_y + sinl(theta) * orbit_radius,
+						target_z);
+	glEnd();
+	
 	// Draw a planet at position[] at angle rotation_angle and rotation_axis
 	// Texture needs to be determined by something external:
 	// wireframe, solid, shaded, and textured
 	GLUquadricObj *sphere;
-	//double radius = 8;	// TESTING
 	
-	//Draws the ball with freeGlut
-    glColor3ub( color[0], color[1], color[2] );
-    glPushMatrix();
+	// Move into orbit position
     glTranslated( position[0], position[1], position[2] );
+	
+	// Adjust for right ascention
 	glRotated( right_ascension, 0.0, 0.0, 1.0);
+	
+	// Show planet's axis
 	glRotated( rotation_axis, 0.0, 1.0, 0.0);
+	
+	// Rotate according to planet's rotation
 	glRotated( rotation_angle, 0.0, 0.0, 1.0 );
+	
+	// Create and draw sphere
     sphere = gluNewQuadric();
     gluSphere( sphere, radius, (int) (radius), (int) (radius) );
     gluDeleteQuadric( sphere );
+	
     glPopMatrix();
 }

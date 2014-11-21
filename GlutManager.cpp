@@ -70,14 +70,15 @@ int GlutManager::run( int argc, char *argv[] )
 
 	// Initialize glut with 32-bit graphics, double buffering, and anti-aliasing
     glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH );
-	//glEnable(GL_BLEND);
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Set up the program window
     glutInitWindowSize( window_width, window_height);    // initial window size
     glutInitWindowPosition( w, h );                  // initial window position
     glutCreateWindow( window_name.c_str() );         // window title
 
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
 	// Always clear screen to black
 	glClearColor( 1.0, 1.0, 1.0, 1.0 );
 
@@ -197,9 +198,16 @@ bool GlutManager::isRegistered(Stepable* stepable)
 *******************************************************************************/
 void GlutManager::display()
 {
+    // Switch back to (default) model view mode, for transformations
+    glMatrixMode( GL_MODELVIEW );
+    glLoadIdentity();
+	
 	//clear the display and set backround to black
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 	glColor3f( 1.0, 1.0, 1.0 );
+
+	// Update the camera, thus updating the point of view
+	camera.update();
 
 	draw();
 
@@ -220,6 +228,7 @@ void GlutManager::reshape(int w, int h)
 	// store new window dimensions globally
     window_width = w;
     window_height = h;
+    glViewport( 0, 0, window_width, window_height );
 
     glMatrixMode( GL_PROJECTION );		// Use an orthographic projection
     glLoadIdentity();					// Initialize transformation matrix
@@ -227,12 +236,8 @@ void GlutManager::reshape(int w, int h)
 	// Adjust viewport and map to window
 	// gluOrtho2D(0, window_width, 0, window_height);
 	// glOrtho(-(w/2), (w/2), -(h/2), (h/2), -100, 100);
-	gluPerspective(50.0, (double) w/(double) h, 0, 100000);
-    glViewport( 0, 0, window_width, window_height );
-
-    // Switch back to (default) model view mode, for transformations
-    glMatrixMode( GL_MODELVIEW );
-    glLoadIdentity();
+	gluPerspective(50.0, (double) w/(double) h, 1.0, 100000.0);
+	
 }
 
 /***************************************************************************//**
