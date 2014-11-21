@@ -263,13 +263,13 @@ void GlutManager::keyDown(unsigned char key, int x, int y)
 
 		case 61:		// "="
 		case 43:		// "+"
-			camera.setDistance( camera.getDistance() - (long double) 10.0 );
+			camera.setDistance( camera.getDistance() * .75 );
 			camera.update();
 			break;
 
 		case 95:		// "_"
 		case 45:		// "-"
-			camera.setDistance( camera.getDistance() + 10 );
+			camera.setDistance( camera.getDistance() * 1.5 );
 			camera.update();
 			break;
 
@@ -303,6 +303,10 @@ void GlutManager::keyDown(unsigned char key, int x, int y)
 
 		case 69:		// "E"
 		case 101:		// "e"
+			break;
+
+		case 9:			// Tab
+			cout << "tab works";
 			break;
 
 		case 32:		// space
