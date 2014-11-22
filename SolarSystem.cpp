@@ -262,12 +262,15 @@ void SolarSystem::keyDown(unsigned char key, int x, int y)
 
 			case 81:		// "Q"
 			case 113:		// "q"
-				setCameraSubject( currentPlanet-- % 10 );
+				currentPlanet = currentPlanet-1;
+				if( currentPlanet == -1 ) currentPlanet = 9 ;
+				setCameraSubject( (currentPlanet) % 10 );
 				break;
 
 			case 69:		// "E"
 			case 101:		// "e"
-				setCameraSubject( currentPlanet++ % 10 );
+				currentPlanet = currentPlanet+1;
+				setCameraSubject( (currentPlanet) % 10 );
 				break;
 
 			case 9:			// Tab
