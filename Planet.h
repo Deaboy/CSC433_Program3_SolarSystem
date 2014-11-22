@@ -18,7 +18,7 @@ using namespace std;
 
 class Planet : public Drawable
 {
-private:
+protected:
 	// Constant stuff
 	string			name;
 	unsigned char	color[3];
@@ -61,7 +61,7 @@ public:
 	void getPosition(long long time, long double& x,
 					 long double& y, long double& z);
 	void update(long long time);
-	void draw();
+	virtual void draw();
 };
 
 #endif

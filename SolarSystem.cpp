@@ -22,7 +22,7 @@ int SolarSystem::run(int argc, char *argv[])
 	Planet* temp;
 	
 	// Sun
-	temp = new Planet;
+	temp = new Star;
 	(*temp).setName("Sun")
 			.setColor(254, 250, 152)
 			.setRadius(696342)

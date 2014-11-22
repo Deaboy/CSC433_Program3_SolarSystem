@@ -18,6 +18,7 @@ class SolarSystem;
 #include "Stepable.h"
 #include <vector>
 #include "Planet.h"
+#include "Star.h"
 #include "GlutManager.h"
 #include "Pressable.h"
 
