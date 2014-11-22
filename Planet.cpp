@@ -48,31 +48,31 @@ Planet& Planet::setColor(unsigned char r, unsigned char g, unsigned char b)
 	return *this;
 }
 
-Planet& Planet::setRadius(long double radius)
+Planet& Planet::setRadius(ld radius)
 {
 	this->radius = radius * PLANET_SCALE;
 	return *this;
 }
 
-Planet& Planet::setRotationAxis(long double rotation_axis)
+Planet& Planet::setRotationAxis(ld rotation_axis)
 {
 	this->rotation_axis = rotation_axis;
 	return *this;
 }
 
-Planet& Planet::setRotationInitial(long double rotation_init)
+Planet& Planet::setRotationInitial(ld rotation_init)
 {
 	this->rotation_init = rotation_init;
 	return *this;
 }
 
-Planet& Planet::setRotationPeriod(long double rotation_period)
+Planet& Planet::setRotationPeriod(ld rotation_period)
 {
 	this->rotation_period = rotation_period;
 	return *this;
 }
 
-Planet& Planet::setRightAscension(long double right_ascension)
+Planet& Planet::setRightAscension(ld right_ascension)
 {
 	this->right_ascension = right_ascension;
 	return *this;
@@ -84,26 +84,26 @@ Planet& Planet::setOrbitTarget(Planet* orbit_target)
 	return *this;
 }
 
-Planet& Planet::setOrbitInitial(long double orbit_init)
+Planet& Planet::setOrbitInitial(ld orbit_init)
 {
 	this->orbit_init = orbit_init;
 	return *this;
 }
 
-Planet& Planet::setOrbitRadius(long double orbit_radius)
+Planet& Planet::setOrbitRadius(ld orbit_radius)
 {
 	this->orbit_radius = orbit_radius * ORBIT_SCALE;
 	return *this;
 }
 
-Planet& Planet::setOrbitPeriod(long double orbit_period)
+Planet& Planet::setOrbitPeriod(ld orbit_period)
 {
 	this->orbit_period = orbit_period;
 	return *this;
 }
 
-void Planet::getPosition(long long time, long double& x,
-						 long double& y, long double& z)
+void Planet::getPosition(long long time, ld& x,
+						 ld& y, ld& z)
 {
 	if (this->time != time)
 	{
@@ -158,11 +158,11 @@ void Planet::draw()
 	
 	// Draw orbit first
 	// Pre-calculate the slice size (in radians)
-	long double orbit_slicesize = (2 * M_PI) / (orbit_radius / 50);
+	ld orbit_slicesize = (2 * M_PI) / (orbit_radius / 50);
 	if (orbit_slicesize > DEGTORAD(1)) orbit_slicesize = DEGTORAD(1);
 	
 	// Get our orbitting target's position
-	long double target_x, target_y, target_z;
+	ld target_x, target_y, target_z;
 	if (orbit_target != NULL)
 		orbit_target->getPosition(time, target_x, target_y, target_z);
 	else
@@ -171,7 +171,7 @@ void Planet::draw()
 	// Draw the orbit without lighting
 	glDisable(GL_LIGHTING);
 	glBegin(GL_LINE_LOOP);
-		for (long double theta = 0; theta < 2*M_PI; theta += orbit_slicesize)
+		for (ld theta = 0; theta < 2*M_PI; theta += orbit_slicesize)
 			glVertex3d(target_x + cosl(theta) * orbit_radius,
 						target_y + sinl(theta) * orbit_radius,
 						target_z);

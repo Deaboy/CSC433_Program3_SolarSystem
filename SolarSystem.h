@@ -19,6 +19,7 @@ class SolarSystem;
 #include <vector>
 #include "Planet.h"
 #include "Star.h"
+#include "Ring.h"
 #include "GlutManager.h"
 #include "Pressable.h"
 

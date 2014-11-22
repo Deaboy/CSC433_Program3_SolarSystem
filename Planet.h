@@ -15,6 +15,7 @@
 #include "Drawable.h"
 
 using namespace std;
+typedef long double ld;
 
 class Planet : public Drawable
 {
@@ -23,44 +24,44 @@ protected:
 	string			name;
 	unsigned char	color[3];
 	GLfloat			lightColor[4];
-	long double		radius;
+	ld		radius;
 	
 	// Rotation info
-	long double		rotation_axis;
-	long double		rotation_init;
-	long double		rotation_period;
-	long double		right_ascension;
+	ld		rotation_axis;
+	ld		rotation_init;
+	ld		rotation_period;
+	ld		right_ascension;
 	
 	// Orbit info
 	Planet*			orbit_target;
-	long double		orbit_init;
-	long double		orbit_radius;
-	long double		orbit_period;
+	ld		orbit_init;
+	ld		orbit_radius;
+	ld		orbit_period;
 	
 	// Memorization
 	long long		time;
-	long double		position[3];
-	long double		orbit_angle;
-	long double		rotation_angle;
+	ld		position[3];
+	ld		orbit_angle;
+	ld		rotation_angle;
 	
 public:
 	Planet();
 	
 	Planet& setName(string name);
 	Planet& setColor(unsigned char r, unsigned char g, unsigned char b);
-	Planet& setRadius(long double radius);
-	Planet& setRotationAxis(long double rotation_axis);
-	Planet& setRotationInitial(long double rotation_init);
-	Planet& setRotationPeriod(long double rotation_period);
-	Planet& setRightAscension(long double right_ascention);
+	Planet& setRadius(ld radius);
+	Planet& setRotationAxis(ld rotation_axis);
+	Planet& setRotationInitial(ld rotation_init);
+	Planet& setRotationPeriod(ld rotation_period);
+	Planet& setRightAscension(ld right_ascention);
 	Planet& setOrbitTarget(Planet* orbit_target);
-	Planet& setOrbitInitial(long double orbit_init);
-	Planet& setOrbitRadius(long double orbit_radius);
-	Planet& setOrbitPeriod(long double orbit_period);
+	Planet& setOrbitInitial(ld orbit_init);
+	Planet& setOrbitRadius(ld orbit_radius);
+	Planet& setOrbitPeriod(ld orbit_period);
 	
-	void getPosition(long long time, long double& x,
-					 long double& y, long double& z);
-	void update(long long time);
+	virtual void getPosition(long long time, ld& x,
+					 ld& y, ld& z);
+	virtual void update(long long time);
 	virtual void draw();
 };
 

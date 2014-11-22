@@ -143,6 +143,7 @@ int SolarSystem::run(int argc, char *argv[])
 			.setOrbitRadius(1433449370)
 			.setOrbitPeriod( FPS*(0 + 60*(0 + 60*(0 + 24*(10759.22)))) );
 	planets.push_back(temp);
+	earth = temp;	// Yeah, I know, but lazy.
 	
 	// Uranus
 	temp = new Planet;
@@ -172,6 +173,19 @@ int SolarSystem::run(int argc, char *argv[])
 			.setOrbitInitial(0)
 			.setOrbitRadius(4498542600)
 			.setOrbitPeriod( FPS*(0 + 60*(0 + 60*(0 + 24*(60190.03)))) );
+	planets.push_back(temp);
+
+	// Saturn's rings
+	temp = new Ring;
+	(*temp).setName("")
+		.setColor(217, 176, 145)
+		.setRadius(136775)
+		.setRotationAxis(26.73)
+		.setRotationInitial(0)
+		.setRotationPeriod( FPS*(0 + 60*(34 + 60*(10))) )
+		.setRightAscension(83.537)
+		.setOrbitRadius(92000)
+		.setOrbitTarget(earth);
 	planets.push_back(temp);
 	
 	
