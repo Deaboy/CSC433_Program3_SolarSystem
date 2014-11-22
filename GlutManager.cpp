@@ -12,6 +12,7 @@
  *                 DECLARATIONS, INCLUDES, AND NAMESPACES
 *******************************************************************************/
 #include "GlutManager.h"
+#include "bmpRead.h"
 
 GlutManager* GlutManager::instance = NULL;
 
