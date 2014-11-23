@@ -21,6 +21,7 @@ class GlutManager;
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <stdio.h>
 #include "Clickable.h"
 #include "DrawingManager.h"
 #include "Stepable.h"
