@@ -14,8 +14,12 @@ Planet::Planet()
 	color[0]			= 0;
 	color[1]			= 0;
 	color[2]			= 0;
-	color[3]			= 0;
+	lightColor[0]		= 0;
+	lightColor[1]		= 0;
+	lightColor[2]		= 0;
+	lightColor[3]		= 0;
 	radius				= 0;
+	texture				= NULL;
 	rotation_axis		= 0;
 	rotation_init		= 0;
 	rotation_period		= 0;
@@ -28,6 +32,12 @@ Planet::Planet()
 	position[0]			= 0;
 	position[1]			= 0;
 	position[2]			= 0;
+}
+
+Planet::~Planet()
+{
+	if (this->texture != NULL)
+		delete[] this->texture;
 }
 	
 Planet& Planet::setName(string name)
@@ -51,6 +61,20 @@ Planet& Planet::setColor(unsigned char r, unsigned char g, unsigned char b)
 Planet& Planet::setRadius(ld radius)
 {
 	this->radius = radius * PLANET_SCALE;
+	return *this;
+}
+
+Planet& Planet::setTexture(string filename, int width, int height)
+{
+	unsigned char* texture;
+	if (GlutManager::LoadBmpFile(filename.c_str(), height, width, texture))
+	{
+		if (this->texture != NULL)
+			delete[] this->texture;
+		this->texture = texture;
+		this->texture_width = width;
+		this->texture_height = height;
+	}
 	return *this;
 }
 
@@ -195,12 +219,30 @@ void Planet::draw()
 	// Rotate according to planet's rotation
 	glRotated( rotation_angle, 0.0, 0.0, 1.0 );
 	
+	if (texture != NULL)
+	{
+		// Texture mapping
+		glTexImage2D( GL_TEXTURE_2D, 0, 3, texture_width, texture_height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture );
+		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+
+		// building mipmaps is not essential, but can improve mapping
+		gluBuild2DMipmaps( GL_TEXTURE_2D, GL_RGB, texture_width, texture_height, GL_RGB, GL_UNSIGNED_BYTE, texture );
+	}
+	else
+	{
+		
+	}
+	
 	// Create and draw sphere
     sphere = gluNewQuadric();
 
 	//Gives the object surface normals for light
 	gluQuadricNormals( sphere, GLU_SMOOTH );
 	gluQuadricDrawStyle( sphere, GLU_FILL );
+    gluQuadricTexture( sphere, GL_TRUE );
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, lightColor );
 	glMaterialfv(GL_FRONT, GL_SPECULAR, lightColor );
 

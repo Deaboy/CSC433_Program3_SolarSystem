@@ -13,6 +13,7 @@
 #include <string>
 #include "Constants.h"
 #include "Drawable.h"
+#include "GlutManager.h"
 
 using namespace std;
 typedef long double ld;
@@ -24,32 +25,37 @@ protected:
 	string			name;
 	unsigned char	color[3];
 	GLfloat			lightColor[4];
-	ld		radius;
+	ld				radius;
+	unsigned char*	texture;
+	int				texture_width;
+	int				texture_height;
 	
 	// Rotation info
-	ld		rotation_axis;
-	ld		rotation_init;
-	ld		rotation_period;
-	ld		right_ascension;
+	ld				rotation_axis;
+	ld				rotation_init;
+	ld				rotation_period;
+	ld				right_ascension;
 	
 	// Orbit info
 	Planet*			orbit_target;
-	ld		orbit_init;
-	ld		orbit_radius;
-	ld		orbit_period;
+	ld				orbit_init;
+	ld				orbit_radius;
+	ld				orbit_period;
 	
 	// Memorization
 	long long		time;
-	ld		position[3];
-	ld		orbit_angle;
-	ld		rotation_angle;
+	ld				position[3];
+	ld				orbit_angle;
+	ld				rotation_angle;
 	
 public:
 	Planet();
+	~Planet();
 	
 	Planet& setName(string name);
 	Planet& setColor(unsigned char r, unsigned char g, unsigned char b);
 	Planet& setRadius(ld radius);
+	Planet& setTexture(string filename, int width, int height);
 	Planet& setRotationAxis(ld rotation_axis);
 	Planet& setRotationInitial(ld rotation_init);
 	Planet& setRotationPeriod(ld rotation_period);

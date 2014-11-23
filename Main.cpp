@@ -77,7 +77,11 @@
 /*******************************************************************************
  *                 DECLARATIONS, INCLUDES, AND NAMESPACES
 *******************************************************************************/
+#include <iostream>
+#include <fstream>
 #include "SolarSystem.h"
+
+using namespace std;
 
 /**************************************************************************//**
  * @author Johnny Ackerman, Danial Andrus

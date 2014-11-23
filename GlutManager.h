@@ -174,6 +174,12 @@ public:
 	
 	void step();
 	
+	// texture stuff
+	static bool LoadBmpFile( const char* filename, int &NumRows, int &NumCols, unsigned char* &ImagePtr );
+	static inline int GetNumBytesPerRow( int NumCols );
+	static short readShort( FILE* infile );
+	static int readLong( FILE* infile );
+	static void skipChars( FILE* infile, int numChars );
 };
 
 
