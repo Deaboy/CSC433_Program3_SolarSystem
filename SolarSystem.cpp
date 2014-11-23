@@ -339,6 +339,18 @@ void SolarSystem::keyDown(unsigned char key, int x, int y)
 				currentPlanet = key - '0';
 				break;
 
+			case 39:		// "`"
+			case 126:
+				Placeholder = subject;
+				for( int j = 0; j < 10; j++ )
+				{
+					subject = planets[j];
+					subject -> setdefinition();
+				}
+				subject = Placeholder;
+
+				break;
+
 			default:		// Everything else, forward to game manager
 				/*current_program::function( key ); */
 				break;

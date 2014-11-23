@@ -35,6 +35,7 @@ Planet::Planet()
 
 	textureOn			= true;
 	wireOn				= false;
+	definition			= true;
 }
 
 Planet::~Planet()
@@ -247,8 +248,9 @@ void Planet::draw()
 		gluQuadricDrawStyle( sphere, GLU_LINE ); }
 	else{ gluQuadricDrawStyle( sphere, GLU_FILL ); }
 
-
-	gluQuadricNormals( sphere, GLU_SMOOTH ); 
+	if( definition ) {gluQuadricNormals( sphere, GLU_SMOOTH ); 
+			glShadeModel( GL_SMOOTH ); }
+	else {gluQuadricNormals( sphere, GLU_FLAT ); glShadeModel( GL_FLAT ); }
 
 	if( textureOn )
 	{
@@ -272,5 +274,11 @@ void Planet::setTextureOn( bool On_Off )
 void Planet::setWireON( bool On_Off )
 {
 	wireOn = On_Off;
+}
+
+void Planet::setdefinition( )
+{
+	if( definition ){ definition = false;  glShadeModel( GL_FLAT ); }
+	else{ definition = true; glShadeModel( GL_SMOOTH ); }
 }
 

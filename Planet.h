@@ -48,9 +48,10 @@ protected:
 	ld				orbit_angle;
 	ld				rotation_angle;
 	
-
+	// toggles
 	bool			textureOn;
 	bool			wireOn;
+	bool			definition;
 
 public:
 	Planet();
@@ -76,6 +77,7 @@ public:
 
 	void setTextureOn( bool On_Off);
 	void setWireON( bool On_Off );
+	void setdefinition( );
 };
 
 #endif
