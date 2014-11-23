@@ -221,6 +221,7 @@ void SolarSystem::setCameraSubject(int i)
 
 void SolarSystem::keyDown(unsigned char key, int x, int y)
 {
+	static int i = 0;
 	if (key != GLUT_LEFT_BUTTON)
 	{
 		switch ( key )
@@ -285,6 +286,9 @@ void SolarSystem::keyDown(unsigned char key, int x, int y)
 				break;
 
 			case 9:			// Tab
+				i = (i+1) / 3;
+				//if( i == 0 ) { *::planets[0].set
+
 				break;
 
 			case 32:		// space

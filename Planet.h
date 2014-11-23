@@ -48,6 +48,10 @@ protected:
 	ld				orbit_angle;
 	ld				rotation_angle;
 	
+
+	bool			textureOn;
+	bool			wireOn;
+
 public:
 	Planet();
 	~Planet();
@@ -69,6 +73,9 @@ public:
 					 ld& y, ld& z);
 	virtual void update(long long time);
 	virtual void draw();
+
+	void setTextureOn( bool On_Off);
+	void setWireON( bool On_Off );
 };
 
 #endif

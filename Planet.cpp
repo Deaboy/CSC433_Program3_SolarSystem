@@ -32,6 +32,8 @@ Planet::Planet()
 	position[0]			= 0;
 	position[1]			= 0;
 	position[2]			= 0;
+
+	textureOn			= true;
 }
 
 Planet::~Planet()
@@ -240,9 +242,18 @@ void Planet::draw()
     sphere = gluNewQuadric();
 
 	//Gives the object surface normals for light
-	gluQuadricNormals( sphere, GLU_SMOOTH );
-	gluQuadricDrawStyle( sphere, GLU_FILL );
-    gluQuadricTexture( sphere, GL_TRUE );
+	if( wireOn ){
+		gluQuadricDrawStyle( sphere, GLU_LINE ); }
+	else{ gluQuadricDrawStyle( sphere, GLU_FILL ); }
+
+
+	gluQuadricNormals( sphere, GLU_SMOOTH ); 
+
+	if( textureOn )
+	{
+		gluQuadricTexture( sphere, GL_TRUE );
+	}
+	else { gluQuadricTexture( sphere, GL_FALSE ); };
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, lightColor );
 	glMaterialfv(GL_FRONT, GL_SPECULAR, lightColor );
 
@@ -251,3 +262,14 @@ void Planet::draw()
 	
     glPopMatrix();
 }
+
+void Planet::setTextureOn( bool On_Off )
+{
+	textureOn = On_Off;
+}
+
+void Planet::setWireON( bool On_Off )
+{
+	wireOn = On_Off;
+}
+
