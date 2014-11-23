@@ -11,6 +11,10 @@
 #ifndef _GLUTMANAGER_H_ //makes sure class is not declared twice
 #define _GLUTMANAGER_H_
 
+
+#define _CRT_SECURE_NO_WARNINGS
+
+
 /*******************************************************************************
  *                 DECLARATIONS, INCLUDES, AND NAMESPACES
 *******************************************************************************/

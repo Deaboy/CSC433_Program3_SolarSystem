@@ -438,6 +438,7 @@ void GlutManager::step()
  **********************************************************************/
 bool GlutManager::LoadBmpFile( const char* filename, int &NumRows, int &NumCols, unsigned char* &ImagePtr )
 {
+
     FILE* infile = fopen( filename, "rb" );		// Open for reading binary data
     if ( !infile )
     {
