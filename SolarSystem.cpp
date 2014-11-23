@@ -221,7 +221,8 @@ void SolarSystem::setCameraSubject(int i)
 
 void SolarSystem::keyDown(unsigned char key, int x, int y)
 {
-	static int i = 0;
+	Planet* Placeholder;
+	static int counter = 0;
 	if (key != GLUT_LEFT_BUTTON)
 	{
 		switch ( key )
@@ -286,9 +287,33 @@ void SolarSystem::keyDown(unsigned char key, int x, int y)
 				break;
 
 			case 9:			// Tab
-				i = (i+1) / 3;
-				//if( i == 0 ) { *::planets[0].set
-
+				Placeholder = subject;
+				counter = (counter+1) % 3;
+				if( counter == 0 ) 
+				{ for( int j = 0; j < 10; j++ )
+					{
+						subject = planets[j];
+						subject -> setTextureOn( true );
+						subject -> setWireON( false );
+					}
+				}
+				if( counter == 1 ) 
+				{ for( int j = 0; j < 10; j++ )
+					{
+						subject = planets[j];
+						subject -> setTextureOn( false );
+						subject -> setWireON( false );
+					}
+				}
+				if( counter == 2 ) 
+				{ for( int j = 0; j < 10; j++ )
+					{
+						subject = planets[j];
+						subject -> setTextureOn( false );
+						subject -> setWireON( true );
+					}
+				}
+				subject = Placeholder;
 				break;
 
 			case 32:		// space

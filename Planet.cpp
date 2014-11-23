@@ -34,6 +34,7 @@ Planet::Planet()
 	position[2]			= 0;
 
 	textureOn			= true;
+	wireOn				= false;
 }
 
 Planet::~Planet()
