@@ -8,7 +8,12 @@
 
 #include "Camera.h"
 
-
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: Constuctor, Initializes the camera
+ *
+*******************************************************************************/
 Camera::Camera()
 {
 	subject[0] = 0;
@@ -31,6 +36,15 @@ Camera::Camera()
 	move_ease = 1;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: returns coordinant location of camera
+ *
+ * @param[in,out]	long double x - x coordinant of camera
+ * @param[in,out]	long double y - y coordinant of camera
+ * @param[in,out]	long double z - z ciordinant of camera
+*******************************************************************************/
 void Camera::getPosition(long double& x, long double& y, long double& z)
 {
 	x = position[0];
@@ -38,6 +52,16 @@ void Camera::getPosition(long double& x, long double& y, long double& z)
 	z = position[2];
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: returns coordinant location of the planet the camera is
+ *		looking at
+ *
+ * @param[in,out]	long double x - x coordinant of Planet
+ * @param[in,out]	long double y - y coordinant of Planet
+ * @param[in,out]	long double z - z ciordinant of Planet
+*******************************************************************************/
 void Camera::getSubject(long double& x, long double& y, long double& z)
 {
 	x = target_subject[0];
@@ -45,21 +69,46 @@ void Camera::getSubject(long double& x, long double& y, long double& z)
 	z = target_subject[2];
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: returns angle of height in comparison to a planet
+*******************************************************************************/
 long double Camera::getPitch()
 {
 	return RADTODEG(target_pitch);
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: return angle of horizontal in comparison to a planet
+*******************************************************************************/
 long double Camera::getYaw()
 {
 	return RADTODEG(target_yaw);
 }
 
+
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: return radius from orbiting planet
+*******************************************************************************/
 long double Camera::getDistance()
 {
 	return target_distance;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: determins the planet being orbited
+ *
+ * @param[in]	long double x - x coordinant of Planet
+ * @param[in]	long double y - y coordinant of Planet
+ * @param[in]	long double z - z ciordinant of Planet
+*******************************************************************************/
 Camera& Camera::setSubject(long double x, long double y, long double z)
 {
 	target_subject[0] = x;
@@ -68,6 +117,13 @@ Camera& Camera::setSubject(long double x, long double y, long double z)
 	return *this;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: sets the hieght angle from the planet
+ *
+ * @param[in]	long double pitch - the angle of height
+*******************************************************************************/
 Camera& Camera::setPitch(long double pitch)
 {
 	if (pitch > 89) pitch = 89;
@@ -76,6 +132,13 @@ Camera& Camera::setPitch(long double pitch)
 	return *this;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: sets the horizontal angle
+ *
+ * @param[in]	long double yaw - horizontal angle in relation to the planet
+*******************************************************************************/
 Camera& Camera::setYaw(long double yaw)
 {
 	this->target_yaw = DEGTORAD(yaw);
