@@ -263,9 +263,11 @@ void Planet::draw()
 	glDisable(GL_LIGHTING);
 	glDisable(GL_TEXTURE_2D);
 	glBegin(GL_LINE_LOOP);
-		for (ld theta = 0; theta < 2*M_PI; theta += orbit_slicesize)
-			glVertex3d(target_x + cosl(theta) * orbit_radius,
-						target_y + sinl(theta) * orbit_radius,
+		for (ld theta = 0, cur = DEGTORAD(orbit_angle);
+			theta < 2*M_PI;
+			theta += orbit_slicesize)
+			glVertex3d(target_x + cosl(cur+theta) * orbit_radius,
+						target_y + sinl(cur+theta) * orbit_radius,
 						target_z);
 	glEnd();
 	glEnable(GL_LIGHTING);
@@ -287,6 +289,8 @@ void Planet::draw()
 	switch (draw_mode)
 	{
 	case 3: // Wireframe
+		glDisable(GL_LIGHTING);
+
 	case 2:	// Flat shading
 		glShadeModel( GL_FLAT );
 		break;
@@ -310,5 +314,6 @@ void Planet::draw()
     gluSphere( sphere, radius, 64, 64 );
 	
     glPopMatrix();
+	glEnable(GL_LIGHTING);
 	glDisable( GL_TEXTURE_2D );
 }

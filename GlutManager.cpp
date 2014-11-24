@@ -70,7 +70,7 @@ void GlutManager::init(int argc, char *argv[])
 	}
 
 	// Initialize glut with 32-bit graphics, double buffering, and anti-aliasing
-	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
 
 	// Set up the program window
 	glutInitWindowSize(window_width, window_height);    // initial window size

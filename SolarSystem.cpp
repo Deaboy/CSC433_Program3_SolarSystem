@@ -329,7 +329,7 @@ void SolarSystem::keySpecialUp(unsigned char key, int x, int y) {}
 void SolarSystem::step()
 {
 	// time += 1;	// 1 to 1 ratio
-	time += (FPS * 60 * 60);// * 24);
+	time += (FPS * 60);// * 60);// * 24);
 	update(time);
 }
 
