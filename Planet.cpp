@@ -19,7 +19,7 @@ Planet::Planet()
 	lightColor[2]		= 0;
 	lightColor[3]		= 0;
 	radius				= 0;
-	texture				= NULL;
+	texture_name[0]		= 0;
 	rotation_axis		= 0;
 	rotation_init		= 0;
 	rotation_period		= 0;
@@ -33,15 +33,15 @@ Planet::Planet()
 	position[1]			= 0;
 	position[2]			= 0;
 
-	textureOn			= true;
-	wireOn				= false;
-	definition			= true;
+	// Create and draw sphere
+    sphere = gluNewQuadric();
+	setDrawMode(0);
 }
 
 Planet::~Planet()
 {
-	if (this->texture != NULL)
-		delete[] this->texture;
+    gluDeleteQuadric( sphere );
+	if (texture_name[0] != 0) glDeleteTextures(1, texture_name);
 }
 	
 Planet& Planet::setName(string name)
@@ -71,14 +71,27 @@ Planet& Planet::setRadius(ld radius)
 Planet& Planet::setTexture(string filename, int width, int height)
 {
 	unsigned char* texture;
+
 	if (GlutManager::LoadBmpFile(filename.c_str(), height, width, texture))
 	{
-		if (this->texture != NULL)
-			delete[] this->texture;
-		this->texture = texture;
-		this->texture_width = width;
-		this->texture_height = height;
+		// Build texture
+		glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height,
+					0, GL_RGB, GL_UNSIGNED_BYTE, texture);
+
+		// Delete previously generated texture
+		if (texture_name[0] != 0)
+			glDeleteTextures(1, texture_name);
+
+		// Generate new texture name
+		glGenTextures(1, texture_name);
+
+		// Bind texture to name, save to class
+		glBindTexture(GL_TEXTURE_2D, texture_name[0]);
+
+		// Delete array of pixels
+		delete[] texture;
 	}
+
 	return *this;
 }
 
@@ -130,6 +143,47 @@ Planet& Planet::setOrbitPeriod(ld orbit_period)
 	return *this;
 }
 
+Planet& Planet::setDrawMode(int mode)
+{
+	draw_mode = mode % 4;
+	switch (draw_mode)
+	{
+	case 0:	// Textured mode
+		gluQuadricDrawStyle( sphere, GLU_FILL );
+		gluQuadricTexture( sphere, GL_TRUE );
+		gluQuadricNormals( sphere, GLU_SMOOTH ); 
+		break;
+
+	case 1:	// Wireframe
+		gluQuadricDrawStyle( sphere, GLU_LINE );
+		gluQuadricTexture( sphere, GL_FALSE );
+		gluQuadricNormals( sphere, GLU_FLAT );
+		break;
+
+	case 2:	// Flat shading
+		gluQuadricDrawStyle( sphere, GLU_FILL );
+		gluQuadricTexture( sphere, GL_FALSE );
+		gluQuadricNormals( sphere, GLU_FLAT );
+		break;
+
+	case 3:	// Smooth shading
+		gluQuadricDrawStyle( sphere, GLU_FILL );
+		gluQuadricTexture( sphere, GL_FALSE );
+		gluQuadricNormals( sphere, GLU_SMOOTH );
+		break;
+
+	default:
+		break;
+	}
+
+	return *this;
+}
+
+void Planet::cycleDrawMode()
+{
+	setDrawMode(draw_mode + 1);
+}
+
 void Planet::getPosition(long long time, ld& x,
 						 ld& y, ld& z)
 {
@@ -142,12 +196,13 @@ void Planet::getPosition(long long time, ld& x,
 			if (orbit_period != 0)
 			{
 				orbit_angle = 360 * (time / orbit_period) + orbit_init;
-			
 			}
 			else
 			{
 				orbit_angle = orbit_init;
 			}
+
+			// Calculate poition
 			position[0] = position[0] + cosl(DEGTORAD(orbit_angle)) * orbit_radius;
 			position[1] = position[1] + sinl(DEGTORAD(orbit_angle)) * orbit_radius;
 		}
@@ -206,11 +261,6 @@ void Planet::draw()
 	glEnd();
 	glEnable(GL_LIGHTING);
 	
-	// Draw a planet at position[] at angle rotation_angle and rotation_axis
-	// Texture needs to be determined by something external:
-	// wireframe, solid, shaded, and textured
-	GLUquadricObj *sphere;
-	
 	// Move into orbit position
     glTranslated( position[0], position[1], position[2] );
 	
@@ -223,70 +273,31 @@ void Planet::draw()
 	// Rotate according to planet's rotation
 	glRotated( rotation_angle, 0.0, 0.0, 1.0 );
 	
-	// Create and draw sphere
-    sphere = gluNewQuadric();
-
-	//Gives the object surface normals for light
-	if( wireOn )
+	// Gives the object surface normals for light
+	// Also apply texture if enabled
+	switch (draw_mode)
 	{
-		gluQuadricDrawStyle( sphere, GLU_LINE );
-	}
-	else
-	{
-		gluQuadricDrawStyle( sphere, GLU_FILL );
-	}
-
-	if( definition )
-	{
-		gluQuadricNormals( sphere, GLU_SMOOTH ); 
-		glShadeModel( GL_SMOOTH );
-	}
-	else
-	{
-		gluQuadricNormals( sphere, GLU_FLAT );
+	case 1: // Wireframe
+	case 2:	// Flat shading
 		glShadeModel( GL_FLAT );
-	}
+		break;
 
-	if( textureOn && texture != NULL )
-	{
-		gluQuadricTexture( sphere, GL_TRUE );
+	case 0:	// Textured mode
+		if (texture_name[0] != 0)
+			glBindTexture(GL_TEXTURE_2D, texture_name[0]);
 
-		// Texture mapping
-		glTexImage2D( GL_TEXTURE_2D, 0, 3, texture_width, texture_height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture );
+	case 3: // Smooth shading
+		glShadeModel( GL_SMOOTH );
+		break;
+	
+	default:
+		break;
 	}
-	else
-	{
-		gluQuadricTexture( sphere, GL_FALSE );
-	}
-
+	
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, lightColor);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, lightColor);
 
-    gluSphere( sphere, radius, 32, 32 );
-    gluDeleteQuadric( sphere );
+    gluSphere( sphere, radius, 64, 64 );
 	
     glPopMatrix();
 }
-
-void Planet::setTextureOn( bool On_Off )
-{
-	textureOn = On_Off;
-}
-
-void Planet::setWireON( bool On_Off )
-{
-	wireOn = On_Off;
-}
-
-void Planet::setdefinition( )
-{
-	if( definition )
-	{
-		definition = false;
-	}
-	else
-	{
-		definition = true;
-	}
-}
-

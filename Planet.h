@@ -26,9 +26,7 @@ protected:
 	unsigned char	color[3];
 	GLfloat			lightColor[4];
 	ld				radius;
-	unsigned char*	texture;
-	int				texture_width;
-	int				texture_height;
+	GLuint			texture_name[1];
 	
 	// Rotation info
 	ld				rotation_axis;
@@ -47,11 +45,8 @@ protected:
 	ld				position[3];
 	ld				orbit_angle;
 	ld				rotation_angle;
-	
-	// toggles
-	bool			textureOn;
-	bool			wireOn;
-	bool			definition;
+	GLUquadricObj	*sphere;
+	int				draw_mode;
 
 public:
 	Planet();
@@ -69,15 +64,13 @@ public:
 	Planet& setOrbitInitial(ld orbit_init);
 	Planet& setOrbitRadius(ld orbit_radius);
 	Planet& setOrbitPeriod(ld orbit_period);
+	Planet& setDrawMode(int mode);
+	void cycleDrawMode();
 	
 	virtual void getPosition(long long time, ld& x,
 					 ld& y, ld& z);
 	virtual void update(long long time);
 	virtual void draw();
-
-	void setTextureOn( bool On_Off);
-	void setWireON( bool On_Off );
-	void setdefinition( );
 };
 
 #endif

@@ -221,7 +221,6 @@ void SolarSystem::setCameraSubject(int i)
 
 void SolarSystem::keyDown(unsigned char key, int x, int y)
 {
-	Planet* Placeholder;
 	static int counter = 0;
 	if (key != GLUT_LEFT_BUTTON)
 	{
@@ -287,37 +286,11 @@ void SolarSystem::keyDown(unsigned char key, int x, int y)
 				break;
 
 			case 9:			// Tab
-				Placeholder = subject;
-				counter = (counter+1) % 3;
-				if( counter == 0 ) 
-				{ for( int j = 0; j < 10; j++ )
-					{
-						subject = planets[j];
-						subject -> setTextureOn( true );
-						subject -> setWireON( false );
-					}
-				}
-				if( counter == 1 ) 
-				{ for( int j = 0; j < 10; j++ )
-					{
-						subject = planets[j];
-						subject -> setTextureOn( false );
-						subject -> setWireON( false );
-					}
-				}
-				if( counter == 2 ) 
-				{ for( int j = 0; j < 10; j++ )
-					{
-						subject = planets[j];
-						subject -> setTextureOn( false );
-						subject -> setWireON( true );
-					}
-				}
-				subject = Placeholder;
+				for (Planet* planet : planets)
+					planet->cycleDrawMode();
 				break;
 
 			case 32:		// space
-				//resets view
 				GlutManager::getInstance()->
 					getCamera().setSubject(0,0,0).setRotationEasing(0.125)
 						.setZoomEasing(0.125).setMovementEasing(1)
@@ -339,20 +312,7 @@ void SolarSystem::keyDown(unsigned char key, int x, int y)
 				currentPlanet = key - '0';
 				break;
 
-			case 39:		// "`"
-			case 126:
-				Placeholder = subject;
-				for( int j = 0; j < 10; j++ )
-				{
-					subject = planets[j];
-					subject -> setdefinition();
-				}
-				subject = Placeholder;
-
-				break;
-
-			default:		// Everything else, forward to game manager
-				/*current_program::function( key ); */
+			default:
 				break;
 		}
 	}
