@@ -258,6 +258,7 @@ void Planet::draw()
 	
 	// Draw the orbit without lighting
 	glDisable(GL_LIGHTING);
+	glDisable(GL_TEXTURE_2D);
 	glBegin(GL_LINE_LOOP);
 		for (ld theta = 0; theta < 2*M_PI; theta += orbit_slicesize)
 			glVertex3d(target_x + cosl(theta) * orbit_radius,
@@ -288,6 +289,7 @@ void Planet::draw()
 		break;
 
 	case 0:	// Textured mode
+		glEnable( GL_TEXTURE_2D );
 		if (texture_name != 0)
 			glBindTexture(GL_TEXTURE_2D, texture_name);
 
@@ -305,4 +307,5 @@ void Planet::draw()
     gluSphere( sphere, radius, 64, 64 );
 	
     glPopMatrix();
+	glDisable( GL_TEXTURE_2D );
 }
