@@ -100,13 +100,12 @@ int GlutManager::run( int argc, char *argv[] )
 	// set up illumination-reflectance model
     GlutManager::initLightModel();
 	glEnable( GL_LIGHTING );
-
-	/* ****This might go in solarsystem ****
-    // generate GLU quadric object with surface normals
-    object = gluNewQuadric( );
-    gluQuadricNormals( object, GLU_SMOOTH );
-    gluQuadricDrawStyle( object, GLU_LINE );
-	*/
+	
+	// Set up texture parameters
+	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
 	
 	registerStepable(&camera);
 

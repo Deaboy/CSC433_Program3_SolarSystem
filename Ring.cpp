@@ -48,6 +48,11 @@ void Ring::draw()
 	glMaterialfv(GL_FRONT, GL_SPECULAR, lightColor );
 
     gluDisk( disk, orbit_radius, radius, 128, 128 );
+
+	// Draw back side
+	glRotated( 180, 1.0, 0.0, 0.0 );
+	gluDisk( disk, orbit_radius, radius, 128, 128 );
+
     gluDeleteQuadric( disk );
 	
     glPopMatrix();

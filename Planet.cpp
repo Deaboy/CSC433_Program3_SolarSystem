@@ -186,7 +186,7 @@ void Planet::draw()
 	
 	// Draw orbit first
 	// Pre-calculate the slice size (in radians)
-	ld orbit_slicesize = (2 * M_PI) / (orbit_radius / 50);
+	ld orbit_slicesize = (2 * M_PI) / 360;//(orbit_radius / 50);
 	if (orbit_slicesize > DEGTORAD(1)) orbit_slicesize = DEGTORAD(1);
 	
 	// Get our orbitting target's position
@@ -223,44 +223,46 @@ void Planet::draw()
 	// Rotate according to planet's rotation
 	glRotated( rotation_angle, 0.0, 0.0, 1.0 );
 	
-	if (texture != NULL)
-	{
-		// Texture mapping
-		glTexImage2D( GL_TEXTURE_2D, 0, 3, texture_width, texture_height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture );
-		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
-		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
-		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
-		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
-
-		// building mipmaps is not essential, but can improve mapping
-		gluBuild2DMipmaps( GL_TEXTURE_2D, GL_RGB, texture_width, texture_height, GL_RGB, GL_UNSIGNED_BYTE, texture );
-	}
-	else
-	{
-		
-	}
-	
 	// Create and draw sphere
     sphere = gluNewQuadric();
 
 	//Gives the object surface normals for light
-	if( wireOn ){
-		gluQuadricDrawStyle( sphere, GLU_LINE ); }
-	else{ gluQuadricDrawStyle( sphere, GLU_FILL ); }
+	if( wireOn )
+	{
+		gluQuadricDrawStyle( sphere, GLU_LINE );
+	}
+	else
+	{
+		gluQuadricDrawStyle( sphere, GLU_FILL );
+	}
 
-	if( definition ) {gluQuadricNormals( sphere, GLU_SMOOTH ); 
-			glShadeModel( GL_SMOOTH ); }
-	else {gluQuadricNormals( sphere, GLU_FLAT ); glShadeModel( GL_FLAT ); }
+	if( definition )
+	{
+		gluQuadricNormals( sphere, GLU_SMOOTH ); 
+		glShadeModel( GL_SMOOTH );
+	}
+	else
+	{
+		gluQuadricNormals( sphere, GLU_FLAT );
+		glShadeModel( GL_FLAT );
+	}
 
-	if( textureOn )
+	if( textureOn && texture != NULL )
 	{
 		gluQuadricTexture( sphere, GL_TRUE );
-	}
-	else { gluQuadricTexture( sphere, GL_FALSE ); };
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, lightColor );
-	glMaterialfv(GL_FRONT, GL_SPECULAR, lightColor );
 
-    gluSphere( sphere, radius, 128, 128 );
+		// Texture mapping
+		glTexImage2D( GL_TEXTURE_2D, 0, 3, texture_width, texture_height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture );
+	}
+	else
+	{
+		gluQuadricTexture( sphere, GL_FALSE );
+	}
+
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, lightColor);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, lightColor);
+
+    gluSphere( sphere, radius, 32, 32 );
     gluDeleteQuadric( sphere );
 	
     glPopMatrix();
@@ -278,7 +280,13 @@ void Planet::setWireON( bool On_Off )
 
 void Planet::setdefinition( )
 {
-	if( definition ){ definition = false;  glShadeModel( GL_FLAT ); }
-	else{ definition = true; glShadeModel( GL_SMOOTH ); }
+	if( definition )
+	{
+		definition = false;
+	}
+	else
+	{
+		definition = true;
+	}
 }
 
