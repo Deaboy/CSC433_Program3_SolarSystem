@@ -37,6 +37,7 @@ private:
 	GlutManager manager;
 	long long time;
 	int currentPlanet;
+	int speed;
 
 public:
 	SolarSystem();

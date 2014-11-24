@@ -5,6 +5,7 @@ SolarSystem::SolarSystem()
 	time = 0;
 	subject = NULL;
 	currentPlanet = 0;
+	speed = 1;
 }
 
 SolarSystem::~SolarSystem()
@@ -328,8 +329,7 @@ void SolarSystem::keySpecialUp(unsigned char key, int x, int y) {}
 
 void SolarSystem::step()
 {
-	// time += 1;	// 1 to 1 ratio
-	time += (FPS * 60);// * 60);// * 24);
+	time += speed;
 	update(time);
 }
 
