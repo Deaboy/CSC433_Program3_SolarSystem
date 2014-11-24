@@ -47,9 +47,9 @@ Camera::Camera()
 *******************************************************************************/
 void Camera::getPosition(long double& x, long double& y, long double& z)
 {
-	x = position[0];
-	y = position[1];
-	z = position[2];
+	x = position[0] + subject[0];
+	y = position[1] + subject[1];
+	z = position[2] + subject[2];
 }
 
 /***************************************************************************//**
@@ -174,13 +174,14 @@ void Camera::update()
 	// Temporary storing this number
 	position[2] = cosl(pitch) * distance;
 	
-	position[0] = subject[0] + cosl(yaw) * position[2];
-	position[1] = subject[1] + sinl(yaw) * position[2];
-	position[2] = subject[2] + sinl(pitch) * distance;
+	position[0] = cosl(yaw) * position[2];
+	position[1] = sinl(yaw) * position[2];
+	position[2] = sinl(pitch) * distance;
 	
 	gluLookAt(position[0], position[1], position[2],
-				subject[0], subject[1], subject[2],
+				0.0, 0.0, 0.0,
 				0.0, 0.0, 0.1);
+	glTranslated(-subject[0], -subject[1], -subject[2]);
 }
 
 void Camera::step()

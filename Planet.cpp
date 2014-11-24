@@ -311,7 +311,7 @@ void Planet::draw()
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, draw_mode ? lightColor : WHITE);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, draw_mode ? lightColor : WHITE);
 
-    gluSphere( sphere, radius, 64, 64 );
+    gluSphere( sphere, radius, PLANET_DETAIL, PLANET_DETAIL );
 	
     glPopMatrix();
 	glEnable(GL_LIGHTING);

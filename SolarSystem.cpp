@@ -343,6 +343,6 @@ void SolarSystem::update(long long time)
 	{
 		long double x, y, z;
 		subject->getPosition(time, x, y, z);
-		GlutManager::getInstance()->getCamera().setSubject(x, y, z);
+		manager.getCamera().setSubject(x, y, z);
 	}
 }
