@@ -75,7 +75,7 @@ int SolarSystem::run(int argc, char *argv[])
 	// Earth
 	temp = new Planet;
 	(*temp).setName("Earth")
-			.setColor(49, 79, 43)
+			.setColor(29, 85, 112)
 			.setRadius(6371.0)
 			.setTexture("textures/earth.bmp", 512, 256)
 			.setRotationAxis(((21.4119/60) + 26)/60 + 23)

@@ -159,10 +159,10 @@ Planet& Planet::setDrawMode(int mode)
 		gluQuadricNormals( sphere, GLU_SMOOTH ); 
 		break;
 
-	case 1:	// Wireframe
-		gluQuadricDrawStyle( sphere, GLU_LINE );
+	case 1:	// Smooth shading
+		gluQuadricDrawStyle( sphere, GLU_FILL );
 		gluQuadricTexture( sphere, GL_FALSE );
-		gluQuadricNormals( sphere, GLU_FLAT );
+		gluQuadricNormals( sphere, GLU_SMOOTH );
 		break;
 
 	case 2:	// Flat shading
@@ -171,11 +171,12 @@ Planet& Planet::setDrawMode(int mode)
 		gluQuadricNormals( sphere, GLU_FLAT );
 		break;
 
-	case 3:	// Smooth shading
-		gluQuadricDrawStyle( sphere, GLU_FILL );
+	case 3:	// Wireframe
+		gluQuadricDrawStyle( sphere, GLU_LINE );
 		gluQuadricTexture( sphere, GL_FALSE );
-		gluQuadricNormals( sphere, GLU_SMOOTH );
+		gluQuadricNormals( sphere, GLU_FLAT );
 		break;
+
 
 	default:
 		break;
@@ -238,6 +239,8 @@ void Planet::update(long long time)
 
 void Planet::draw()
 {
+	static const float WHITE[4] = { 1, 1, 1, 1 };
+
     glPushMatrix();
 	
 	// Set the color
@@ -283,7 +286,7 @@ void Planet::draw()
 	// Also apply texture if enabled
 	switch (draw_mode)
 	{
-	case 1: // Wireframe
+	case 3: // Wireframe
 	case 2:	// Flat shading
 		glShadeModel( GL_FLAT );
 		break;
@@ -293,7 +296,7 @@ void Planet::draw()
 		if (texture_name != 0)
 			glBindTexture(GL_TEXTURE_2D, texture_name);
 
-	case 3: // Smooth shading
+	case 1: // Smooth shading
 		glShadeModel( GL_SMOOTH );
 		break;
 	
@@ -301,8 +304,8 @@ void Planet::draw()
 		break;
 	}
 	
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, lightColor);
-	glMaterialfv(GL_FRONT, GL_SPECULAR, lightColor);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, draw_mode ? lightColor : WHITE);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, draw_mode ? lightColor : WHITE);
 
     gluSphere( sphere, radius, 64, 64 );
 	

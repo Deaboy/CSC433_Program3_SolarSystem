@@ -106,9 +106,6 @@ void GlutManager::init(int argc, char *argv[])
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-	registerStepable(&camera);
-
 }
 
 int GlutManager::run()
@@ -419,6 +416,7 @@ void GlutManager::step()
 	{
 		stepable->step();
 	}
+	camera.step();
 }
 
 /* ********************************************************************
