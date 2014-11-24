@@ -1,10 +1,11 @@
-//
-//  Camera.cpp
-//  CSC433_Program3_SolarSystem
-//
-//  Created by Daniel Andrus on 2014-11-19.
-//  Copyright (c) 2014 Daniel Andrus. All rights reserved.
-//
+/***************************************************************************//**
+ * @file File containing the implementation for the Camera Class
+ *
+ * @Date 2014 - 11 - 19
+ *
+ * @brief Contains the implementation for the Camera class.
+*******************************************************************************/
+
 
 #include "Camera.h"
 
@@ -145,30 +146,63 @@ Camera& Camera::setYaw(long double yaw)
 	return *this;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: sets the radius from planet
+ *
+ * @param[in]	long double distance - radius from planet
+*******************************************************************************/
 Camera& Camera::setDistance(long double distance)
 {
 	this->target_distance = distance;
 	return *this;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: slows the rotation to a stop
+ *
+ * @param[in]	long double ease - 1 means snap, 0 means no movement
+*******************************************************************************/
 Camera& Camera::setRotationEasing(long double ease)
 {
 	this->rot_ease = (ease > 1 ? 1 : ease < 0 ? 0 : ease);
 	return *this;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: slows the zoom to a stop
+ *
+ * @param[in]	long double ease - 1 means snap, 0 means no movement
+******************************************************************************/
 Camera& Camera::setZoomEasing(long double ease)
 {
 	this->zoom_ease = (ease > 1 ? 1 : ease < 0 ? 0 : ease);
 	return *this;
 }
 
+/**************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: slows the movement to a stop
+ *
+ * @param[in]	long double ease - 1 means snap, 0 means no movement
+******************************************************************************/
 Camera& Camera::setMovementEasing(long double ease)
 {
 	this->move_ease = (ease > 1 ? 1 : ease < 0 ? 0 : ease);
 	return *this;
 }
 
+/***************************************************************************//*
+ * @author Daniel Andrus
+ * 
+ * @par Description:updates the camera when moved or while moving with a planet
+******************************************************************************/
 void Camera::update()
 {
 	// Temporary storing this number
@@ -184,6 +218,11 @@ void Camera::update()
 	glTranslated(-subject[0], -subject[1], -subject[2]);
 }
 
+/***************************************************************************//*
+ * @author Daniel Andrus
+ * 
+ * @par Description: steps camera as it is moved
+******************************************************************************/
 void Camera::step()
 {
 	if (rot_ease == 1)
