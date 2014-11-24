@@ -93,7 +93,9 @@ public:
 	/*!
 	* @brief Function to get the current instance of the program.
 	*/
-	int run( int argc, char *argv[] );
+	void init( int argc, char *argv[] );
+
+	int run();
 
 	/*!
 	* @brief Gets the width of the view port in the virtual space.

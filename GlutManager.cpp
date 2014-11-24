@@ -52,13 +52,13 @@ GlutManager::~GlutManager()
  *
  * @returns Status code of the program. 0 means no problems.
 *******************************************************************************/
-int GlutManager::run( int argc, char *argv[] )
+void GlutManager::init(int argc, char *argv[])
 {
-	window_width = (int) window_width;
-	window_height = (int) window_height;
+	window_width = (int)window_width;
+	window_height = (int)window_height;
 
 	// perform various OpenGL initializations
-    glutInit( &argc, argv );
+	glutInit(&argc, argv);
 
 	// Put window in center of screen
 	int w = glutGet(GLUT_SCREEN_WIDTH);
@@ -70,44 +70,49 @@ int GlutManager::run( int argc, char *argv[] )
 	}
 
 	// Initialize glut with 32-bit graphics, double buffering, and anti-aliasing
-    glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH );
+	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 
 	// Set up the program window
-    glutInitWindowSize( window_width, window_height);    // initial window size
-    glutInitWindowPosition( w, h );                  // initial window position
-    glutCreateWindow( window_name.c_str() );         // window title
+	glutInitWindowSize(window_width, window_height);    // initial window size
+	glutInitWindowPosition(w, h);                  // initial window position
+	glutCreateWindow(window_name.c_str());         // window title
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
+
 	// Always clear screen to black
-	glClearColor( 1.0, 1.0, 1.0, 1.0 );
+	glClearColor(1.0, 1.0, 1.0, 1.0);
 
 	glutIgnoreKeyRepeat(1);
 
-    // Register callbacks
-    glutDisplayFunc( *::display );
-    glutReshapeFunc( *::reshape );
-	glutKeyboardFunc( *::keyDown );
-    glutMouseFunc( *::mouseclick );
-	#ifndef OS_X
-	glutMouseWheelFunc( *::mousescroll );
-	#endif
-	glutMotionFunc( *::mousedrag );
-	glutPassiveMotionFunc( *::mousemove );
+	// Register callbacks
+	glutDisplayFunc(*::display);
+	glutReshapeFunc(*::reshape);
+	glutKeyboardFunc(*::keyDown);
+	glutMouseFunc(*::mouseclick);
+#ifndef OS_X
+	glutMouseWheelFunc(*::mousescroll);
+#endif
+	glutMotionFunc(*::mousedrag);
+	glutPassiveMotionFunc(*::mousemove);
 	glutTimerFunc(0, *::step, 0);
 
 	// set up illumination-reflectance model
-    GlutManager::initLightModel();
-	glEnable( GL_LIGHTING );
-	
+	GlutManager::initLightModel();
+	glEnable(GL_LIGHTING);
+
 	// Set up texture parameters
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
-	
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
 	registerStepable(&camera);
+
+}
+
+int GlutManager::run()
+{
 
     // Go into OpenGL/GLUT main loop
     glutMainLoop();

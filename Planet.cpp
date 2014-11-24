@@ -19,7 +19,7 @@ Planet::Planet()
 	lightColor[2]		= 0;
 	lightColor[3]		= 0;
 	radius				= 0;
-	texture_name[0]		= 0;
+	texture_name		= 0;
 	rotation_axis		= 0;
 	rotation_init		= 0;
 	rotation_period		= 0;
@@ -41,7 +41,7 @@ Planet::Planet()
 Planet::~Planet()
 {
     gluDeleteQuadric( sphere );
-	if (texture_name[0] != 0) glDeleteTextures(1, texture_name);
+	if (texture_name != 0) glDeleteTextures(1, &texture_name);
 }
 	
 Planet& Planet::setName(string name)
@@ -75,19 +75,24 @@ Planet& Planet::setTexture(string filename, int width, int height)
 	if (GlutManager::LoadBmpFile(filename.c_str(), height, width, texture))
 	{
 		// Build texture
-		glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height,
-					0, GL_RGB, GL_UNSIGNED_BYTE, texture);
+		//glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height,
+		//			0, GL_RGB, GL_UNSIGNED_BYTE, texture);
 
 		// Delete previously generated texture
-		if (texture_name[0] != 0)
-			glDeleteTextures(1, texture_name);
+		if (texture_name != 0)
+			glDeleteTextures(1, &texture_name);
 
 		// Generate new texture name
-		glGenTextures(1, texture_name);
+		glGenTextures(1, &texture_name);
 
 		// Bind texture to name, save to class
-		glBindTexture(GL_TEXTURE_2D, texture_name[0]);
+		glBindTexture(GL_TEXTURE_2D, texture_name);
 
+		glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height,
+					0, GL_RGB, GL_UNSIGNED_BYTE, texture);
+		gluBuild2DMipmaps(GL_TEXTURE_2D, 3, width, height,
+                       GL_RGB, GL_UNSIGNED_BYTE, texture);
+		
 		// Delete array of pixels
 		delete[] texture;
 	}
@@ -283,8 +288,8 @@ void Planet::draw()
 		break;
 
 	case 0:	// Textured mode
-		if (texture_name[0] != 0)
-			glBindTexture(GL_TEXTURE_2D, texture_name[0]);
+		if (texture_name != 0)
+			glBindTexture(GL_TEXTURE_2D, texture_name);
 
 	case 3: // Smooth shading
 		glShadeModel( GL_SMOOTH );

@@ -26,7 +26,7 @@ protected:
 	unsigned char	color[3];
 	GLfloat			lightColor[4];
 	ld				radius;
-	GLuint			texture_name[1];
+	GLuint			texture_name;
 	
 	// Rotation info
 	ld				rotation_axis;

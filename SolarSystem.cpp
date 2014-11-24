@@ -21,6 +21,8 @@ int SolarSystem::run(int argc, char *argv[])
 	Planet* earth;
 	Planet* temp;
 	
+	manager.init(argc, argv);
+
 	// Sun
 	temp = new Star;
 	(*temp).setName("Sun")
@@ -210,7 +212,7 @@ int SolarSystem::run(int argc, char *argv[])
 			.setZoomEasing(0.125).setMovementEasing(1)
 			.setPitch(45).setYaw(315).setDistance(1000);
 	
-	return manager.run(argc, argv);
+	return manager.run();
 }
 
 void SolarSystem::setCameraSubject(int i)
