@@ -20,15 +20,16 @@
  *
  * @section program_section Program Information 
  * 
- * @details This is a fractal drawing program designed to allow a user to
- * generate complex fractals using a simple graphical interface.
+ * @details This program simulates the solar system. It creates 8 planets, the
+ *			sun, the moon, and the rings of Saturn. The Planets rotate the sun
+ *			and the moon orbits the earth. '+', '-', and the mouse wheel handle
+ *			zoom. The camera "orbits" what it is looking at and can be moved 
+ *			by left click and drag or by 'wasd'. Tab switches camera mode
+ *			including textures
  *
  *
- * Extras  Has Tabs and many useful buttons. Displays Errors for user. 
- *	Has a drawing grid to help the user draw. Has user friendly
- *  instructions. Limited memory usage to half a "gigabyte" so more
- *	complex fractals can be draw without limiting the itterations of
- *	simpler fractals
+ * Extras  Each Planet, sun and moon included, has a number key that they are
+ *		bound to. Also 'q' and 'e' are previous and next between planets.
  *
  * GLUT and OpenGL are the libraries used for gui management.
  *
@@ -44,32 +45,29 @@
  * 
  * @par Usage: 
    @verbatim  
-   > fractals
+   > solar
    @endverbatim 
  *
  * @section todo_bugs_modification_section Todo, Bugs, and Modifications
  *
- * @Bugs	-	Runs Slowly on weak computers for complex fractals
- *				Linux OpenGL or GLUT has an uncommon GL_LINE_LOOP bug
- *
- * @todo	-	Add parallel programing so program doesn't stops during
- *					Fractalization
+ * @todo	-	Add speed controlls
  *
  * 
  * @par Modifications and Development Timeline: 
    @verbatim 
    Date          Modification 
    ----------   ---------------------------------------------------------------
-   10-05-2014	Created GitHub repo
-   10-18-2014	Added program components and several classes
-   10-22-2014	Added different views
-   10-23-2014	Added mouse handling and rubberbanding
-   10-24-2014	Major visual overhaul
-   10-24-2014	Added fractal generation
-   10-25-2014	Made compatible with linux and fixed compile errors and warnings
-   10-26-2014	Added most documentation
-   10-27-2014	Added memory limit on fractal generation to prevent crashes
-   				Added error messages and user prompts and finalized project
+   11-08-2014	Created GitHub repo
+				Added program components and several classes
+   11-09-2014	attempted to make old code 3-D compatable
+   11-10-2014	Added most of the overall classes ~ not much working
+   11-20-2014	added camera class, solar system visable
+   11-21-2014	Added zoom functionality and camera movement, turned on lights
+				added rings to saturn, made sun glow, toggles between planets
+   11-22-2014	fined tuned, and fixed bugs
+   11-23-2014	Added textures, tab for view modes
+   11-27-2014	fine tuning and last minute fixes, also all of the doxygen
+				including this...
    @endverbatim
  *
  ******************************************************************************/
@@ -87,8 +85,7 @@ using namespace std;
  * @author Johnny Ackerman, Danial Andrus
  * 
  * @par Description:
- * Main function of the program. This function primarly passes control to the
- * Fractal class.
+ * Main function of the program. Passes control to the SolarSystem Class
  * 
  * 
  * @param[in]      argc - Number of aurments from the command line
