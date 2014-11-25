@@ -454,6 +454,12 @@ void SolarSystem::keyDown(unsigned char key, int x, int y)
 			currentPlanet = key - '0';
 			break;
 
+		case 84:
+		case 116:
+			for (Planet* planet : planets)
+				planet->toggleTeaParty();
+			break;
+
 		default:
 			break;
 		}

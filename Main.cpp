@@ -28,8 +28,31 @@
  *			including textures
  *
  *
+ * Assumptions - All Planets orbits are coplaner and circlular, Pluto was 
+ *			not added to solar system. speed of solar system Will start at
+ *			standard speed. All planets are assumed to be perfect spheres.
+ *			Planet axis are constant. Sizes are to scale. At time = 0, Planets
+ *			are perfectly alined, planet surfaces do not change.
+ *
+ *
+ * Controls
+ *		0 through 9 -> individual planet toggles, 0 is the sun, 9 is neptune, 
+ *					the moon is next to earth
+ *		q and e -> previous and next planet
+ *		wasd -> movement controls for camera
+ *		TAB -> goes to next draw mode
+ *		'-' and '+' -> zooms in and out
+ *		[ and ] -> decresses, incresses speed -- default is real time
+ *		H		-> Help
+ *		Left Click and Drag -> mouse camera Movement
+ *		Scroll Wheel -> mouse controlled zoom
+ *		t -> probably shouldn't press that one
+ *
+ *
  * Extras  Each Planet, sun and moon included, has a number key that they are
  *		bound to. Also 'q' and 'e' are previous and next between planets.
+ *		many optimizations to improve fps and "smooth mouse controls"
+ *		DO NOT PRESS T
  *
  * GLUT and OpenGL are the libraries used for gui management.
  *

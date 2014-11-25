@@ -57,34 +57,129 @@ protected:
 	GLUquadricObj	*sphere;	  /*!< sphere object used by glut to draw */
 	int				draw_mode;	/*!< current draw mode, determines 
 													texture, shading, model*/
+	bool			IsSphere;	/*!< yes planets are spheres */
 
 public:
+	/*!
+	 * @brief constructor, initiallizes a planet
+	 */
 	Planet();
+
+	/*!
+	 * @brief destructor, dealth stars a planet
+	 */
 	virtual ~Planet();
 	
+
+	/*!
+	 * @brief sets the planet's name
+	 */
 	Planet& setName(string name);
+
+	/*!
+	 * @brief sets the planet's color
+	 */
 	Planet& setColor(unsigned char r, unsigned char g, unsigned char b);
+
+	/*!
+	 * @brief sets the planet's radius
+	 */
 	Planet& setRadius(ld radius);
+
+	/*!
+	 * @brief sets the planet's texture
+	 */
 	Planet& setTexture(string filename, int width, int height);
+
+	/*!
+	 * @brief sets the planet's rotation_axis
+	 */
 	Planet& setRotationAxis(ld rotation_axis);
+
+	/*!
+	 * @brief sets the planet's initial possition before roatation
+	 */
 	Planet& setRotationInitial(ld rotation_init);
+
+	/*!
+	 * @brief sets the planet's rotation speed
+	 */
 	Planet& setRotationPeriod(ld rotation_period);
+
+	/*!
+	 * @brief sets the planet's "tilt"
+	 */
 	Planet& setRightAscension(ld right_ascention);
+
+	/*!
+	 * @brief what the planet orbits
+	 */
 	Planet& setOrbitTarget(Planet* orbit_target);
+
+	/*!
+	 * @brief sets the planet's initial position in space
+	 */
 	Planet& setOrbitInitial(ld orbit_init);
+
+	/*!
+	 * @brief sets the planet's radious from orbit target
+	 */
 	Planet& setOrbitRadius(ld orbit_radius);
+
+	/*!
+	 * @brief sets the planet's orbit speed
+	 */
 	Planet& setOrbitPeriod(ld orbit_period);
+
+	/*!
+	 * @brief determines, texture, smoothness and frame
+	 */
 	Planet& setDrawMode(int mode);
+
+	/*!
+	 * @brief toggles between tea party and boring ol' beach ball mode
+	 */
+	Planet& toggleTeaParty();
+
+	/*!
+	 * @brief cycle between set draw mode togglables
+	 */
 	void cycleDrawMode();
 	
+
+	/*!
+	 * @brief returns the planet's name
+	 */
 	string	getName();
+
+	/*!
+	 * @brief returns the planet's radius
+	 */
 	ld		getRadius();
+
+	/*!
+	 * @brief returns the planet's distance from orbit target
+	 */
 	ld		getOrbitRadius();
 	
+
+	/*!
+	 * @brief returns the planet's location
+	 */
 	virtual void getPosition(long long time, ld& x,
 					 ld& y, ld& z);
+
+	/*!
+	 * @brief changes the planet's location
+	 */
 	virtual void update(long long time);
+
+	/*!
+	 * @brief draws the planet
+	 */
 	virtual void draw();
+
+	
 };
 
 #endif

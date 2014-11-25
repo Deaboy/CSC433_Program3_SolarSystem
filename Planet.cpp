@@ -32,6 +32,7 @@ Planet::Planet()
 	position[0]			= 0;
 	position[1]			= 0;
 	position[2]			= 0;
+	IsSphere			= true;
 
 	// Create and draw sphere
     sphere = gluNewQuadric();
@@ -185,6 +186,12 @@ Planet& Planet::setDrawMode(int mode)
 	return *this;
 }
 
+Planet& Planet::toggleTeaParty()
+{
+	IsSphere = !IsSphere;
+	return *this;
+}
+
 void Planet::cycleDrawMode()
 {
 	setDrawMode(draw_mode + 1);
@@ -328,7 +335,26 @@ void Planet::draw()
 	
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, draw_mode ? lightColor : WHITE);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, draw_mode ? lightColor : WHITE);
-	gluSphere( sphere, radius, PLANET_DETAIL, PLANET_DETAIL );
+
+	if( IsSphere )
+	{
+		gluSphere( sphere, radius, PLANET_DETAIL, PLANET_DETAIL );
+	}
+	else
+	{
+		if( draw_mode == 3 )
+		{
+			glFrontFace( GL_CW );
+			glutWireTeapot( radius );
+			glFrontFace( GL_CCW );
+		}
+		else
+		{
+            glFrontFace( GL_CW );
+            glutSolidTeapot( radius );
+            glFrontFace( GL_CCW );
+		}
+	}
 	
 	// Display name label
 	glLoadIdentity();
@@ -346,10 +372,14 @@ void Planet::draw()
 	glColor3ubv(color);
 	glRasterPos3d(0,0,0);
 	glutBitmapString(GLUT_BITMAP_HELVETICA_18,
-					(const unsigned char *) name.c_str() );
+					(const unsigned char *) (IsSphere ? name.c_str() :
+									("Tea Time! (" + name + ")").c_str()) );
 	
 	// Restore settings
     glPopMatrix();
 	glEnable(GL_LIGHTING);
 	glDisable( GL_TEXTURE_2D );
 }
+
+
+

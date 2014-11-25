@@ -84,19 +84,35 @@ void Ring::draw()
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, draw_mode ? lightColor : WHITE);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, draw_mode ? lightColor : WHITE);
 
-	glDisable(GL_CULL_FACE);
-	glBegin(draw_mode == 3 ? GL_LINE_LOOP : GL_TRIANGLE_STRIP);
+	// Draw ring
+	glBegin(draw_mode == 3 ? GL_LINE_STRIP : GL_TRIANGLE_STRIP);
 	for (ld t = 0, s = 2*M_PI/PLANET_DETAIL;
 		t < 2*M_PI + s;
 		t += s)
 	{
 		glTexCoord2d(1, t / 2*M_PI);
-		glVertex2d(cosl(t)*orbit_radius, sinl(t)*orbit_radius);
+		glVertex2d(cosl(-t)*orbit_radius, sinl(-t)*orbit_radius);
 		glTexCoord2d(0, t / 2*M_PI);
-		glVertex2d(cosl(t)*radius, sinl(t)*radius);
+		glVertex2d(cosl(-t)*radius, sinl(-t)*radius);
 	}
 	glEnd();
-	glEnable(GL_CULL_FACE);
+	
+	// Draw reverse side (for shading reasons)
+	if (draw_mode != 3)
+	{
+		glRotated(180, 0, 1, 0);
+		glBegin(GL_TRIANGLE_STRIP);
+		for (ld t = 0, s = 2*M_PI/PLANET_DETAIL;
+			t < 2*M_PI + s;
+			t += s)
+		{
+			glTexCoord2d(1, t / 2*M_PI);
+			glVertex2d(cosl(-t)*orbit_radius, sinl(-t)*orbit_radius);
+			glTexCoord2d(0, t / 2*M_PI);
+			glVertex2d(cosl(-t)*radius, sinl(-t)*radius);
+		}
+		glEnd();
+	}
 
 	// If in wireframe mode, draw outline for ring
 	if (draw_mode == 3)

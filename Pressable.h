@@ -16,23 +16,23 @@ class Pressable
 {
 public:
 	/*!
-	 * @brief Resize callback. Executes whenever the keyboard is pressed
+	 * @brief keyboard callback. Executes whenever the keyboard is pressed
 	 */
 	virtual void keyDown(unsigned char key, int x, int y) = 0;
 
 	/*!
-	 * @brief Resize callback. Executes whenever the keyboard is released
+	 * @brief keyboard callback. Executes whenever the keyboard is released
 	 */
 	virtual void keyUp(unsigned char key, int x, int y) = 0;
 
 	/*!
-	 * @brief Resize callback. Executes whenever the special keys are pressed
+	 * @brief keyboard callback. Executes whenever the special keys are pressed
 	 *			such as the arrow keys, or enter
 	 */
 	virtual void keySpecialDown(unsigned char key, int x, int y) = 0;
 
 	/*!
-	 * @brief Resize callback. Executes whenever the special keys are released
+	 * @brief keyboard callback. Executes whenever the special keys are released
 	 *			such as the arrow keys, or enter
 	 */
 	virtual void keySpecialUp(unsigned char key, int x, int y) = 0;
