@@ -64,7 +64,7 @@ void Ring::draw()
 	glDisable(GL_CULL_FACE);
 	glBegin(draw_mode == 3 ? GL_LINE_LOOP : GL_TRIANGLE_STRIP);
 	for (ld t = 0, s = 2*M_PI/PLANET_DETAIL;
-		t < 2*M_PI;
+		t < 2*M_PI + s;
 		t += s)
 	{
 		glTexCoord2d(1, t / 2*M_PI);
@@ -72,27 +72,24 @@ void Ring::draw()
 		glTexCoord2d(0, t / 2*M_PI);
 		glVertex2d(cosl(t)*radius, sinl(t)*radius);
 	}
-	glTexCoord2d(1, 1);
-	glVertex2d(orbit_radius,  0);
-	glTexCoord2d(0, 1);
-	glVertex2d(1, 0);
 	glEnd();
 	glEnable(GL_CULL_FACE);
 
+	// If in wireframe mode, draw outline for ring
 	if (draw_mode == 3)
 	{
 		// Inner wireframe loop
-		glBegin(GL_LINE_LOOP);
+		glBegin(GL_LINE_STRIP);
 		for (ld t = 0, s = 2*M_PI/PLANET_DETAIL;
-			t < 2*M_PI;
+			t < 2*M_PI + s;
 			t += s)
 			glVertex2d(cosl(t)*orbit_radius, sinl(t)*orbit_radius);
 		glEnd();
 
 		// Outer wireframe loop
-		glBegin(GL_LINE_LOOP);
+		glBegin(GL_LINE_STRIP);
 		for (ld t = 0, s = 2*M_PI/PLANET_DETAIL;
-			t < 2*M_PI;
+			t < 2*M_PI + s;
 			t += s)
 			glVertex2d(cosl(t)*radius, sinl(t)*radius);
 		glEnd();

@@ -269,7 +269,9 @@ void Planet::draw()
 			glVertex3d(target_x + cosl(cur+theta) * orbit_radius,
 						target_y + sinl(cur+theta) * orbit_radius,
 						target_z);
-		glVertex3d(target_x + orbit_radius, target_y, target_z);
+		glVertex3d(target_x + cosl(DEGTORAD(orbit_angle))*orbit_radius,
+					target_y + sinl(DEGTORAD(orbit_angle))*orbit_radius,
+					target_z);
 	glEnd();
 	glEnable(GL_LIGHTING);
 	

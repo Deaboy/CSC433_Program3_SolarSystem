@@ -13,4 +13,4 @@ Star.o Ring.o Camera.o
 	$(CXX) $(CXXFLAGS) $@ -c $<
 
 clean:
-	$(RM) $(EXECS) *.o
+	$(RM) $(EXECS) *.o *~
