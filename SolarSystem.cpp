@@ -676,7 +676,7 @@ void SolarSystem::draw()
 		
 		"To orbit around a planet, use the WASD keys.\n"
 		"You can also use the mouse. Simply left-click on the screen\n"
-		"and drag the view around.\n\n"
+		"and drag the fly around.\n\n"
 		
 		"To zoom in, use the + key. To zoom out, use the - key. You\n"
 		"can also use the scroll wheel on your mouse.\n\n"
@@ -690,7 +690,7 @@ void SolarSystem::draw()
 		"Finally, press [ to decrease speed, ] to increase speed, and\n"
 		"SPACE to reset speed to real time.\n\n"
 		
-		"Press H to close.\n\n"
+		"Press H to close this help window.\n\n"
 		
 		"Oh, and press T for a special surprise!";
 	

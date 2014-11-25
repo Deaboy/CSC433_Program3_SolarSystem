@@ -47,7 +47,7 @@
  *		Left Click and Drag -> mouse camera Movement
  *		Scroll Wheel -> mouse controlled zoom
  *		z -> set camra to default view of sun
- *		space -> sets speed to 0
+ *		space -> sets speed to 1 (real time)
  *		t -> probably shouldn't press that one
  *
  *
@@ -76,7 +76,7 @@
  *
  * @section todo_bugs_modification_section Todo, Bugs, and Modifications
  *
- * @todo	-	Add speed controlls
+ * @bug	-	Possible performance issues on computers running Windows.
  *
  * 
  * @par Modifications and Development Timeline: 
