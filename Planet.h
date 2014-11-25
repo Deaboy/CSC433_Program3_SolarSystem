@@ -67,6 +67,10 @@ public:
 	Planet& setDrawMode(int mode);
 	void cycleDrawMode();
 	
+	string	getName();
+	ld		getRadius();
+	ld		getOrbitRadius();
+	
 	virtual void getPosition(long long time, ld& x,
 					 ld& y, ld& z);
 	virtual void update(long long time);

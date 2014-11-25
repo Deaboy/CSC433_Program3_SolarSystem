@@ -190,6 +190,21 @@ void Planet::cycleDrawMode()
 	setDrawMode(draw_mode + 1);
 }
 
+string Planet::getName()
+{
+	return name;
+}
+
+ld Planet::getRadius()
+{
+	return radius;
+}
+
+ld Planet::getOrbitRadius()
+{
+	return orbit_radius;
+}
+
 void Planet::getPosition(long long time, ld& x,
 						 ld& y, ld& z)
 {

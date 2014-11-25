@@ -35,6 +35,7 @@ Camera::Camera()
 	rot_ease = 1;
 	zoom_ease = 1;
 	move_ease = 1;
+	min_distance = 0;
 }
 
 /***************************************************************************//**
@@ -42,11 +43,11 @@ Camera::Camera()
  * 
  * @par Description: returns coordinant location of camera
  *
- * @param[in,out]	long double x - x coordinant of camera
- * @param[in,out]	long double y - y coordinant of camera
- * @param[in,out]	long double z - z ciordinant of camera
+ * @param[in,out]	ld x - x coordinant of camera
+ * @param[in,out]	ld y - y coordinant of camera
+ * @param[in,out]	ld z - z ciordinant of camera
 *******************************************************************************/
-void Camera::getPosition(long double& x, long double& y, long double& z)
+void Camera::getPosition(ld& x, ld& y, ld& z)
 {
 	x = position[0] + subject[0];
 	y = position[1] + subject[1];
@@ -59,11 +60,11 @@ void Camera::getPosition(long double& x, long double& y, long double& z)
  * @par Description: returns coordinant location of the planet the camera is
  *		looking at
  *
- * @param[in,out]	long double x - x coordinant of Planet
- * @param[in,out]	long double y - y coordinant of Planet
- * @param[in,out]	long double z - z ciordinant of Planet
+ * @param[in,out]	ld x - x coordinant of Planet
+ * @param[in,out]	ld y - y coordinant of Planet
+ * @param[in,out]	ld z - z ciordinant of Planet
 *******************************************************************************/
-void Camera::getSubject(long double& x, long double& y, long double& z)
+void Camera::getSubject(ld& x, ld& y, ld& z)
 {
 	x = target_subject[0];
 	y = target_subject[1];
@@ -73,9 +74,9 @@ void Camera::getSubject(long double& x, long double& y, long double& z)
 /***************************************************************************//**
  * @author Daniel Andrus
  * 
- * @par Description: returns angle of height in comparison to a planet
+ * @par Description: returns vertical angle
 *******************************************************************************/
-long double Camera::getPitch()
+ld Camera::getPitch()
 {
 	return RADTODEG(target_pitch);
 }
@@ -83,20 +84,19 @@ long double Camera::getPitch()
 /***************************************************************************//**
  * @author Daniel Andrus
  * 
- * @par Description: return angle of horizontal in comparison to a planet
+ * @par Description: return angle along XY-plane
 *******************************************************************************/
-long double Camera::getYaw()
+ld Camera::getYaw()
 {
 	return RADTODEG(target_yaw);
 }
 
-
 /***************************************************************************//**
  * @author Daniel Andrus
  * 
- * @par Description: return radius from orbiting planet
+ * @par Description: return current distance from subject
 *******************************************************************************/
-long double Camera::getDistance()
+ld Camera::getDistance()
 {
 	return target_distance;
 }
@@ -104,13 +104,23 @@ long double Camera::getDistance()
 /***************************************************************************//**
  * @author Daniel Andrus
  * 
- * @par Description: determins the planet being orbited
- *
- * @param[in]	long double x - x coordinant of Planet
- * @param[in]	long double y - y coordinant of Planet
- * @param[in]	long double z - z ciordinant of Planet
+ * @par Description: return minimum allowed distance from subject
 *******************************************************************************/
-Camera& Camera::setSubject(long double x, long double y, long double z)
+ld Camera::getMinimumDistance()
+{
+	return min_distance;
+}
+
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: sets the coordinate that is the subject of the camera
+ *
+ * @param[in]	ld x - x coordinate of subject
+ * @param[in]	ld y - y coordinate of subject
+ * @param[in]	ld z - z coordinate of subject
+*******************************************************************************/
+Camera& Camera::setSubject(ld x, ld y, ld z)
 {
 	target_subject[0] = x;
 	target_subject[1] = y;
@@ -121,15 +131,15 @@ Camera& Camera::setSubject(long double x, long double y, long double z)
 /***************************************************************************//**
  * @author Daniel Andrus
  * 
- * @par Description: sets the hieght angle from the planet
+ * @par Description: sets the vertical angle from the subject
  *
- * @param[in]	long double pitch - the angle of height
+ * @param[in]	ld pitch - the vertical height
 *******************************************************************************/
-Camera& Camera::setPitch(long double pitch)
+Camera& Camera::setPitch(ld pitch)
 {
 	if (pitch > 89) pitch = 89;
 	if (pitch < -89) pitch = -89;
-	this->target_pitch = DEGTORAD(pitch);
+	target_pitch = DEGTORAD(pitch);
 	return *this;
 }
 
@@ -138,24 +148,40 @@ Camera& Camera::setPitch(long double pitch)
  * 
  * @par Description: sets the horizontal angle
  *
- * @param[in]	long double yaw - horizontal angle in relation to the planet
+ * @param[in]	ld yaw - horizontal angle in relation to the subject
 *******************************************************************************/
-Camera& Camera::setYaw(long double yaw)
+Camera& Camera::setYaw(ld yaw)
 {
-	this->target_yaw = DEGTORAD(yaw);
+	target_yaw = DEGTORAD(yaw);
 	return *this;
 }
 
 /***************************************************************************//**
  * @author Daniel Andrus
  * 
- * @par Description: sets the radius from planet
+ * @par Description: sets the distance from the subject
  *
- * @param[in]	long double distance - radius from planet
+ * @param[in]	ld distance - radius from planet
 *******************************************************************************/
-Camera& Camera::setDistance(long double distance)
+Camera& Camera::setDistance(ld distance)
 {
-	this->target_distance = distance;
+	target_distance = (distance > min_distance ? distance : min_distance);
+	return *this;
+}
+
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: sets the minimum distance from the subject
+ *
+ * @param[in]	ld min_distance - minimum distance from subject
+*******************************************************************************/
+Camera& Camera::setMinimumDistance(ld min_distance)
+{
+	min_distance = min_distance > 0 ? min_distance : 0;
+	this->min_distance		= min_distance;
+	this->target_distance	= target_distance < min_distance ?
+									min_distance : target_distance;
 	return *this;
 }
 
@@ -164,11 +190,11 @@ Camera& Camera::setDistance(long double distance)
  * 
  * @par Description: slows the rotation to a stop
  *
- * @param[in]	long double ease - 1 means snap, 0 means no movement
+ * @param[in]	ld ease - 1 means snap, 0 means no movement
 *******************************************************************************/
-Camera& Camera::setRotationEasing(long double ease)
+Camera& Camera::setRotationEasing(ld ease)
 {
-	this->rot_ease = (ease > 1 ? 1 : ease < 0 ? 0 : ease);
+	rot_ease = (ease > 1 ? 1 : ease < 0 ? 0 : ease);
 	return *this;
 }
 
@@ -177,9 +203,9 @@ Camera& Camera::setRotationEasing(long double ease)
  * 
  * @par Description: slows the zoom to a stop
  *
- * @param[in]	long double ease - 1 means snap, 0 means no movement
+ * @param[in]	ld ease - 1 means snap, 0 means no movement
 ******************************************************************************/
-Camera& Camera::setZoomEasing(long double ease)
+Camera& Camera::setZoomEasing(ld ease)
 {
 	this->zoom_ease = (ease > 1 ? 1 : ease < 0 ? 0 : ease);
 	return *this;
@@ -190,9 +216,9 @@ Camera& Camera::setZoomEasing(long double ease)
  * 
  * @par Description: slows the movement to a stop
  *
- * @param[in]	long double ease - 1 means snap, 0 means no movement
+ * @param[in]	ld ease - 1 means snap, 0 means no movement
 ******************************************************************************/
-Camera& Camera::setMovementEasing(long double ease)
+Camera& Camera::setMovementEasing(ld ease)
 {
 	this->move_ease = (ease > 1 ? 1 : ease < 0 ? 0 : ease);
 	return *this;

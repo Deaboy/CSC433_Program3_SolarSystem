@@ -22,38 +22,43 @@
 #include <GLUT/glut.h>
 #endif
 
+typedef long double ld;
+
 class Camera : public Stepable
 {
 private:
-	long double subject[3];
-	long double target_subject[3];
-	long double position[3];
-	long double target_pitch;
-	long double target_yaw;
-	long double target_distance;
-	long double pitch;
-	long double yaw;
-	long double distance;
-	long double rot_ease;
-	long double zoom_ease;
-	long double move_ease;
+	ld		subject[3];
+	ld		target_subject[3];
+	ld		position[3];
+	ld		target_pitch;
+	ld		target_yaw;
+	ld		target_distance;
+	ld		pitch;
+	ld		yaw;
+	ld		distance;
+	ld		rot_ease;
+	ld		zoom_ease;
+	ld		move_ease;
+	ld		min_distance;
 
 public:
 	Camera();
 
-	void getPosition(long double& x, long double& y, long double& z);
-	void getSubject(long double& x, long double& y, long double& z);
-	long double getPitch();
-	long double getYaw();
-	long double getDistance();
+	void	getPosition(ld& x, ld& y, ld& z);
+	void	getSubject(ld& x, ld& y, ld& z);
+	ld		getPitch();
+	ld		getYaw();
+	ld		getDistance();
+	ld		getMinimumDistance();
 
-	Camera& setSubject(long double x, long double y, long double z);
-	Camera& setPitch(long double pitch);
-	Camera& setYaw(long double yaw);
-	Camera& setDistance(long double distance);
-	Camera& setRotationEasing(long double ease);
-	Camera& setZoomEasing(long double ease);
-	Camera& setMovementEasing(long double ease);
+	Camera&	setSubject(ld x, ld y, ld z);
+	Camera&	setPitch(ld pitch);
+	Camera&	setYaw(ld yaw);
+	Camera&	setDistance(ld distance);
+	Camera&	setMinimumDistance(ld min_distance);
+	Camera&	setRotationEasing(ld ease);
+	Camera&	setZoomEasing(ld ease);
+	Camera&	setMovementEasing(ld ease);
 
 	void step();
 	void update();

@@ -224,6 +224,8 @@ void SolarSystem::setCameraSubject(int i)
 	if (i < (int) planets.size())
 	{
 		subject = planets[i];
+		manager.getCamera().setMinimumDistance(
+			subject->getRadius() * PLANET_ZOOM_MIN);
 	}
 }
 
