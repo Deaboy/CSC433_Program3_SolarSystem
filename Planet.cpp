@@ -1,13 +1,20 @@
-//
-//  Planet.cpp
-//  CSC433_Program3_SolarSystem
-//
-//  Created by Daniel Andrus on 2014-11-10.
-//  Copyright (c) 2014 Daniel Andrus. All rights reserved.
-//
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ *
+ * @file File containing the implementation for the Planet Class
+ *
+ * @Date 2014 - 11 - 19
+ *
+ * @brief Contains the implementation for the Planet class.
+*******************************************************************************/
 
 #include "Planet.h"
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: constructor - sets default values for planet
+*******************************************************************************/
 Planet::Planet()
 {
 	name				= "";
@@ -39,18 +46,43 @@ Planet::Planet()
 	setDrawMode(0);
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: uses death star on planet
+*******************************************************************************/
 Planet::~Planet()
 {
     gluDeleteQuadric( sphere );
 	if (texture_name != 0) glDeleteTextures(1, &texture_name);
 }
 	
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: names the planet
+ *
+ * @param[in]	string name - name of planet
+ *
+ * @return this - the current planet
+*******************************************************************************/
 Planet& Planet::setName(string name)
 {
 	this->name = name;
 	return *this;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: sets color of planet
+ *
+ * @param[in]	unsigned char r - red bit
+ * @param[in]	unsigned char g - green bit
+ * @param[in]	unsigned char b - blue bit
+ *
+ * @return this - the current planet
+*******************************************************************************/
 Planet& Planet::setColor(unsigned char r, unsigned char g, unsigned char b)
 {
 	this->color[0] = r;
@@ -63,12 +95,32 @@ Planet& Planet::setColor(unsigned char r, unsigned char g, unsigned char b)
 	return *this;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: set size of planet
+ *
+ * @param[in]	ld radius - size of planet
+ *
+ * @return this - the current planet
+*******************************************************************************/
 Planet& Planet::setRadius(ld radius)
 {
 	this->radius = radius * PLANET_SCALE;
 	return *this;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: set texture file
+ *
+ * @param[in]	string filename - name of file
+ * @param[in]	int width		- columns
+ * @param[in]	int height		- rows
+ *
+ * @return this - the current planet
+*******************************************************************************/
 Planet& Planet::setTexture(string filename, int width, int height)
 {
 	unsigned char* texture;
@@ -101,54 +153,135 @@ Planet& Planet::setTexture(string filename, int width, int height)
 	return *this;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: set the axis of rotation
+ *
+ * @param[in]	ld rotation_axis - sets the axis of rotation
+ *
+ * @return this - the current planet
+*******************************************************************************/
 Planet& Planet::setRotationAxis(ld rotation_axis)
 {
 	this->rotation_axis = rotation_axis;
 	return *this;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: set the rotation start position
+ *
+ * @param[in]	ld rotation_init - initial rotation position
+ *
+ * @return this - the current planet
+*******************************************************************************/
 Planet& Planet::setRotationInitial(ld rotation_init)
 {
 	this->rotation_init = rotation_init;
 	return *this;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: set speed of the rotation 
+ *
+ * @param[in]	ld rotation_period - speed of the rotation
+ *
+ * @return this - the current planet
+*******************************************************************************/
 Planet& Planet::setRotationPeriod(ld rotation_period)
 {
 	this->rotation_period = rotation_period;
 	return *this;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: sets the "tilt" of the planet
+ *
+ * @param[in]	ld right_ascension - "tilt"
+ *
+ * @return this - the current planet
+*******************************************************************************/
 Planet& Planet::setRightAscension(ld right_ascension)
 {
 	this->right_ascension = right_ascension;
 	return *this;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: telss planet what object to orbit
+ *
+ * @param[in]	Planet* orbit_target - object being orbited
+ *
+ * @return this - the current planet
+*******************************************************************************/
 Planet& Planet::setOrbitTarget(Planet* orbit_target)
 {
 	this->orbit_target = orbit_target;
 	return *this;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: set location of the orbit start position
+ *
+ * @param[in]	ld orbit_itit - initial position in orbit
+ *
+ * @return this - the current planet
+*******************************************************************************/
 Planet& Planet::setOrbitInitial(ld orbit_init)
 {
 	this->orbit_init = orbit_init;
 	return *this;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: sets orbital distance
+ *
+ * @param[in]	ld orbit_radius - distance from orbital target
+ *
+ * @return this - the current planet
+*******************************************************************************/
 Planet& Planet::setOrbitRadius(ld orbit_radius)
 {
 	this->orbit_radius = orbit_radius * ORBIT_SCALE;
 	return *this;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: set the orbital speed
+ *
+ * @param[in]	ld orbit_period - orbit speed
+ *
+ * @return this - the current planet
+*******************************************************************************/
 Planet& Planet::setOrbitPeriod(ld orbit_period)
 {
 	this->orbit_period = orbit_period;
 	return *this;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: set the draw mode style
+ *
+ * @param[in]	int mode - list of drawing modes
+ *
+ * @return this - the current planet
+*******************************************************************************/
 Planet& Planet::setDrawMode(int mode)
 {
 	draw_mode = mode % 4;
@@ -192,26 +325,62 @@ Planet& Planet::toggleTeaParty()
 	return *this;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: changes drawing style
+*******************************************************************************/
 void Planet::cycleDrawMode()
 {
 	setDrawMode(draw_mode + 1);
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: pointer to planet's name
+ *
+ * @return name - name of planet
+*******************************************************************************/
 string Planet::getName()
 {
 	return name;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: pointer to radius
+ *
+ * @return radius - size of planet
+*******************************************************************************/
 ld Planet::getRadius()
 {
 	return radius;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: pointer to orbit_radius
+ *
+ * @return orbit_radius - distance from orbital target
+*******************************************************************************/
 ld Planet::getOrbitRadius()
 {
 	return orbit_radius;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: gets the position of the planet
+ *
+ * @param[in]	long long time - time of solar system
+ * @param[in,out]	x - The x coordinate of the planet
+ * @param[in,out]	y - The y coordinate of the planet
+ * @param[in,out]	z - the z coordinate of the planet
+*******************************************************************************/
 void Planet::getPosition(long long time, ld& x,
 						 ld& y, ld& z)
 {
@@ -243,6 +412,13 @@ void Planet::getPosition(long long time, ld& x,
 	return;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: updates planets location based on time
+ *
+ * @param[in]	long long time - time of the solar system
+*******************************************************************************/
 void Planet::update(long long time)
 {
 	if (this->time != time)
@@ -259,6 +435,11 @@ void Planet::update(long long time)
 	}
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: Draws planet based on texture option and given info
+*******************************************************************************/
 void Planet::draw()
 {
 	static const float WHITE[4] = { 1, 1, 1, 1 };
@@ -336,11 +517,11 @@ void Planet::draw()
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, draw_mode ? lightColor : WHITE);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, draw_mode ? lightColor : WHITE);
 
-	if( IsSphere )
+	if( IsSphere ) //all planets are spheres
 	{
 		gluSphere( sphere, radius, PLANET_DETAIL, PLANET_DETAIL );
 	}
-	else
+	else // what else could be a planet??
 	{
 		if( draw_mode == 3 )
 		{

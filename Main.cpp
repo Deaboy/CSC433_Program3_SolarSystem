@@ -46,12 +46,15 @@
  *		H		-> Help
  *		Left Click and Drag -> mouse camera Movement
  *		Scroll Wheel -> mouse controlled zoom
+ *		z -> set camra to default view of sun
+ *		space -> sets speed to 0
  *		t -> probably shouldn't press that one
  *
  *
  * Extras  Each Planet, sun and moon included, has a number key that they are
  *		bound to. Also 'q' and 'e' are previous and next between planets.
  *		many optimizations to improve fps and "smooth mouse controls"
+ *		Made planets based on a time and not using an idle function
  *		DO NOT PRESS T
  *
  * GLUT and OpenGL are the libraries used for gui management.
