@@ -1,14 +1,19 @@
-//
-//  Planet.h
-//  CSC433_Program3_SolarSystem
-//
-//  Created by Daniel Andrus on 2014-11-10.
-//  Copyright (c) 2014 Daniel Andrus. All rights reserved.
-//
+/**************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ *
+ * @Date	11/11/2014
+ *
+ * @file File containing the declaration for the Planet class.
+ *
+ * @brief This Class creates a given planet, texture maps it, and draws it
+******************************************************************************/
 
 #ifndef _PLANET_H_
 #define _PLANET_H_
 
+/******************************************************************************
+ *                 DECLARATIONS, INCLUDES, AND NAMESPACES
+******************************************************************************/
 #include <cmath>
 #include <string>
 #include "Constants.h"
@@ -18,35 +23,40 @@
 using namespace std;
 typedef long double ld;
 
+/**************************************************************************//**
+ * @brief The Planet Class handles a sole planet
+******************************************************************************/
 class Planet : public Drawable
 {
 protected:
 	// Constant stuff
-	string			name;
-	unsigned char	color[3];
-	GLfloat			lightColor[4];
-	ld				radius;
-	GLuint			texture_name;
+	string			name; /*!< name of the planet*/
+	unsigned char	color[3];	/*!< array of colors for planet */
+	GLfloat			lightColor[4]; /*!< reflected color of planet */
+	ld				radius;	/*!< radius of planet */
+	GLuint			texture_name; /*!< name of texture file for .bmp */
 	
 	// Rotation info
-	ld				rotation_axis;
-	ld				rotation_init;
-	ld				rotation_period;
-	ld				right_ascension;
+	ld				rotation_axis; /*!< axis of rotation */
+	ld				rotation_init; /*!< initial position before rotation */
+	ld				rotation_period; /*!< "day of a planet" */
+	ld				right_ascension; /*!< tilt of axis */
 	
 	// Orbit info
-	Planet*			orbit_target;
-	ld				orbit_init;
-	ld				orbit_radius;
-	ld				orbit_period;
+	Planet*			orbit_target; /*!< what the planet is orbiting */
+	ld				orbit_init;	  /*!< initial orbit position */
+	ld				orbit_radius; /*!< radius of orbit */
+	ld				orbit_period; /*!< "year of planet" */
 	
 	// Memorization
-	long long		time;
-	ld				position[3];
-	ld				orbit_angle;
-	ld				rotation_angle;
-	GLUquadricObj	*sphere;
-	int				draw_mode;
+	long long		time;		  /*!< time of solar system */
+	ld				position[3];  /*!< coordinates of planet */
+	ld				orbit_angle;  /*!< position from starting orbit */
+	ld				rotation_angle; /*!< position from 
+												starting rotation position */
+	GLUquadricObj	*sphere;	  /*!< sphere object used by glut to draw */
+	int				draw_mode;	/*!< current draw mode, determines 
+													texture, shading, model*/
 
 public:
 	Planet();
