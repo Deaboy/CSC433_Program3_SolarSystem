@@ -466,7 +466,7 @@ void SolarSystem::keyDown(unsigned char key, int x, int y)
 	}
 }
 
- /***************************************************************************//**
+ /**************************************************************************//**
  * @author Daniel Andrus, Johnny Ackerman
  * 
  * @par Description: handles what happens when key is released, currently
@@ -648,6 +648,7 @@ void SolarSystem::update(long long time)
 *******************************************************************************/
 void SolarSystem::draw()
 {
+	// Reset everything for 2D HUD drawing
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	glLoadIdentity();
@@ -660,6 +661,7 @@ void SolarSystem::draw()
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
 	
+	// build text to draw
 	string txt;
 	if (help)
 	{
@@ -696,15 +698,18 @@ void SolarSystem::draw()
 	else
 	{
 	
-		txt = to_string(speed) + "x";
+		txt = to_string(speed) + "x speed";
 
 	}
 	
+	// draw the text
 	glColor3ub(255, 255, 255);
 	glRasterPos2i(10, 24);
 	glutBitmapString(GLUT_BITMAP_HELVETICA_18,
 					(const unsigned char *) txt.c_str() );
 	
+	
+	// Restore settings for future drawings
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glPopMatrix();

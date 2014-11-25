@@ -221,7 +221,8 @@ public:
 	/*!
 	* @brief provided bmp texture load
 	*/
-	static bool LoadBmpFile( const char* filename, int &NumRows, int &NumCols, unsigned char* &ImagePtr );
+	static bool LoadBmpFile( const char* filename, int &NumRows, int &NumCols,
+							unsigned char* &ImagePtr );
 
 	/*!
 	* @brief used by "loadBmpFile

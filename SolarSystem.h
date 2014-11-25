@@ -90,10 +90,7 @@ public:
 	 */
 	void keySpecialUp(unsigned char key, int x, int y);
 	
-
-
-	/////////////MOUSE
-
+	
 	/*!
 	 * @brief mouse callback. Executes whenever the mouse is clicked
 	 */
@@ -144,9 +141,11 @@ public:
 	 * @brief updates universe
 	 */
 	void update(long long time);
+	
+	/*!
+	 * @brief draws simulation speed or help
+	 */
 	void draw();
 };
-
-void menuevent(int selection);
 
 #endif

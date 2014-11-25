@@ -70,7 +70,7 @@ void GlutManager::init(int argc, char *argv[])
 	}
 
 	// Initialize glut with 32-bit graphics, double buffering, and anti-aliasing
-	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_MULTISAMPLE);
+	glutInitDisplayMode(GLUT_RGBA|GLUT_DOUBLE|GLUT_DEPTH|GLUT_MULTISAMPLE);
 
 	// Set up the program window
 	glutInitWindowSize(window_width, window_height);    // initial window size
@@ -210,7 +210,8 @@ void GlutManager::unregisterClickable(Clickable* clickable)
 *******************************************************************************/
 bool GlutManager::isClickableRegistered(Clickable* clickable)
 {
-	return find(clickables.begin(), clickables.end(), clickable) != clickables.end();
+	return find(clickables.begin(), clickables.end(), clickable)
+				!= clickables.end();
 }
 
 /***************************************************************************//**
@@ -255,7 +256,8 @@ void GlutManager::unregisterStepable(Stepable* stepable)
 *******************************************************************************/
 bool GlutManager::isStepableRegistered(Stepable* stepable)
 {
-	return find(stepables.begin(), stepables.end(), stepable) != stepables.end();
+	return find(stepables.begin(), stepables.end(), stepable)
+				!= stepables.end();
 }
 
 /***************************************************************************//**
@@ -298,7 +300,8 @@ void GlutManager::unregisterPressable(Pressable* pressable)
 *******************************************************************************/
 bool GlutManager::isPressableRegistered(Pressable* pressable)
 {
-	return find(pressables.begin(), pressables.end(), pressable) != pressables.end();
+	return find(pressables.begin(), pressables.end(), pressable)
+			!= pressables.end();
 }
 
 /***************************************************************************//**
@@ -492,7 +495,7 @@ void GlutManager::initLightModel()
 
 	glShadeModel( GL_SMOOTH );
 
-    glEnable( GL_DEPTH_TEST );  // enable depth buffer for hidden-surface elimination
+    glEnable( GL_DEPTH_TEST );  // enable hidden-surface elimination
     glEnable( GL_NORMALIZE );   // automatic normalization of normals
     glEnable( GL_CULL_FACE );   // eliminate backfacing polygons
     glCullFace( GL_BACK );
@@ -617,7 +620,7 @@ inline int GlutManager::GetNumBytesPerRow( int NumCols )
 short GlutManager::readShort( FILE* infile )
 {
     unsigned char lowByte, hiByte;
-    lowByte = fgetc( infile );			// Read the low order byte (little endian form)
+    lowByte = fgetc( infile );			// Read the low order byte (lil endian)
     hiByte = fgetc( infile );			// Read the high order byte
 
     // Pack together

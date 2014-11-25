@@ -1,10 +1,3 @@
-//
-//  constants.h
-//  CSC433_Program3_SolarSystem
-//
-//  Created by Daniel Andrus on 2014-11-11.
-//  Copyright (c) 2014 Daniel Andrus. All rights reserved.
-//
 /***************************************************************************//**
  * @author Daniel Andrus, Johnny Ackerman
  *

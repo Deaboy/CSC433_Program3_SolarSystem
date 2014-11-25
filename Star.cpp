@@ -17,7 +17,12 @@
 void Star::draw()
 {
 	// Enable emission
-	float emission[4] = { lightColor[0] / 2, lightColor[1] / 2, lightColor[2] / 2, lightColor[3] / 2 };
+	float emission[4] = {
+		lightColor[0] / 2,
+		lightColor[1] / 2,
+		lightColor[2] / 2,
+		lightColor[3] / 2
+	};
 	glMaterialfv(GL_FRONT, GL_EMISSION, emission);
 
 	Planet::draw();
