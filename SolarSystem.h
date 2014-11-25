@@ -46,6 +46,7 @@ private:
 	int				speed;
 	int				menu;
 	bool			drag;
+	bool			help;
 
 public:
 	SolarSystem();

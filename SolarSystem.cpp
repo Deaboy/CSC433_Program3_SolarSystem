@@ -29,6 +29,7 @@ SolarSystem::SolarSystem()
 	min_zoom = 100;
 	speed = 1;
 	drag = false;
+	help = false;
 }
 
 /***************************************************************************//**
@@ -255,6 +256,7 @@ int SolarSystem::run(int argc, char *argv[])
 	manager.getCamera().setSubject(0,0,0).setRotationEasing(0.125)
 			.setZoomEasing(0.125).setMovementEasing(1)
 			.setPitch(45).setYaw(315).setDistance(1000);
+	setCameraSubject(0);
 	
 	//add entries to our menu
 	glutAddMenuEntry("0 - Sun",'0');
@@ -267,10 +269,7 @@ int SolarSystem::run(int argc, char *argv[])
 	glutAddMenuEntry("7 - Saturn", '7');
 	glutAddMenuEntry("8 - Uranus", '8');
 	glutAddMenuEntry("9 - Neptune", '9');
-	glutAddMenuEntry("[ - Rewind time", '[');
-	glutAddMenuEntry("] - Fast forward time", ']');
-	glutAddMenuEntry("Space - Real time", ' ');
-	glutAddMenuEntry("Tab - Cycle drawing modes", 9);
+	glutAddMenuEntry("H - Help", 'h');
 
 	// attach the menu to the right button
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
@@ -293,7 +292,8 @@ void SolarSystem::setCameraSubject(int i)
 	{
 		subject = planets[i];
 		manager.getCamera().setMinimumDistance(
-			subject->getRadius() * PLANET_ZOOM_MIN);
+			subject->getRadius() * PLANET_ZOOM_MIN)
+			.setDistance(subject->getRadius() * 4);
 	}
 }
 
@@ -308,123 +308,154 @@ void SolarSystem::setCameraSubject(int i)
 *******************************************************************************/
 void SolarSystem::keyDown(unsigned char key, int x, int y)
 {
-	if (key != GLUT_LEFT_BUTTON)
+	if (help)
+	{
+		if (key == 'h' || key == 'H')
+		{
+			help = false;
+			return;
+		}
+	}
+	else
 	{
 		switch ( key )
 		{
-			case 27:		// Escape
-				exit( 0 );
-				break;
+		case 27:		// Escape
+			exit( 0 );
+			break;
 
-			case 61:		// "="
-			case 43:		// "+"
-				GlutManager::getInstance()->
-					getCamera().setDistance( GlutManager::getInstance()->
-						getCamera().getDistance() * .75 );
-				break;
+		case 61:		// "="
+		case 43:		// "+"
+			GlutManager::getInstance()->
+				getCamera().setDistance( GlutManager::getInstance()->
+					getCamera().getDistance() * .75 );
+			break;
 
-			case 95:		// "_"
-			case 45:		// "-"
-				GlutManager::getInstance()->
-					getCamera().setDistance( GlutManager::getInstance()->
-						getCamera().getDistance() * 1.333333333 );
-				break;
+		case 95:		// "_"
+		case 45:		// "-"
+			GlutManager::getInstance()->
+				getCamera().setDistance( GlutManager::getInstance()->
+					getCamera().getDistance() * 1.333333333 );
+			break;
 
-			case 87:		// "W"
-			case 119:		// "w"
-				GlutManager::getInstance()->
-					getCamera().setPitch( GlutManager::getInstance()->
-						getCamera().getPitch() + 15 );
-				break;
+		case 87:		// "W"
+		case 119:		// "w"
+			GlutManager::getInstance()->
+				getCamera().setPitch( GlutManager::getInstance()->
+					getCamera().getPitch() + 15 );
+			break;
 
-			case 83:		// "S"
-			case 115:		// "s"
-				GlutManager::getInstance()->
-					getCamera().setPitch( GlutManager::getInstance()->
-						getCamera().getPitch() - 15 );
-				break;
+		case 83:		// "S"
+		case 115:		// "s"
+			GlutManager::getInstance()->
+				getCamera().setPitch( GlutManager::getInstance()->
+					getCamera().getPitch() - 15 );
+			break;
 
-			case 65:		// "A"
-			case 97:		// "a"
-				GlutManager::getInstance()->
-					getCamera().setYaw( GlutManager::getInstance()->
-						getCamera().getYaw() + 20 );
-				break;
+		case 65:		// "A"
+		case 97:		// "a"
+			GlutManager::getInstance()->
+				getCamera().setYaw( GlutManager::getInstance()->
+					getCamera().getYaw() + 20 );
+			break;
 
-			case 68:		// "D"
-			case 100:		// "d"
-				GlutManager::getInstance()->
-					getCamera().setYaw( GlutManager::getInstance()->
-						getCamera().getYaw() - 20 );
-				break;
+		case 68:		// "D"
+		case 100:		// "d"
+			GlutManager::getInstance()->
+				getCamera().setYaw( GlutManager::getInstance()->
+					getCamera().getYaw() - 20 );
+			break;
 
-			case 81:		// "Q"
-			case 113:		// "q"
-				currentPlanet = currentPlanet-1;
-				if( currentPlanet == -1 ) currentPlanet = 9 ;
-				setCameraSubject( (currentPlanet) % 10 );
-				break;
+		case 81:		// "Q"
+		case 113:		// "q"
+			currentPlanet = currentPlanet-1;
+			if( currentPlanet == -1 ) currentPlanet = 9 ;
+			setCameraSubject( (currentPlanet) % 10 );
+			break;
 
-			case 69:		// "E"
-			case 101:		// "e"
-				currentPlanet = currentPlanet+1;
-				setCameraSubject( (currentPlanet) % 10 );
-				break;
+		case 69:		// "E"
+		case 101:		// "e"
+			currentPlanet = currentPlanet+1;
+			setCameraSubject( (currentPlanet) % 10 );
+			break;
 
-			case 9:			// Tab
-				for (Planet* planet : planets)
-					planet->cycleDrawMode();
-				break;
+		case 9:			// Tab
+			for (Planet* planet : planets)
+				planet->cycleDrawMode();
+			break;
 
-			case 91:		// '['
-			case 123:		// '{'
-				if (speed > 1)
-					speed /= 2;
-				else if (speed <= -1)
+		case 91:		// '['
+		case 123:		// '{'
+			if (speed > 1)
+			{
+				speed /= 2;
+			}
+			else if (speed <= -1)
+			{
+				if (speed > -1073741824)
+				{
 					speed *= 2;
-				else
-					speed--;
-				break;
+				}
+			}
+			else
+			{
+				speed--;
+			}
+			break;
 
-			case 93:		// ']'
-			case 124:		// '}'
-				if (speed >= 1)
+		case 93:		// ']'
+		case 124:		// '}'
+			if (speed >= 1)
+			{
+				if (speed < 1073741824)
+				{
 					speed *= 2;
-				else if (speed < -1)
-					speed /= 2;
-				else
-					speed++;
-				break;
+				}
+			}
+			else if (speed < -1)
+			{
+				speed /= 2;
+			}
+			else
+			{
+				speed++;
+			}
+			break;
 
-			case 32:		//space
-				speed = 1;
-				break;
+		case 32:		//space
+			speed = 1;
+			break;
 
-			case 90:		// 'Z'
-			case 122:		// 'z'
-				GlutManager::getInstance()->
-					getCamera().setSubject(0,0,0).setRotationEasing(0.125)
-						.setZoomEasing(0.125).setMovementEasing(1)
-						.setPitch(45).setYaw(315).setDistance(1000);
-				setCameraSubject(0);
-				break;
+		case 90:		// 'Z'
+		case 122:		// 'z'
+			GlutManager::getInstance()->
+				getCamera().setSubject(0,0,0).setRotationEasing(0.125)
+					.setZoomEasing(0.125).setMovementEasing(1)
+					.setPitch(45).setYaw(315).setDistance(1000);
+			setCameraSubject(0);
+			break;
+		
+		case 'h':
+		case 'H':
+			help = true;
+			break;
 
-			case '0':
-			case '1':
-			case '2':
-			case '3':
-			case '4':
-			case '5':
-			case '6':
-			case '7':
-			case '8':
-			case '9':
-				setCameraSubject(key - '0');
-				currentPlanet = key - '0';
-				break;
+		case '0':
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
+			setCameraSubject(key - '0');
+			currentPlanet = key - '0';
+			break;
 
-			default:
-				break;
+		default:
+			break;
 		}
 	}
 }
@@ -590,6 +621,8 @@ void SolarSystem::step()
 *******************************************************************************/
 void SolarSystem::update(long long time)
 {
+	if (help) return;
+	
 	for (Planet* planet : planets)
 	{
 		planet->update(time);
@@ -602,6 +635,11 @@ void SolarSystem::update(long long time)
 	}
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: Draws the current simulation speed or the help box
+*******************************************************************************/
 void SolarSystem::draw()
 {
 	glMatrixMode(GL_MODELVIEW);
@@ -610,15 +648,54 @@ void SolarSystem::draw()
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 	glLoadIdentity();
-	gluOrtho2D(0, glutGet(GLUT_WINDOW_WIDTH), 0, glutGet(GLUT_WINDOW_HEIGHT));
+	gluOrtho2D(0, glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT), 0);
 	glDisable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
 	
-	string txt = to_string(speed) + "x";
+	string txt;
+	if (help)
+	{
+	
+		glColor3ub(0,0,0);
+		glRecti(0, 0, 540, 540);
+		
+		
+		txt =
+		"Welcome to the Solar System. Sol for short.\n"
+		"There are many fun ways to soar through space.\n\n"
+		
+		"To orbit around a planet, use the WASD keys.\n"
+		"You can also use the mouse. Simply left-click on the screen\n"
+		"and drag the view around.\n\n"
+		
+		"To zoom in, use the + key. To zoom out, use the - key. You\n"
+		"can also use the scroll wheel on your mouse.\n\n"
+		
+		"Press TAB to cycle through the display modes: textured,\n"
+		"smooth shading, flat shading, and wireframe.\n\n"
+		
+		"Use the Q and E keys to cycle through the planets, or 0-9 to\n"
+		"jump directly to a planet.\n\n"
+		
+		"Finally, press [ to decrease speed, ] to increase speed, and\n"
+		"SPACE to reset speed to real time.\n\n"
+		
+		"Press H to close.\n\n"
+		
+		"Oh, and press T for a special surprise!";
+	
+	}
+	else
+	{
+	
+		txt = to_string(speed) + "x";
+
+	}
+	
 	glColor3ub(255, 255, 255);
-	glRasterPos2i(10, 10);
+	glRasterPos2i(10, 24);
 	glutBitmapString(GLUT_BITMAP_HELVETICA_18,
 					(const unsigned char *) txt.c_str() );
 	
