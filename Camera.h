@@ -6,6 +6,9 @@
 //  Copyright (c) 2014 Daniel Andrus. All rights reserved.
 //
 
+/*******************************************************************************
+ *                 DECLARATIONS, INCLUDES, AND NAMESPACES
+*******************************************************************************/
 #ifndef _CAMERA_H_
 #define _CAMERA_H_
 
@@ -24,43 +27,113 @@
 
 typedef long double ld;
 
+/***************************************************************************//**
+ * @brief The Camera Class handles camera, position, view and movement
+ *
+ * @details The camera "orbits" a planet, getting all its movement from
+ *		the keyboard or the mouse.
+*******************************************************************************/
 class Camera : public Stepable
 {
 private:
-	ld		subject[3];
-	ld		target_subject[3];
-	ld		position[3];
-	ld		target_pitch;
-	ld		target_yaw;
-	ld		target_distance;
-	ld		pitch;
-	ld		yaw;
-	ld		distance;
-	ld		rot_ease;
-	ld		zoom_ease;
-	ld		move_ease;
-	ld		min_distance;
+	ld subject[3]; /*!< position of the planet currently looking at */
+	ld target_subject[3]; /* !< the planet we are trying to look at */
+	ld position[3];	/* !< position of the camera */
+	ld target_pitch;	/* !< pitch the camera is working to achieve */
+	ld target_yaw;		/* !< yaw the camera is working to achieve */
+	ld target_distance; /* !< distance the camera is working towards*/
+	ld pitch; /* !< current pitch */
+	ld yaw;	/* !< current yaw */
+	ld distance;	/* !< current distance */
+	ld min_distance;	/* !< minimum distance from subject */
+	ld rot_ease;	/* !< ease into target rotation */
+	ld zoom_ease;  /* !< ease into target zoom */
+	ld move_ease;  /* !< ease into target location */
 
 public:
+	/*!
+	 * @brief constructor, creates camera
+	 */
 	Camera();
 
-	void	getPosition(ld& x, ld& y, ld& z);
-	void	getSubject(ld& x, ld& y, ld& z);
-	ld		getPitch();
-	ld		getYaw();
-	ld		getDistance();
-	ld		getMinimumDistance();
+	/*!
+	 * @brief returns the position
+	 */
+	void getPosition(ld& x, ld& y, ld& z);
 
-	Camera&	setSubject(ld x, ld y, ld z);
-	Camera&	setPitch(ld pitch);
-	Camera&	setYaw(ld yaw);
-	Camera&	setDistance(ld distance);
-	Camera&	setMinimumDistance(ld min_distance);
-	Camera&	setRotationEasing(ld ease);
-	Camera&	setZoomEasing(ld ease);
-	Camera&	setMovementEasing(ld ease);
+	/*!
+	 * @brief returns the subject
+	 */
+	void getSubject(ld& x, ld& y, ld& z);
 
+	/*!
+	 * @brief returns the Pitch
+	 */
+	ld getPitch();
+
+	/*!
+	 * @brief returns the Yaw
+	 */
+	ld getYaw();
+
+	/*!
+	 * @brief returns the distance
+	 */
+	ld getDistance();
+
+	/*!
+	 * @brief returns minimum distance from subject
+	 */
+	ld getMinimumDistance();
+
+	/*!
+	 * @brief sets the subject
+	 */
+	Camera& setSubject(ld x, ld y, ld z);
+
+	/*!
+	 * @brief sets the pitch angle from planet
+	 */
+	Camera& setPitch(ld pitch);
+
+	/*!
+	 * @brief sets the yaw angle from planet
+	 */
+	Camera& setYaw(ld yaw);
+
+	/*!
+	 * @brief sets the distance from planet
+	 */
+	Camera& setDistance(ld distance);
+	
+	/*!
+	 * @brief sets the minimum distance from subject
+	 */
+	Camera& setMinimumDistance(ld min_distance);
+
+	/*!
+	 * @brief sets the rotation ease
+	 */
+	Camera& setRotationEasing(ld ease);
+
+	/*!
+	 * @brief sets the rotation ease for movement
+	 */
+	Camera& setZoomEasing(ld ease);
+
+	/*!
+	 * @brief sets the movement ease
+	 */
+	Camera& setMovementEasing(ld ease);
+
+	/*!
+	 * @brief moves the camera
+	 */
 	void step();
+
+	/*!
+	 * @brief updates camera during movement and planet changes
+	 */
 	void update();
 };
 

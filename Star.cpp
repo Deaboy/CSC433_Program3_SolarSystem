@@ -1,5 +1,19 @@
+/***************************************************************************//**
+ * @author Daniel Andrus
+ *
+ * @Date	11/7/2014
+ *
+ * @file File containing the implementation of the Ring class.
+ *
+ * @brief creates the rings of saturn
+*******************************************************************************/
 #include "Star.h"
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: adds emission to planets draw function
+*******************************************************************************/
 void Star::draw()
 {
 	// Enable emission

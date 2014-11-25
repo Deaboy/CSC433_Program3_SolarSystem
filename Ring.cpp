@@ -1,6 +1,24 @@
+/***************************************************************************//**
+ * @author Daniel Andrus
+ *
+ * @Date	11/7/2014
+ *
+ * @file File containing the implementation of the Ring class.
+ *
+ * @brief creates the rings of saturn
+*******************************************************************************/
 #include "Ring.h"
 
-
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: returns the position of the ring
+ *  
+ * @param[in]	long long time - time position is based off of
+ * @param[in]	ld x - x coordinate
+ * @param[in]	ld y - The y coordinate 
+ * @param[in]	ld z - The z coordinate 
+*******************************************************************************/
 void Ring::getPosition(long long time, ld& x, ld& y, ld& z)
 {
 	if (orbit_target == NULL)
@@ -13,6 +31,11 @@ void Ring::getPosition(long long time, ld& x, ld& y, ld& z)
 	}
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: manually draws the ring and sets in texture points
+*******************************************************************************/
 void Ring::draw()
 {
 	static const float WHITE[4] = { 1, 1, 1, 1 };
