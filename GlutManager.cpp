@@ -25,7 +25,7 @@ GlutManager* GlutManager::instance = NULL;
  *	classes, and creates instances of subClasses
 *******************************************************************************/
 GlutManager::GlutManager()
-: window_width(400 /*arbitrary*/), window_height(300 /*arbitrary*/),
+: window_width(1280 /*arbitrary*/), window_height(720 /*arbitrary*/),
 window_name("Solar System")
 {
 	instance = this;
@@ -90,9 +90,6 @@ void GlutManager::init(int argc, char *argv[])
 	glutReshapeFunc(*::reshape);
 	glutKeyboardFunc(*::keyDown);
 	glutMouseFunc(*::mouseclick);
-#ifndef OS_X
-	glutMouseWheelFunc(*::mousescroll);
-#endif
 	glutMotionFunc(*::mousedrag);
 	glutPassiveMotionFunc(*::mousemove);
 	glutTimerFunc(0, *::step, 0);
@@ -308,39 +305,44 @@ void GlutManager::keyDown(unsigned char key, int x, int y)
 *******************************************************************************/
 void GlutManager::mouseclick(int button, int state, int x, int y)
 {
-	// Camera controls
+	// Distribute events
 	if (state == GLUT_UP)
 	{
-		if (button == mouse_button)
+		if (button == GLUT_LEFT_BUTTON || button == GLUT_RIGHT_BUTTON)
 		{
-			//glutWarpPointer(mouse_restore_x, mouse_restore_y);
-			camera.setRotationEasing(0.125);
-			mouse_button = -1;
+			for (Clickable* clickable : clickables)
+			{
+				if (clickable->containsPoint(x, y))
+					clickable->onMouseUp(button);
+			}
 		}
 	}
 	else
 	{
-		if (button == GLUT_LEFT_BUTTON)
+		if (button == GLUT_LEFT_BUTTON || button == GLUT_RIGHT_BUTTON)
 		{
-			camera.setRotationEasing(1);
-			mouse_button = button;
-			mouse_restore_x = x;
-			mouse_restore_y = y;
+			for (Clickable* clickable : clickables)
+			{
+				if (clickable->containsPoint(x, y))
+					clickable->onMouseDown(button);
+			}
 		}
-	}
-}
-
-void GlutManager::mousescroll(int button, int dir, int x, int y)
-{
-	if (dir > 0)
-	{
-		// Zoom in
-		camera.setDistance(camera.getDistance() * 0.75);
-	}
-	else
-	{
-		// Zoom out
-		camera.setDistance(camera.getDistance() * 1.33333333333);
+		else if (button == 3) // Mouse wheel up
+		{
+			for (Clickable* clickable : clickables)
+			{
+				if (clickable->containsPoint(x, y))
+					clickable->onMouseScrollUp();
+			}
+		}
+		else if (button == 4) // Mouse wheel down
+		{
+			for (Clickable* clickable : clickables)
+			{
+				if (clickable->containsPoint(x, y))
+					clickable->onMouseScrollDown();
+			}
+		}
 	}
 }
 
@@ -355,14 +357,12 @@ void GlutManager::mousescroll(int button, int dir, int x, int y)
 *******************************************************************************/
 void GlutManager::mousemove(int x, int y)
 {
-	if (mouse_button == GLUT_LEFT_BUTTON)
+	static int lx = 0, ly = 0;
+	for (Clickable* clickable : clickables)
 	{
-		camera.setPitch(camera.getPitch() + (y - mouse_restore_y) / 4.0);
-		camera.setYaw(camera.getYaw() + ((mouse_restore_x - x) / 4.0));
-		mouse_restore_x = x;
-		mouse_restore_y = y;
-		//glutWarpPointer(mouse_restore_x, mouse_restore_y);
+		clickable->onMouseMove(x, y, lx, ly);
 	}
+	lx = x, ly = y;
 }
 
 /***************************************************************************//**
@@ -398,14 +398,12 @@ void GlutManager::initLightModel()
     glLightfv( GL_LIGHT0, GL_DIFFUSE, light_diffuse );
     glLightfv( GL_LIGHT0, GL_SPECULAR, light_specular );
 
-    // glShadeModel( GL_FLAT );    // start with flat shading (smooth is default)
 	glShadeModel( GL_SMOOTH );
 
     glEnable( GL_DEPTH_TEST );  // enable depth buffer for hidden-surface elimination
     glEnable( GL_NORMALIZE );   // automatic normalization of normals
     glEnable( GL_CULL_FACE );   // eliminate backfacing polygons
     glCullFace( GL_BACK );
-    // glLightModeli( GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE );   // render back faces
 
     glClearColor( 0.0, 0.0, 0.0, 1.0 );     // black background
 }
@@ -425,7 +423,8 @@ void GlutManager::step()
  *  Return true for success, false for failure.
  *  Author: Sam Buss December 2001.
  **********************************************************************/
-bool GlutManager::LoadBmpFile( const char* filename, int &NumRows, int &NumCols, unsigned char* &ImagePtr )
+bool GlutManager::LoadBmpFile( const char* filename, int &NumRows,
+								int &NumCols, unsigned char* &ImagePtr )
 {
 
     FILE* infile = fopen( filename, "rb" );		// Open for reading binary data
@@ -439,15 +438,23 @@ bool GlutManager::LoadBmpFile( const char* filename, int &NumRows, int &NumCols,
     int bChar = fgetc( infile );
     int mChar = fgetc( infile );
     if ( bChar == 'B' && mChar == 'M' )
-    {			// If starts with "BM" for "BitMap"
-        skipChars( infile, 4 + 2 + 2 + 4 + 4 );			// Skip 4 fields we don't care about
+    {
+    	// If starts with "BM" for "BitMap"
+    	
+    	// Skip 4 fields we don't care about
+        skipChars( infile, 4 + 2 + 2 + 4 + 4 );
         NumCols = readLong( infile );
         NumRows = readLong( infile );
-        skipChars( infile, 2 );					// Skip one field
+        
+        // Skip one field
+        skipChars( infile, 2 );
         int bitsPerPixel = readShort( infile );
-        skipChars( infile, 4 + 4 + 4 + 4 + 4 + 4 );		// Skip 6 more fields
+        
+        // Skip 6 more fields
+        skipChars( infile, 4 + 4 + 4 + 4 + 4 + 4 );
 
-        if ( NumCols > 0 && NumCols <= 100000 && NumRows > 0 && NumRows <= 100000
+        if ( NumCols > 0 && NumCols <= 100000
+        		&& NumRows > 0 && NumRows <= 100000
                 && bitsPerPixel == 24 && !feof( infile ) )
         {
             fileFormatOK = true;
@@ -629,11 +636,6 @@ void keyDown(unsigned char key, int x, int y)
 void mouseclick(int button, int state, int x, int y)
 {
 	GlutManager::getInstance()->mouseclick(button, state, x, y);
-}
-
-void mousescroll(int button, int dir, int x, int y)
-{
-	GlutManager::getInstance()->mousescroll(button, dir, x, y);
 }
 
 /***************************************************************************//**

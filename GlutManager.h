@@ -160,8 +160,6 @@ public:
 	*/
 	void mouseclick(int button, int state, int x, int y );
 	
-	void mousescroll(int button, int dir, int x, int y);
-	
 	/*!
 	 * @brief Mouse movement callback. Executes whenever a mouse is moved
 	 *		inside the program window.
@@ -232,8 +230,6 @@ void keySpecialUp(int key, int x, int y);
  *      either clicked or released.
  */
 void mouseclick(int button, int state, int x, int y );
-
-void mousescroll(int button, int dir, int x, int y);
 
 /*!
  * @brief Mouse movement callback. Executes whenever a mouse is moved

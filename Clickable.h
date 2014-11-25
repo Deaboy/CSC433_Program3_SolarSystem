@@ -20,6 +20,9 @@ public:
 	virtual void onMouseUp(int button) = 0;
 	virtual void onMouseEnter() = 0;
 	virtual void onMouseLeave() = 0;
+	virtual void onMouseScrollUp() = 0;
+	virtual void onMouseScrollDown() = 0;
+	virtual void onMouseMove(int x, int y, int lx, int ly) = 0;
 	virtual bool containsPoint(double x, double y) const = 0;
 };
 
