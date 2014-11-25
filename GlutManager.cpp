@@ -424,35 +424,10 @@ void GlutManager::mouseclick(int button, int state, int x, int y)
 					clickable->onMouseScrollDown();
 			}
 		}
-<<<<<<< HEAD
 	}
 }
 
-/***************************************************************************//**
- * @author Daniel Andrus
- * 
- * @par Description: zooms camera with mouse wheel
- *
- * @param[in]	int button - button being pressed
- * @param[in]	int dir	   - direction wheel is being spun
- * @param[in]	int x	   - x coordinant of mouse spin
- * @param[in]   int y	   - y coordinant of mouse spin
-*******************************************************************************/
-void GlutManager::mousescroll(int button, int dir, int x, int y)
-{
-	if (dir > 0)
-	{
-		// Zoom in
-		camera.setDistance(camera.getDistance() * 0.75);
-	}
-	else
-	{
-		// Zoom out
-		camera.setDistance(camera.getDistance() * 1.33333333333);
-=======
->>>>>>> origin/master
-	}
-}
+
 
 /***************************************************************************//**
  * @author Daniel Andrus, Johnny Ackerman
@@ -735,26 +710,6 @@ void mouseclick(int button, int state, int x, int y)
 	GlutManager::getInstance()->mouseclick(button, state, x, y);
 }
 
-<<<<<<< HEAD
-/***************************************************************************//**
- * @author Daniel Andrus
- * 
- * @par Description: handles mouse input
- *  
- * @param[in]	button - The button whose state was changed.
- * @param[in]	state - The new state of the button.
- * @param[in]	x - The x coordinate of the mouse at the time the button
- *				was pressed. Measured in integers.
- * @param[in]	y - The y coordinate of the mouse at the time the button
- *				was pressed.
-*******************************************************************************/
-void mousescroll(int button, int dir, int x, int y)
-{
-	GlutManager::getInstance()->mousescroll(button, dir, x, y);
-}
-
-=======
->>>>>>> origin/master
 /***************************************************************************//**
  * @author Daniel Andrus, Johnny Ackerman
  * 
