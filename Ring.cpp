@@ -16,8 +16,8 @@
  *  
  * @param[in]	long long time - time position is based off of
  * @param[in]	ld x - x coordinate
- * @param[in]	y - The y coordinate 
- * @param[in]	z - The z coordinate 
+ * @param[in]	ld y - The y coordinate 
+ * @param[in]	ld z - The z coordinate 
 *******************************************************************************/
 void Ring::getPosition(long long time, ld& x, ld& y, ld& z)
 {
@@ -31,6 +31,11 @@ void Ring::getPosition(long long time, ld& x, ld& y, ld& z)
 	}
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: manually draws the ring and sets in texture points
+*******************************************************************************/
 void Ring::draw()
 {
 	static const float WHITE[4] = { 1, 1, 1, 1 };
