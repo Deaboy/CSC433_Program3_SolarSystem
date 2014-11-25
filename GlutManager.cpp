@@ -108,14 +108,16 @@ void GlutManager::init(int argc, char *argv[])
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 }
 
-int GlutManager::run()
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: starts GlutMainLoop
+*******************************************************************************/
+void GlutManager::run()
 {
 
     // Go into OpenGL/GLUT main loop
     glutMainLoop();
-
-    return 0;
-
 }
 
 /***************************************************************************//**
@@ -154,11 +156,25 @@ double GlutManager::getViewHeight()
 	return window_height;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: returns pointer to camera class
+ *
+ * @returns camera - pointer to camera class
+*******************************************************************************/
 Camera& GlutManager::getCamera()
 {
 	return camera;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: Makes an object clickable for use with other functions
+ *
+ * @param[in]	Clickable* clickable - object being made clickable
+*******************************************************************************/
 void GlutManager::registerClickable(Clickable* clickable)
 {
 	if (!isClickableRegistered(clickable) && clickable != NULL)
@@ -167,6 +183,13 @@ void GlutManager::registerClickable(Clickable* clickable)
 	}
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: removes clickablity
+ *
+ * @param[in]	Clickable* clickable - object being removed from clickable
+*******************************************************************************/
 void GlutManager::unregisterClickable(Clickable* clickable)
 {
 	auto it = find(clickables.begin(), clickables.end(), clickable);
@@ -174,11 +197,29 @@ void GlutManager::unregisterClickable(Clickable* clickable)
 		clickables.erase(it);
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: checks if object is clickable
+ *
+ * @param[in]	Clickable* clickable - object being tested
+ *
+ * @return true - object is clickable
+ * @return false - object is not clickable
+*******************************************************************************/
 bool GlutManager::isClickableRegistered(Clickable* clickable)
 {
 	return find(clickables.begin(), clickables.end(), clickable) != clickables.end();
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: Makes an object stepable for use with other functions
+ *			specifically movement related functions
+ *
+ * @param[in]	Stepable* stepable - object being made stepable
+*******************************************************************************/
 void GlutManager::registerStepable(Stepable* stepable)
 {
 	if (!isStepableRegistered(stepable) && stepable != NULL)
@@ -187,6 +228,13 @@ void GlutManager::registerStepable(Stepable* stepable)
 	}
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: remove object from stepable
+ *
+ * @param[in]	Stepable* stepable - object becoming unstepable
+*******************************************************************************/
 void GlutManager::unregisterStepable(Stepable* stepable)
 {
 	auto it = find(stepables.begin(), stepables.end(), stepable);
@@ -194,11 +242,29 @@ void GlutManager::unregisterStepable(Stepable* stepable)
 		stepables.erase(it);
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: checks if object is stepable
+ *
+ * @param[in]	Stepable* stepable - object being made stepable
+ *
+ * @return	true - object is stepable
+ * @return  false - object is not stepable
+*******************************************************************************/
 bool GlutManager::isStepableRegistered(Stepable* stepable)
 {
 	return find(stepables.begin(), stepables.end(), stepable) != stepables.end();
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: Makes an object Pressable for use with other functions
+ *			specifically keyboard related functions
+ *
+ * @param[in]	Pressable* pressable - object being made pressable
+*******************************************************************************/
 void GlutManager::registerPressable(Pressable* pressable)
 {
 	if (!isPressableRegistered(pressable) && pressable != NULL)
@@ -207,6 +273,13 @@ void GlutManager::registerPressable(Pressable* pressable)
 	}
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: removes pressablity
+ *
+ * @param[in]	Pressable* pressable - object lossing pressibles
+*******************************************************************************/
 void GlutManager::unregisterPressable(Pressable* pressable)
 {
 	auto it = find(pressables.begin(), pressables.end(), pressable);
@@ -214,6 +287,14 @@ void GlutManager::unregisterPressable(Pressable* pressable)
 		pressables.erase(it);
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: Makes an object Pressable for use with other functions
+ *			specifically keyboard related functions
+ *
+ * @param[in]	Pressable* pressable - object being made pressable
+*******************************************************************************/
 bool GlutManager::isPressableRegistered(Pressable* pressable)
 {
 	return find(pressables.begin(), pressables.end(), pressable) != pressables.end();
@@ -330,6 +411,16 @@ void GlutManager::mouseclick(int button, int state, int x, int y)
 	}
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: zooms camera with mouse wheel
+ *
+ * @param[in]	int button - button being pressed
+ * @param[in]	int dir	   - direction wheel is being spun
+ * @param[in]	int x	   - x coordinant of mouse spin
+ * @param[in]   int y	   - y coordinant of mouse spin
+*******************************************************************************/
 void GlutManager::mousescroll(int button, int dir, int x, int y)
 {
 	if (dir > 0)
@@ -410,6 +501,11 @@ void GlutManager::initLightModel()
     glClearColor( 0.0, 0.0, 0.0, 1.0 );     // black background
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: Moves stepable objects
+*******************************************************************************/
 void GlutManager::step()
 {
 	for (Stepable* stepable : stepables)
@@ -596,22 +692,6 @@ void keyDown(unsigned char key, int x, int y)
 	GlutManager::getInstance()->keyDown(key, x, y);
 }
 
-/***************************************************************************//**
- * @author Daniel Andrus, Johnny Ackerman
- * 
- * @par Description: Key up callback. Executes whenever a typical key is
- *		released. Simply forwards to Pong class' identical function.
- * 
- * @param[in]	key - ASCII-encoded char of the key that was pressed.
- * @param[in]	x - The x coordinate of the mouse at the time the key
- *				was pressed. Measured in integers.
- * @param[in]	y - The y coordinate of the mouse at the time the key
- *				was pressed.
-*******************************************************************************/
-//void keyUp(unsigned char key, int x, int y)
-//{
-//	GlutManager::getInstance()->keyUp(key, x, y);
-//}
 
 /***************************************************************************//**
  * @author Johnny Ackerman
@@ -631,6 +711,18 @@ void mouseclick(int button, int state, int x, int y)
 	GlutManager::getInstance()->mouseclick(button, state, x, y);
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: handles mouse input
+ *  
+ * @param[in]	button - The button whose state was changed.
+ * @param[in]	state - The new state of the button.
+ * @param[in]	x - The x coordinate of the mouse at the time the button
+ *				was pressed. Measured in integers.
+ * @param[in]	y - The y coordinate of the mouse at the time the button
+ *				was pressed.
+*******************************************************************************/
 void mousescroll(int button, int dir, int x, int y)
 {
 	GlutManager::getInstance()->mousescroll(button, dir, x, y);
@@ -664,6 +756,13 @@ void mousedrag(int x, int y)
 	GlutManager::getInstance()->mousedrag(x, y);
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus
+ * 
+ * @par Description: sets frames per second of the program
+ *  
+ * @param[in]	int i - its used by glut
+*******************************************************************************/
 void step(int i)
 {
 	// FPS, or technically "milliseconds per frame"

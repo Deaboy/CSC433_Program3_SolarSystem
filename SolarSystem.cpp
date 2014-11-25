@@ -212,7 +212,8 @@ int SolarSystem::run(int argc, char *argv[])
 			.setZoomEasing(0.125).setMovementEasing(1)
 			.setPitch(45).setYaw(315).setDistance(1000);
 	
-	return manager.run();
+	manager.run();
+	return 0;
 }
 
 void SolarSystem::setCameraSubject(int i)

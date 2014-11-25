@@ -95,7 +95,7 @@ public:
 	*/
 	void init( int argc, char *argv[] );
 
-	int run();
+	void run();
 
 	/*!
 	* @brief Gets the width of the view port in the virtual space.
