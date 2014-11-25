@@ -1,5 +1,26 @@
+/***************************************************************************//**
+ * @author Daniel Andrus
+ *
+ * @Date	11/7/2014
+ *
+ * @file File containing the implementation of the Solar System class.
+ *
+ * @brief creates the Solar System, implementation of solar system class
+*******************************************************************************/
+/*******************************************************************************
+ *                 DECLARATIONS, INCLUDES, AND NAMESPACES
+*******************************************************************************/
 #include "SolarSystem.h"
 
+/*******************************************************************************
+ *                          FUNCTION DEFINITIONS
+*******************************************************************************/
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: Constuctor, Initializes the SolarSystem
+ *
+*******************************************************************************/
 SolarSystem::SolarSystem()
 {
 	time = 0;
@@ -10,6 +31,12 @@ SolarSystem::SolarSystem()
 	drag = false;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: Destructor, DeathStar effect on all Planets
+ *
+*******************************************************************************/
 SolarSystem::~SolarSystem()
 {
 	for (Planet* planet : planets)
@@ -18,6 +45,17 @@ SolarSystem::~SolarSystem()
 	}
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: Sets up Planets and calls glut init functions and camera
+ *		functions
+ *
+ * @param[in] int argc - number of aurguments form commandline
+ * @param[in] char *argv[] - array of augments from commandline
+ *
+ * @returns 0 - no problems
+*******************************************************************************/
 int SolarSystem::run(int argc, char *argv[])
 {
 	Planet* sun;
@@ -220,6 +258,13 @@ int SolarSystem::run(int argc, char *argv[])
 	return 0;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: changes what planet camera is viewing
+ *
+ * @param[in] int i - itterator though planet vector
+*******************************************************************************/
 void SolarSystem::setCameraSubject(int i)
 {
 	if (i < (int) planets.size())
@@ -230,6 +275,15 @@ void SolarSystem::setCameraSubject(int i)
 	}
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: changes what planet camera is viewing
+ *
+ * @param[in] unsigned char key - key that was pressed
+ * @param[in] int x - x coordinate of mouse when keyboard pressed
+ * @param[in] int y - y coordinate of mouse when keyboard pressed
+*******************************************************************************/
 void SolarSystem::keyDown(unsigned char key, int x, int y)
 {
 	if (key != GLUT_LEFT_BUTTON)
@@ -300,7 +354,24 @@ void SolarSystem::keyDown(unsigned char key, int x, int y)
 					planet->cycleDrawMode();
 				break;
 
-			case 32:		// space
+			case 91:		// '['
+			case 123:		// '{'
+				time--;
+				break;
+
+			case 93:		// ']'
+			case 124:		// '}'
+				time++;
+				if( time < 5 || time > 5 ) time = time*3;
+				break;
+
+			case 32:		//space
+				time = 0;
+				if( time < 5 || time > 5 ) time = long long(time/3);
+				break;
+
+			case 90:		// 'Z'
+			case 122:		// 'z'
 				GlutManager::getInstance()->
 					getCamera().setSubject(0,0,0).setRotationEasing(0.125)
 						.setZoomEasing(0.125).setMovementEasing(1)
@@ -328,12 +399,49 @@ void SolarSystem::keyDown(unsigned char key, int x, int y)
 	}
 }
 
+ /***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: handles what happens when key is released, currently
+ *			unused
+ *
+ * @param[in] unsigned char key - key that was pressed
+ * @param[in] int x - x coordinate of mouse when keyboard pressed
+ * @param[in] int y - y coordinate of mouse when keyboard pressed
+*******************************************************************************/
 void SolarSystem::keyUp(unsigned char key, int x, int y) {}
 
+ /*************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description:handles what happens when Special key is pressed, currently
+ *			unused
+ *
+ * @param[in] unsigned char key - key that was pressed
+ * @param[in] int x - x coordinate of mouse when keyboard pressed
+ * @param[in] int y - y coordinate of mouse when keyboard pressed
+******************************************************************************/
 void SolarSystem::keySpecialDown(unsigned char key, int x, int y) {}
 
+ /*************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: handles what happens when Special key is released,
+ *			currently unused
+ *
+ * @param[in] unsigned char key - key that was pressed
+ * @param[in] int x - x coordinate of mouse when keyboard pressed
+ * @param[in] int y - y coordinate of mouse when keyboard pressed
+******************************************************************************/
 void SolarSystem::keySpecialUp(unsigned char key, int x, int y) {}
 
+ /*************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: handles what happens when mouse button is pressed
+ *
+ * @param[in] int button - button pressed
+******************************************************************************/
 void SolarSystem::onMouseDown(int button)
 {
 	if (button == GLUT_LEFT_BUTTON)
@@ -343,6 +451,13 @@ void SolarSystem::onMouseDown(int button)
 	}
 }
 
+ /*************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: handles what happens when mouse button is released
+ *
+ * @param[in] int button - button pressed
+******************************************************************************/
 void SolarSystem::onMouseUp(int button)
 {
 	if (button == GLUT_LEFT_BUTTON)
@@ -352,10 +467,25 @@ void SolarSystem::onMouseUp(int button)
 	}
 }
 
+ /*************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: when mouse is over an object - unused
+******************************************************************************/
 void SolarSystem::onMouseEnter() {}
 
+/*************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: when mouse leaves an object - unused
+******************************************************************************/
 void SolarSystem::onMouseLeave() {}
 
+/*************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: zooms out when wheel is spun "up"
+******************************************************************************/
 void SolarSystem::onMouseScrollUp()
 {
 	// Zoom in
@@ -363,6 +493,11 @@ void SolarSystem::onMouseScrollUp()
 		manager.getCamera().getDistance() * 0.75);
 }
 
+/*************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: zooms in when wheel is spun "down"
+******************************************************************************/
 void SolarSystem::onMouseScrollDown()
 {
 	// Zoom out
@@ -370,6 +505,16 @@ void SolarSystem::onMouseScrollDown()
 		manager.getCamera().getDistance() * 1.33333333333);
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: moves camera based on mouse drags
+ *
+ * @param[in] int x - x coordinate of mouse before drag
+ * @param[in] int y - y coordinate of mouse before drag
+ * @param[in] int x - x coordinate of mouse after drag
+ * @param[in] int y - y coordinate of mouse after drag
+*******************************************************************************/
 void SolarSystem::onMouseMove(int x, int y, int lx, int ly)
 {
 	if (drag)
@@ -381,17 +526,38 @@ void SolarSystem::onMouseMove(int x, int y, int lx, int ly)
 	}
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: checks if coords are valid
+ *
+ * @param[in] double x - x coordinate of mouse
+ * @param[in] double y - y coordinate of mouse
+ *
+ * @return true - in solar system
+ * @return false - not in solar system
+*******************************************************************************/
 bool SolarSystem::containsPoint(double x, double y) const
 {
 	return true;
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: handles solar system movement based on a time
+*******************************************************************************/
 void SolarSystem::step()
 {
 	time += speed;
 	update(time);
 }
 
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ * 
+ * @par Description: updates time value for all planets
+*******************************************************************************/
 void SolarSystem::update(long long time)
 {
 	for (Planet* planet : planets)

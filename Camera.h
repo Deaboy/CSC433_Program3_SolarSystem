@@ -1,10 +1,12 @@
-//
-//  Camera.h
-//  CSC433_Program3_SolarSystem
-//
-//  Created by Daniel Andrus on 2014-11-19.
-//  Copyright (c) 2014 Daniel Andrus. All rights reserved.
-//
+/***************************************************************************//**
+* @author Daniel Andrus, Johnny Ackerman
+ *
+ * @file File containing the header for the Camera Class
+ *
+ * @Date 2014 - 11 - 19
+ *
+ * @brief Contains the declaration for the Camera class.
+*******************************************************************************/
 
 /*******************************************************************************
  *                 DECLARATIONS, INCLUDES, AND NAMESPACES

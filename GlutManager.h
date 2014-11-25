@@ -3,10 +3,9 @@
  *
  * @Date	10/20/2014
  *
- * @file File containing the declaration for the Fractals class.
+ * @file File containing the declaration for the GlutMangager class.
  *
- * @brief Contains the declaration for the Fractals class, the core class of the
- *      entire program.
+ * @brief Handles how glut interacts with the program
 *******************************************************************************/
 #ifndef _GLUTMANAGER_H_ //makes sure class is not declared twice
 #define _GLUTMANAGER_H_
@@ -44,14 +43,10 @@ class GlutManager;
 using namespace std;
 
 /***************************************************************************//**
- * @brief The Fractals class is in charge of window management, drawing
- *      all the parts of the screen, and running the other classes. It also
- *      handles the interaction between glut and the program and event
- *      management.
+ * @brief The GlutManger Class handle everything to do with glut
  *
- * @details This class essentially provides a base for the rest of the program.
- *      It handles drawing functions, forwards OpenGL events, generates a
- *      framerate, and standardizes various aspects of the program.
+ * @details initializes callbacks, handles glut startup initializing and
+ *		handles glut events
 *******************************************************************************/
 class GlutManager : public DrawingManager
 {
@@ -60,18 +55,13 @@ private:
 	int window_height;			/*!< Height of gui window */
 	string window_name;			/*!< Name of the gui window */
 
-	Camera camera;
-	vector<Clickable*> clickables;
-	vector<Stepable*> stepables;
-	vector<Pressable*> pressables;
-	map<int, vector<Drawable*> > drawables;
-	
-	// Camera control variables
-	int mouse_restore_x;
-	int mouse_restore_y;
-	int mouse_button;
+	Camera camera;				/*!< view camera */
+	vector<Clickable*> clickables;	/*!< clickable objects for mouse events */
+	vector<Stepable*> stepables;	/*!< stepable objects for movement events*/
+	vector<Pressable*> pressables; /*!< pressable objects for keyboard events*/
+	map<int, vector<Drawable*> > drawables; /*!< things glut needs to draw */
 
-	static GlutManager* instance;
+	static GlutManager* instance; /*!< instance of itself */
 
 public:
 	/*!
@@ -95,6 +85,9 @@ public:
 	*/
 	void init( int argc, char *argv[] );
 
+	/*!
+	* @brief initiates glut main loop
+	*/
 	void run();
 
 	/*!
@@ -107,18 +100,57 @@ public:
 	*/
 	double getViewHeight();
 	
+	/*!
+	* @brief gets reference to object Camera
+	*/
 	Camera& getCamera();
 
+	/*!
+	* @brief registers possible mouse events
+	*/
 	void registerClickable(Clickable* clickable);
+
+	/*!
+	* @brief removes possible mouse events
+	*/
 	void unregisterClickable(Clickable* clickable);
+
+	/*!
+	* @brief checks if possible mouse events
+	*/
 	bool isClickableRegistered(Clickable* clickable);
 	
+
+
+	/*!
+	* @brief registers possible movement events
+	*/
 	void registerStepable(Stepable* stepable);
+
+	/*!
+	* @brief removes possible movement events
+	*/
 	void unregisterStepable(Stepable* stepable);
+
+	/*!
+	* @brief checks if possible movement events
+	*/
 	bool isStepableRegistered(Stepable* stepable);
 	
+
+	/*!
+	* @brief registers possible keyboard events
+	*/
 	void registerPressable(Pressable* pressable);
+
+	/*!
+	* @brief removes possible keyboard events
+	*/
 	void unregisterPressable(Pressable* pressable);
+
+	/*!
+	* @brief checks if possible keyboard events
+	*/
 	bool isPressableRegistered(Pressable* pressable);
 
 	/*!
@@ -177,13 +209,36 @@ public:
 	 */
 	void initLightModel();
 	
+	/*!
+	* @brief handles movement
+	*/
 	void step();
 	
 	// texture stuff
+
+	/*!
+	* @brief provided bmp texture load
+	*/
 	static bool LoadBmpFile( const char* filename, int &NumRows, int &NumCols, unsigned char* &ImagePtr );
+
+	/*!
+	* @brief used by "loadBmpFile
+	*/
 	static inline int GetNumBytesPerRow( int NumCols );
+
+	/*!
+	* @brief used by "loadBmpFile"
+	*/
 	static short readShort( FILE* infile );
+
+	/*!
+	* @brief used by "loadBmpFile"
+	*/
 	static int readLong( FILE* infile );
+
+	/*!
+	* @brief used by "loadBmpFile"
+	*/
 	static void skipChars( FILE* infile, int numChars );
 };
 
@@ -243,6 +298,9 @@ void mousemove(int x, int y);
  */
 void mousedrag(int x, int y);
 
+/*!
+ * @brief step callback, object handles movement
+ */
 void step(int i);
 
 #endif

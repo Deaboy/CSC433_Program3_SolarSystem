@@ -5,6 +5,13 @@
 //  Created by Daniel Andrus on 2014-11-11.
 //  Copyright (c) 2014 Daniel Andrus. All rights reserved.
 //
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ *
+ * @file File containing Constant Data used in solar system
+ *
+ * @Date 2014 - 11 - 11
+*******************************************************************************/
 
 #ifndef _CONSTANTS_H_
 #define _CONSTANTS_H_
