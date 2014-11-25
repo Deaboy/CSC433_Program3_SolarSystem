@@ -3,7 +3,7 @@
  *
  * @Date	11/7/2014
  *
- * @file File containing the implementation of the Fractals class.
+ * @file File containing the implementation of the GlutManger class.
  *
  * @brief implementation for handeling callbacks
 *******************************************************************************/
