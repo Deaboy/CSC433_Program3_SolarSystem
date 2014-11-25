@@ -259,7 +259,7 @@ void Planet::draw()
     glPushMatrix();
 	
 	// Set the color
-    glColor3ub( color[0], color[1], color[2] );
+    glColor3ubv( color );
 	//double radius = 8;	// TESTING
 	
 	// Draw orbit first
@@ -328,9 +328,27 @@ void Planet::draw()
 	
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, draw_mode ? lightColor : WHITE);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, draw_mode ? lightColor : WHITE);
-
-    gluSphere( sphere, radius, PLANET_DETAIL, PLANET_DETAIL );
+	gluSphere( sphere, radius, PLANET_DETAIL, PLANET_DETAIL );
 	
+	// Display name label
+	glLoadIdentity();
+	glPopMatrix();
+	glPushMatrix();
+	
+	// Translate to appear to right of planet
+    glTranslated( position[0], position[1], position[2] );
+    glRotated( GlutManager::getInstance()->getCamera().getYaw() + 90, 0, 0, 1);
+    glTranslated( radius * 1.25, 0, 0 );
+    
+    // Draw text without lighting or texture effects
+	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_LIGHTING);
+	glColor3ubv(color);
+	glRasterPos3d(0,0,0);
+	glutBitmapString(GLUT_BITMAP_HELVETICA_18,
+					(const unsigned char *) name.c_str() );
+	
+	// Restore settings
     glPopMatrix();
 	glEnable(GL_LIGHTING);
 	glDisable( GL_TEXTURE_2D );
