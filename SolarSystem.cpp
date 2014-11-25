@@ -423,6 +423,18 @@ void SolarSystem::keyDown(unsigned char key, int x, int y)
 				currentPlanet = key - '0';
 				break;
 
+			case 84:
+			case 116:
+				Planet* savePosition;
+				savePosition = subject;
+				for( int j = 0; j < 10; j++ )
+				{
+					subject = planets[j];
+					subject -> isPlanetASphere();
+				}
+				subject = savePosition;
+				break;
+
 			default:
 				break;
 		}

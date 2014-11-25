@@ -28,6 +28,13 @@
  *			including textures
  *
  *
+ * Assumptions - All Planets orbits are coplaner and circlular, Pluto was 
+ *			not added to solar system. speed of solar system Will start at
+ *			standard speed. All planets are assumed to be perfect spheres.
+ *			Planet axis are constant. Sizes are to scale. At time = 0, Planets
+ *			are perfectly alined, planet surfaces do not change.
+ *
+ *
  * Extras  Each Planet, sun and moon included, has a number key that they are
  *		bound to. Also 'q' and 'e' are previous and next between planets.
  *

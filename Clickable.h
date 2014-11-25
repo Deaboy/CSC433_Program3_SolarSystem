@@ -25,13 +25,44 @@
  class Clickable
 {
 public:
+	/*!
+	 * @brief mouse callback. Executes whenever the mouse is clicked
+	 */
 	virtual void onMouseDown(int button) = 0;
+
+	/*!
+	 * @brief mouse callback. Executes whenever the mouse is unclicked
+	 */
 	virtual void onMouseUp(int button) = 0;
+
+	/*!
+	 * @brief mouse callback. Executes whenever the mouse hovers over clickable
+	 */
 	virtual void onMouseEnter() = 0;
+
+	/*!
+	 * @brief mouse callback. Executes whenever the mouse leaves clickable
+	 */
 	virtual void onMouseLeave() = 0;
+
+	/*!
+	 * @brief mouse callback. Executes whenever the mouse wheel is rolled up
+	 */
 	virtual void onMouseScrollUp() = 0;
+
+	/*!
+	 * @brief mouse callback. Executes whenever the mouse wheel is rolled down
+	 */
 	virtual void onMouseScrollDown() = 0;
+
+	/*!
+	 * @brief mouse callback. Executes whenever the mouse moves
+	 */
 	virtual void onMouseMove(int x, int y, int lx, int ly) = 0;
+
+	/*!
+	 * @brief determines if mouse coordinates are in solar system
+	 */
 	virtual bool containsPoint(double x, double y) const = 0;
 };
 
