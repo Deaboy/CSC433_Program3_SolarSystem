@@ -1,4 +1,6 @@
 /***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ *
  * @file File containing the implementation for the Camera Class
  *
  * @Date 2014 - 11 - 19

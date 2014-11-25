@@ -29,7 +29,6 @@ GlutManager::GlutManager()
 window_name("Solar System")
 {
 	instance = this;
-	mouse_button = -1;
 }
 
 /***************************************************************************//**
@@ -50,7 +49,8 @@ GlutManager::~GlutManager()
  *		calling this function, as it enters the OpenGL main loop, only
  *		to return at end of program execution.
  *
- * @returns Status code of the program. 0 means no problems.
+ * @param[in] int argc - number of aurguments form commandline
+ * @param[in] char *argv[] - array of augments from commandline
 *******************************************************************************/
 void GlutManager::init(int argc, char *argv[])
 {

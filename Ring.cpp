@@ -1,7 +1,7 @@
 /***************************************************************************//**
  * @author Daniel Andrus
  *
- * @Date	11/7/2014
+ * @Date	11/13/2014
  *
  * @file File containing the implementation of the Ring class.
  *

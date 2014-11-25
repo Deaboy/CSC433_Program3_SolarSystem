@@ -1,3 +1,12 @@
+/***************************************************************************//**
+ * @author Daniel Andrus, Johnny Ackerman
+ *
+ * @file File containing the header for the clickable Class
+ *
+ * @Date 2014 - 11 - 19
+ *
+ * @brief Contains the declaration for the clickable class.
+*******************************************************************************/
 #ifndef _CLICKABLE_H_
 #define _CLICKABLE_H_
 
