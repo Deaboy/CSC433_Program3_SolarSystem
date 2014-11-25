@@ -93,6 +93,10 @@ void GlutManager::init(int argc, char *argv[])
 	glutMotionFunc(*::mousedrag);
 	glutPassiveMotionFunc(*::mousemove);
 	glutTimerFunc(0, *::step, 0);
+	
+	// Set up context menu
+	glutCreateMenu(*::menuevent);
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
 
 	// set up illumination-reflectance model
 	GlutManager::initLightModel();
@@ -462,6 +466,11 @@ void GlutManager::mousedrag(int x, int y)
 	mousemove(x, y);
 }
 
+void GlutManager::menuevent(int selection)
+{
+	keyDown(selection, 0, 0);
+}
+
 /***************************************************************************//**
  * @author Dr. Weiss
  * 
@@ -736,6 +745,11 @@ void mousemove(int x, int y)
 void mousedrag(int x, int y)
 {
 	GlutManager::getInstance()->mousedrag(x, y);
+}
+
+void menuevent(int selection)
+{
+	GlutManager::getInstance()->menuevent(selection);
 }
 
 /***************************************************************************//**

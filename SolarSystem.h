@@ -16,7 +16,9 @@
 class SolarSystem;
 
 #include <vector>
+#include <string>
 #include "Constants.h"
+#include "Drawable.h"
 #include "Stepable.h"
 #include "Planet.h"
 #include "Star.h"
@@ -30,7 +32,8 @@ using namespace std;
 /**************************************************************************//**
  * @brief The SolarSystem class creates and handles the solar system
 ******************************************************************************/
-class SolarSystem : public Stepable, public Pressable, public Clickable
+class SolarSystem : public Drawable, public Stepable, public Pressable,
+public Clickable
 {
 private:
 	//Planets
@@ -41,6 +44,7 @@ private:
 	ld				min_zoom;
 	int				currentPlanet;
 	int				speed;
+	int				menu;
 	bool			drag;
 
 public:
@@ -66,6 +70,9 @@ public:
 
 	void step();
 	void update(long long time);
+	void draw();
 };
+
+void menuevent(int selection);
 
 #endif

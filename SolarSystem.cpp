@@ -249,11 +249,33 @@ int SolarSystem::run(int argc, char *argv[])
 	manager.registerStepable(this);
 	manager.registerPressable(this);
 	manager.registerClickable(this);
+	manager.drawObject(this);
 	
+	// Initialize camera
 	manager.getCamera().setSubject(0,0,0).setRotationEasing(0.125)
 			.setZoomEasing(0.125).setMovementEasing(1)
 			.setPitch(45).setYaw(315).setDistance(1000);
 	
+	//add entries to our menu
+	glutAddMenuEntry("0 - Sun",'0');
+	glutAddMenuEntry("1 - Mercury", '1');
+	glutAddMenuEntry("2 - Venus", '2');
+	glutAddMenuEntry("3 - Earth", '3');
+	glutAddMenuEntry("4 - Moon", '4');
+	glutAddMenuEntry("5 - Mars", '5');
+	glutAddMenuEntry("6 - Jupiter", '6');
+	glutAddMenuEntry("7 - Saturn", '7');
+	glutAddMenuEntry("8 - Uranus", '8');
+	glutAddMenuEntry("9 - Neptune", '9');
+	glutAddMenuEntry("[ - Rewind time", '[');
+	glutAddMenuEntry("] - Fast forward time", ']');
+	glutAddMenuEntry("Space - Real time", ' ');
+	glutAddMenuEntry("Tab - Cycle drawing modes", 9);
+
+	// attach the menu to the right button
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
+	
+	// Enter main loop
 	manager.run();
 	return 0;
 }
@@ -356,18 +378,26 @@ void SolarSystem::keyDown(unsigned char key, int x, int y)
 
 			case 91:		// '['
 			case 123:		// '{'
-				time--;
+				if (speed > 1)
+					speed /= 2;
+				else if (speed <= -1)
+					speed *= 2;
+				else
+					speed--;
 				break;
 
 			case 93:		// ']'
 			case 124:		// '}'
-				time++;
-				if( time < 5 || time > 5 ) time = time*3;
+				if (speed >= 1)
+					speed *= 2;
+				else if (speed < -1)
+					speed /= 2;
+				else
+					speed++;
 				break;
 
 			case 32:		//space
-				time = 0;
-				if( time < 5 || time > 5 ) time = long long(time/3);
+				speed = 1;
 				break;
 
 			case 90:		// 'Z'
@@ -571,3 +601,31 @@ void SolarSystem::update(long long time)
 		manager.getCamera().setSubject(x, y, z);
 	}
 }
+
+void SolarSystem::draw()
+{
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	gluOrtho2D(0, glutGet(GLUT_WINDOW_WIDTH), 0, glutGet(GLUT_WINDOW_HEIGHT));
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_LIGHTING);
+	
+	string txt = to_string(speed) + "x";
+	glColor3ub(255, 255, 255);
+	glRasterPos2i(10, 10);
+	glutBitmapString(GLUT_BITMAP_HELVETICA_18,
+					(const unsigned char *) txt.c_str() );
+	
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+	glPopMatrix();
+}
+

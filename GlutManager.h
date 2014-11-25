@@ -203,6 +203,8 @@ public:
 	 *		the program window while a button is pressed.
 	 */
 	void mousedrag(int x, int y);
+	
+	void menuevent(int selection);
 
 	/*!
 	 * @brief sets up glut lighting
@@ -297,6 +299,8 @@ void mousemove(int x, int y);
  *		the program window while a button is pressed.
  */
 void mousedrag(int x, int y);
+
+void menuevent(int selection);
 
 /*!
  * @brief step callback, object handles movement
