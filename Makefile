@@ -5,7 +5,8 @@ EXECS=solarsystem
 
 all: $(EXECS)
 
-solarsystem: Main.o Planet.o SolarSystem.o GlutManager.o DrawingManager.o
+solarsystem: Main.o DrawingManager.o GlutManager.o SolarSystem.o Planet.o\
+Star.o Ring.o Camera.o
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(CXXLIBS)
 
 %.o: %.c

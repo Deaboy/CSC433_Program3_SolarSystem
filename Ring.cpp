@@ -72,6 +72,10 @@ void Ring::draw()
 		glTexCoord2d(0, t / 2*M_PI);
 		glVertex2d(cosl(t)*radius, sinl(t)*radius);
 	}
+	glTexCoord2d(1, 1);
+	glVertex2d(orbit_radius,  0);
+	glTexCoord2d(0, 1);
+	glVertex2d(1, 0);
 	glEnd();
 	glEnable(GL_CULL_FACE);
 

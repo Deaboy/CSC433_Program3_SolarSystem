@@ -50,7 +50,7 @@ protected:
 
 public:
 	Planet();
-	~Planet();
+	virtual ~Planet();
 	
 	Planet& setName(string name);
 	Planet& setColor(unsigned char r, unsigned char g, unsigned char b);

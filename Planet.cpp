@@ -262,13 +262,14 @@ void Planet::draw()
 	// Draw the orbit without lighting
 	glDisable(GL_LIGHTING);
 	glDisable(GL_TEXTURE_2D);
-	glBegin(GL_LINE_LOOP);
+	glBegin(GL_LINE_STRIP);
 		for (ld theta = 0, cur = DEGTORAD(orbit_angle);
 			theta < 2*M_PI;
 			theta += orbit_slicesize)
 			glVertex3d(target_x + cosl(cur+theta) * orbit_radius,
 						target_y + sinl(cur+theta) * orbit_radius,
 						target_z);
+		glVertex3d(target_x + orbit_radius, target_y, target_z);
 	glEnd();
 	glEnable(GL_LIGHTING);
 	
