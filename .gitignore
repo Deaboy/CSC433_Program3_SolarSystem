@@ -187,3 +187,7 @@ Solar_System.vcxproj.filters
 *.vcxproj
 *.filters
 *.sln
+
+# Object files and executeables
+*.o
+solarsystem
